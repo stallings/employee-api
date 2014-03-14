@@ -1,0 +1,659 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>UX API</title>
+
+</head>
+<body>
+<h1>UX API</h1>
+
+<p>The UX API is a RESTful API to get more information from each UX team member.  The information includes:</p>
+
+<ul>
+<li>Background information</li>
+<li>Skill Ratings (password protected)</li>
+<li>Current and past projects</li>
+<li>Deparment information</li>
+<li>Virtual Team (V-Team) information</li>
+</ul>
+
+
+<h3>Framework</h3>
+
+<ul>
+<li>NodeJS + Express + Mongoose + PassportJS * MongoDB <a href="http://localhost:28017/">http://localhost:28017/</a></li>
+<li>JSONP compatible</li>
+<li>Example: <a href="http://blog.wercker.com/2013/06/20/Getting-started-with-Node-Mongoose-MongoDB-Part1.html">http://blog.wercker.com/2013/06/20/Getting-started-with-Node-Mongoose-MongoDB-Part1.html</a></li>
+</ul>
+
+
+<h3>Security</h3>
+
+<ul>
+<li>IP Whitelisting (if necessary) <a href="https://wiki.intra.sears.com/confluence/display/ECOMMIT/Do+Not+Shun+for+InfoProt">List of Sears IPs</a></li>
+<li>Password Protection for skill ratings</li>
+<li>Look into this for Google authentication: <a href="http://stackoverflow.com/questions/13657162/restricting-login-access-passport-js-google-authentication">http://stackoverflow.com/questions/13657162/restricting-login-access-passport-js-google-authentication</a></li>
+<li>ensureAuthentication example: <a href="https://github.com/jaredhanson/passport-google/blob/master/examples/signon/app.js">https://github.com/jaredhanson/passport-google/blob/master/examples/signon/app.js</a></li>
+<li>multiple callbacks, see next(): <a href="http://expressjs.com/3x/api.html#app.all">http://expressjs.com/3x/api.html#app.all</a></li>
+</ul>
+
+
+<hr />
+
+<h2>Users</h2>
+
+<h4>GET /users (public)</h4>
+
+<p>Returns JSON feed of all UX member names and their IDs</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X GET http://localhost/users
+</code></pre>
+
+<h4>GET /users/{id},{id} (public/protected)</h4>
+
+<p>Returns JSON feed of one of more users specified by id. If you pass a valid key you will receive protected user information.</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X GET http://localhost/users/5069b47aa8927,65354b47xh8927
+</code></pre>
+
+<h4>POST /users (protected)</h4>
+
+<p>Adds a new user to the collection</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost/users
+</code></pre>
+
+<h4>PUT /users/{id} (protected)</h4>
+
+<p>Modifies required user information (name, headshot, job title and start date)</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '{"jobTitle": "CEO"}' http://localhost/users/ad3ofj4dff96ds
+</code></pre>
+
+<h4>PUT /users/{id}/skills (protected)</h4>
+
+<p>Modifies a user skill and ratings</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost/users/ad3ofj4dff96ds/skills
+</code></pre>
+
+<h4>PUT /users/{id}/profile (protected)</h4>
+
+<p>Modifies a user profile</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "Past Projects", "details": "Kmart Fashion"}, {"title": "Top Strengths", "details": "Arm Wrestling"}]' http://localhost/users/ad3ofj4dff96dsi4oajf/profile
+</code></pre>
+
+<h4>DELETE /users/{id} (protected)</h4>
+
+<p>Deletes a user</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X DELETE http://localhost/users/ad3ofj4dff96ds
+</code></pre>
+
+<hr />
+
+<h2>Departments</h2>
+
+<h4>GET /departments (public)</h4>
+
+<p>Returns JSON feed of all department names and their IDs</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X GET http://localhost/departments
+</code></pre>
+
+<h4>GET /departments/{id},{id} (public)</h4>
+
+<p>Returns JSON feed of one and more departments with user IDs that belong to them</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X GET http://localhost/departments/50fdghdfgha8927,cvfdgdf7xh8927
+</code></pre>
+
+<h4>POST /departments (protected)</h4>
+
+<p>Adds a new department</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers" }' http://localhost/departments
+</code></pre>
+
+<h4>PUT /departments/{id} (protected)</h4>
+
+<p>Modify a department name</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Project Managers" }' http://localhost/departments/aofijeoafjef
+</code></pre>
+
+<h4>PUT /departments/{id}/members (protected)</h4>
+
+<p>Add a user(s) to a department</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/531a2875e454ce0ad42d6465/members
+</code></pre>
+
+<h4>DELETE /departments/{id}/members/{id} (protected)</h4>
+
+<p>Deletes a user from a department</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X DELETE http://localhost/departments/ad3ofj4dff96ds/members/dsfoajefaefoj
+</code></pre>
+
+<h4>DELETE /departments/{id} (protected)</h4>
+
+<p>Deletes a department</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X DELETE http://localhost/departments/ad3ofj4dff96ds
+</code></pre>
+
+<hr />
+
+<h2>Virtual Teams</h2>
+
+<h4>GET /vteams (public)</h4>
+
+<p>Returns JSON feed of all v-team names and their IDs</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X GET http://localhost/vteams
+</code></pre>
+
+<h4>GET /vteams/{id},{id} (public)</h4>
+
+<p>Returns JSON feed of one and more v-teams with user IDs that belong to them</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X GET http://localhost/vteams/50fdghdfgha8927,cvfdgdf7xh8927
+</code></pre>
+
+<h4>POST /vteams (protected)</h4>
+
+<p>Adds a new v-team</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Card" }' http://localhost/vteams
+</code></pre>
+
+<h4>PUT /vteams/{id} (protected)</h4>
+
+<p>Modify a v-team name</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost/vteams/aofijeoafjef
+</code></pre>
+
+<h4>PUT /vteams/{id}/members (protected)</h4>
+
+<p>Add a user(s) to a v-team</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X PUT -H 'Content-Type: application/json' -d '["5opldghdfgha8927","cvfdgrnb7xh8927"]' http://localhost/vteams/aofijeoafjef/members
+</code></pre>
+
+<h4>DELETE /vteams/{id}/members/{id} (protected)</h4>
+
+<p>Deletes a user from a v-team</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X DELETE http://localhost/vteams/ad3ofj4dff96ds/members/dsfoajefaefoj
+</code></pre>
+
+<h4>DELETE /vteams/{id} (protected)</h4>
+
+<p>Deletes a v-team</p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X DELETE http://localhost/vteams/ad3ofj4dff96ds
+</code></pre>
+
+<hr />
+
+<h2>Login</h2>
+
+<h4>POST /logins (public)</h4>
+
+<p>Returns valid key or empty string. The valid key expires in MongoDB after x number of seconds. You should save this key as a cookie. Only store hashed passwords on server: <a href="http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt">http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt</a></p>
+
+<p><strong>Curl Example</strong></p>
+
+<pre><code>curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "securePassword!!!" }' http://localhost/logins
+</code></pre>
+
+<hr />
+
+<h2>MongoDB JSON Data Structure Examples</h2>
+
+<h4>User</h4>
+
+<pre><code>{
+   "_id": "2o3jr42398rjorj234f",
+   "name": "John Smith",
+   "headshot": "http://goo.gl/oafjewnefa",
+   "startDate": ISODate("2014-02-01T06:00:00Z"),
+   "jobTitle": "UX Architect",
+   "email": "jpulgar@searshc.com",
+   "skype": "josepulgarbird",
+   "employeeType": "FTE",
+   "skills": [
+                {
+                  "title": "User Research",
+                  "rating": "3.5"
+                },
+                {
+                  "title": "Information Architecture",
+                  "rating": "4.0"
+                }
+              ],
+   "profile": [
+                {
+                  "title": "Current Project",
+                  "details": "PDP"
+                },
+                {
+                  "title": "Past Projects",
+                  "details": "Parts &amp; Services, Profile"
+                },
+                {
+                  "title": "Top Strengths",
+                  "details": "Collaborator.  Ability to lead large projects.  Well-rounded in design, UX and technology."
+                }
+              ]
+ }
+</code></pre>
+
+<h4>Departments</h4>
+
+<pre><code>{
+   "_id": "2oeargargarg98rjorj234f",
+   "name": "Project Managers",
+   "members": [ "2o3jr42398rjorj234f", "2o3jrgsbtahthsh234f", "2o3jrjkhdjhjorj234f", "2o3jhmgjfhjkgjkhgfjk234f" ]
+ }
+</code></pre>
+
+<h4>Virtual Teams</h4>
+
+<pre><code>{
+   "_id": "2oeargargarg98rjorj234f",
+   "name": "Kmart Fashion",
+   "4dfy": "203948093",
+   "members": [ "2o3jr42398rjorj234f", "2o3jrgsbtahthsh234f", "2o3jrjkhdjhjorj234f", "2o3jhmgjfhjkgjkhgfjk234f" ]
+ }
+</code></pre>
+
+<h4>Logins</h4>
+
+<pre><code>{
+   "_id": "2oeargargarg98rjorj234f",
+   "username": "jpulgar",
+   "password": "securepassword"
+ }
+</code></pre>
+
+<h4>Keys</h4>
+
+<pre><code>{
+   "_id": "2oeargargarg98rjorj234f",
+   "createdAt" : ISODate("2014-03-10T19:17:12.487Z"),
+   "key": "dasfoisjfoaffdsafsdafdsafsadfdoafmadsfoj"
+}
+</code></pre>
+
+<hr />
+
+<h2>How to Install MongoDB</h2>
+
+<p>These instructions are for Mac.  It assumes you already have Homebrew installed. Lines 3-4 set Mongo to autostart with Mac.  Lines 5-6 sets a location for the databases.</p>
+
+<pre><code>brew update
+brew install mongodb
+ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+sudo mkdir -p /data/db
+sudo chown `id -u` /data/db
+</code></pre>
+
+<h2>How to Create a Database</h2>
+
+<p>These instructions launch the mongo console, set a particular database, create a users collection and add a user to a collection.</p>
+
+<pre><code>mongo
+use baseball
+show databases
+db.createCollection("users")
+show collections
+db.users.insert( { name: "Jose Pulgar", headshot: "http://goo.gl/dofijdf", startDate: new Date(2014,1,1) } )
+db.users.find()
+db.users.find({ _id: ObjectId("5319ebfde454ce0ad42d6464")})   // find Jose by ID
+</code></pre>
+
+<h1>MongoDB Syntax</h1>
+
+<h2>Add a Document</h2>
+
+<p>Example of adding a user.</p>
+
+<pre><code>db.users.insert(
+    { 
+        name: "Jose Pulgar", 
+        headshot: "http://goo.gl/dofijdf", 
+        startDate: new Date(2014,1,1) 
+    }
+)
+</code></pre>
+
+<h2>Update Document Field</h2>
+
+<p>Example of updating a user user.</p>
+
+<pre><code>db.users.update(
+   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
+   {
+      $set: { name: "John Smith" }
+   }
+)
+</code></pre>
+
+<h2>Remove a Document</h2>
+
+<p>Example of removing a user.</p>
+
+<pre><code>db.users.remove( { _id: ObjectId("5319ebfde454ce0ad42d6464")} )
+</code></pre>
+
+<h2>Remove Document Field</h2>
+
+<p>Example of removing a user field.</p>
+
+<pre><code>db.users.update(
+   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
+   {
+      $unset: {
+         startDate: ""
+      }
+   }
+)
+</code></pre>
+
+<h2>Insert/Update Subdocument Field</h2>
+
+<p>Example of adding a user skill.</p>
+
+<pre><code>db.users.update(
+   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
+   {
+      $set: {
+         skills: [
+            {
+               title: "User Research",
+               rating: 3.5
+            }
+         ]
+      }
+   },
+   { upsert: true }
+)
+</code></pre>
+
+<h2>Remove Subdocument Field</h2>
+
+<p>Example of removing a user skill.</p>
+
+<pre><code>db.users.update(
+   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
+   {
+      $pull: {
+         skills: { title: "User Research" }
+      }
+   }
+)
+</code></pre>
+
+<h2>Add member(s) to a team</h2>
+
+<p>Example of adding members to a team</p>
+
+<pre><code>db.departments.update(
+   { _id: ObjectId("531a2875e454ce0ad42d6465")},
+   {
+      $addToSet: {
+         members: { 
+            $each: [ 
+                ObjectId("531a2875e454ce0ad42d6461"),               ObjectId("531a2875e454ce0ad42d6462")
+            ]
+         }
+      }
+   }
+)
+</code></pre>
+
+<h2>Remove member from a team</h2>
+
+<p>Example of removing member from a department or v-team</p>
+
+<pre><code>db.departments.update(
+   { _id: ObjectId("531a2875e454ce0ad42d6465")},
+   {
+      $pull: {
+         members: ObjectId("531a2875e454ce0ad42d6461")
+      }
+   }
+)
+</code></pre>
+
+<h2>Add Login</h2>
+
+<p>Add a login to the list.</p>
+
+<pre><code>db.logins.insert(
+    { 
+        username: "jpulgar", 
+        password: "securepassword"
+    }
+)
+</code></pre>
+
+<h2>Set global Key expiration time</h2>
+
+<pre><code>db.keys.ensureIndex( { "createdAt": 1 }, { expireAfterSeconds: 10 } )
+</code></pre>
+
+<h2>Add Key</h2>
+
+<p>Add a key to the list. They auto expire based on the seconds above.</p>
+
+<pre><code>db.keys.insert(
+    { 
+        "createdAt": new Date(),
+        key: "afjodifmoew24o52nm3oi4nmroim4nrt"    }
+)
+</code></pre>
+
+<h2>Other Notes</h2>
+
+<p>RESTful API example: <a href="http://developers.flattr.net/api/resources/things/#get-multiple-things">http://developers.flattr.net/api/resources/things/#get-multiple-things</a></p>
+</body>
+</html>
