@@ -540,21 +540,7 @@ app.delete('/vteams/:vteamid', function(req, res) {
 /* ********************************* */
 app.post('/logins', function(req, res) {
     
-    // Salt and hash the sent password
-    // then do a find
-    // only store hashed passwords on server
-    
-    
-    // Generate a salt + hash and store it in mongo
-    // var hash = bcrypt.hashSync("my password", 10);
-    // read the hash from the server and compare
-    // bcrypt.compareSync("my password", hash); // true
-    // bcrypt.compareSync("not my password", hash); // false
-    
-    
-    
-    // find only the username
-    Login.findOne({ 'username': req.body.username, 'password': req.body.password }, function(err, user){
+    Login.findOne({ 'username': req.body.username }, function(err, user){
         if (err) {
             myConsole("Error: POST /login");
             myConsole(err);
@@ -563,20 +549,22 @@ app.post('/logins', function(req, res) {
             myConsole("Warning: POST /login User does not exist");
             res.jsonp(404, { error: 'User does not exist' });
         } else {
-            
-            // now read the hash password and do a test, if true, then do the following
-            
-            var myKey = new Key({'level': user.level });
-            myKey.save(function (err) {
-                if (err) {
-                       myConsole('Error: Unable to save key');
-                       res.jsonp(500, { error: err.name + ' - ' + err.message });
-                } else {
-                    res.jsonp({'key' : myKey._id});
-                }
-            });
-            
-            // if false, return incorrect password
+            bcrypt.compare(process.argv[3], user.password, function(err, doesMatch){
+                if (doesMatch){
+                    var myKey = new Key({'level': user.level });
+                    myKey.save(function (err) {
+                        if (err) {
+                               myConsole('Error: Unable to save key');
+                               res.jsonp(500, { error: err.name + ' - ' + err.message });
+                        } else {
+                            res.jsonp({'key' : myKey._id});
+                        }
+                    });
+              } else{
+                myConsole("Error: POST /login Incorrect password");
+                res.jsonp(500, { error: 'Incorrect password' });
+              }
+             });
         }
     });    
 });
