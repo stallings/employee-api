@@ -1,12 +1,10 @@
 /* 
-
 Todo:
 - Add IP white listning https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
 - Add email and Skype and FTE/Contractor/Third-Party
 - Add user tags (ASAP/PDP)
 - Clean up JSONP replies, instead of returning id, return the whole object
 - Special functions should pass a key as URL parameter
-
 */
 
 // Requires
@@ -536,7 +534,7 @@ app.delete('/vteams/:vteamid', function(req, res) {
 // Description: Get key
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "secret"}' http://localhost:5000/login
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "mypass"}' http://localhost:5000/logins
 /* ********************************* */
 app.post('/logins', function(req, res) {
     
@@ -549,7 +547,7 @@ app.post('/logins', function(req, res) {
             myConsole("Warning: POST /login User does not exist");
             res.jsonp(404, { error: 'User does not exist' });
         } else {
-            bcrypt.compare(process.argv[3], user.password, function(err, doesMatch){
+            bcrypt.compare(req.body.password, user.password, function(err, doesMatch){
                 if (doesMatch){
                     var myKey = new Key({'level': user.level });
                     myKey.save(function (err) {
