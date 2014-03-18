@@ -1,14 +1,18 @@
-/* Todo:
+/* 
+
+Todo:
 - Add IP white listning https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
-- Integrate login
 - Add email and Skype and FTE/Contractor/Third-Party
 - Add user tags (ASAP/PDP)
-- Clean up JSONP replies
+- Clean up JSONP replies, instead of returning id, return the whole object
+- Special functions should pass a key as URL parameter
+
 */
 
 // Requires
 var express = require('express');
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 var app = express();
 
@@ -25,11 +29,12 @@ app.use(express.json());
 var User = require('./models/user');
 var Department = require('./models/department');
 var VTeam = require('./models/vteam');
+var Login = require('./models/login');
+var Key = require('./models/key');
 
 /* ********************************* */
 // Debugging
 /* ********************************* */
-var logging = true;
 function myConsole(data) {
     var logging = true;
     if (logging) {
@@ -166,7 +171,7 @@ app.put('/users/:userid/skills', function(req, res) {
 });
 
 /* ********************************* */
-// Route: PUT /users/id/skills
+// Route: PUT /users/id/profile
 // Description: Add/Modify Profile
 //
 // Sample curl:
@@ -522,6 +527,58 @@ app.delete('/vteams/:vteamid', function(req, res) {
             res.jsonp(404, { error: 'VTeam not found' });
         }
     });
+});
+
+
+
+/* ********************************* */
+// Route: POST /login
+// Description: Get key
+//
+// Sample curl:
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "secret"}' http://localhost:5000/login
+/* ********************************* */
+app.post('/logins', function(req, res) {
+    
+    // Salt and hash the sent password
+    // then do a find
+    // only store hashed passwords on server
+    
+    
+    // Generate a salt + hash and store it in mongo
+    // var hash = bcrypt.hashSync("my password", 10);
+    // read the hash from the server and compare
+    // bcrypt.compareSync("my password", hash); // true
+    // bcrypt.compareSync("not my password", hash); // false
+    
+    
+    
+    // find only the username
+    Login.findOne({ 'username': req.body.username, 'password': req.body.password }, function(err, user){
+        if (err) {
+            myConsole("Error: POST /login");
+            myConsole(err);
+            res.jsonp(500, { error: err.name + ' - ' + err.message });
+        } else if (!user) { 
+            myConsole("Warning: POST /login User does not exist");
+            res.jsonp(404, { error: 'User does not exist' });
+        } else {
+            
+            // now read the hash password and do a test, if true, then do the following
+            
+            var myKey = new Key({'level': user.level });
+            myKey.save(function (err) {
+                if (err) {
+                       myConsole('Error: Unable to save key');
+                       res.jsonp(500, { error: err.name + ' - ' + err.message });
+                } else {
+                    res.jsonp({'key' : myKey._id});
+                }
+            });
+            
+            // if false, return incorrect password
+        }
+    });    
 });
 
 
