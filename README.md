@@ -8,209 +8,168 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * Deparment information
 * Virtual Team (V-Team) information
 
-### Framework ###
+## Framework ##
 
 * NodeJS + Express + Mongoose + MongoDB <http://localhost:28017/>
 * JSONP compatible
 
 
 
-### Security ###
+## Security ##
 
 * Authentication required for skills: login and auto-expiring keys
+* Passwords are Bcrypted (Hash + Salt) before storing
 * IP Whitelisting (if necessary) [List of IPs](https://wiki.intra.sears.com/confluence/display/ECOMMIT/Do+Not+Shun+for+InfoProt)
 * Password Protection for skill ratings
 
 
 
 
-===
+# Users #
 
-## Users ##
-
-#### GET /users (public)
+## GET /users (public)
 Returns JSON feed of all employees and their IDs
-
-**Curl Example**
 
 ```
 curl -i -X GET http://localhost:5000/users
 ```
 
-#### GET /users/{id},{id} (public/protected)
+## GET /users/{id},{id} (public/protected)
 Returns JSON feed of one of more users specified by id. If you pass a valid key you will receive protected user information.
-
-**Curl Example**
 
 ```
 curl -i -X GET http://localhost:5000/users/{id},{id}
 curl -i -X GET http://localhost:5000/users/{id},{id}?key={validKey}
 ```
 
-#### POST /users (protected)
+## POST /users (protected)
 Adds a new user to the collection
-
-**Curl Example**
 
 ```
 curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost:5000/users?key={validKey}
 ```
 
-#### PUT /users/{id} (protected)
+## PUT /users/{id} (protected)
 Modifies required user information (name, headshot, job title and start date)
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"jobTitle": "CEO"}' http://localhost:5000/users/{id}?key={validKey}
 ```
 
-#### PUT /users/{id}/skills (protected)
+## PUT /users/{id}/skills (protected)
 Modifies a user skill and ratings
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/{id}/skills?key={validKey}
 ```
 
-#### PUT /users/{id}/profile (protected)
+## PUT /users/{id}/profile (protected)
 Modifies a user profile
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "Past Projects", "details": "Kmart Fashion"}, {"title": "Top Strengths", "details": "Arm Wrestling"}]' http://localhost:5000/users/{id}/profile?key={validKey}
 ```
 
-#### DELETE /users/{id} (protected)
+## DELETE /users/{id} (protected)
 Deletes a user
-
-**Curl Example**
 
 ```
 curl -i -X DELETE http://localhost:5000/users/{id}?key={validKey}
 ```
-===
 
-## Departments ##
 
-#### GET /departments (public)
+# Departments #
+
+## GET /departments (public)
 Returns JSON feed of all department names and their IDs
-
-**Curl Example**
 
 ```
 curl -i -X GET http://localhost:5000/departments
 ```
 
-#### GET /departments/{id},{id} (public)
+## GET /departments/{id},{id} (public)
 Returns JSON feed of one and more departments with user IDs that belong to them
-
-**Curl Example**
 
 ```
 curl -i -X GET http://localhost:5000/departments/{id},{id}
 ```
 
-#### POST /departments (protected)
+## POST /departments (protected)
 Adds a new department
-
-**Curl Example**
 
 ```
 curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers" }' http://localhost:5000/departments?key={validKey}
 ```
 
-#### PUT /departments/{id} (protected)
+## PUT /departments/{id} (protected)
 Modify a department name
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Project Managers" }' http://localhost:5000/departments/{id}?key={validKey}
 ```
 
-#### PUT /departments/{id}/members (protected)
+## PUT /departments/{id}/members (protected)
 Add a user(s) to a department
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/{id}/members?key={validKey}
 ```
 
-#### DELETE /departments/{id}/members/{id} (protected)
+## DELETE /departments/{id}/members/{id} (protected)
 Deletes a user from a department
-
-**Curl Example**
 
 ```
 curl -i -X DELETE http://localhost:5000/departments/{id}/members/{id}?key={validKey}
 ```
 
-#### DELETE /departments/{id} (protected)
+## DELETE /departments/{id} (protected)
 Deletes a department
-
-**Curl Example**
 
 ```
 curl -i -X DELETE http://localhost:5000/departments/{id}?key={validKey}
 ```
 
-===
 
-## Virtual Teams ##
 
-#### GET /vteams (public)
+# Virtual Teams
+
+## GET /vteams (public)
 Returns JSON feed of all v-team names and their IDs
-
-**Curl Example**
 
 ```
 curl -i -X GET http://localhost:5000/vteams
 ```
 
-#### GET /vteams/{id},{id} (public)
+## GET /vteams/{id},{id} (public)
 Returns JSON feed of one and more v-teams with user IDs that belong to them
-
-**Curl Example**
 
 ```
 curl -i -X GET http://localhost:5000/vteams/{id},{id}
 ```
 
-#### POST /vteams (protected)
+## POST /vteams (protected)
 Adds a new v-team
-
-**Curl Example**
 
 ```
 curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Card" }' http://localhost:5000/vteams?key={validKey}
 ```
 
-#### PUT /vteams/{id} (protected)
+## PUT /vteams/{id} (protected)
 Modify a v-team name
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost:5000/vteams/{id}?key={validKey}
 ```
 
-#### PUT /vteams/{id}/members (protected)
+## PUT /vteams/{id}/members (protected)
 Add a user(s) to a v-team
-
-**Curl Example**
 
 ```
 curl -i -X PUT -H 'Content-Type: application/json' -d '["5opldghdfgha8927","cvfdgrnb7xh8927"]' http://localhost:5000/vteams/{id}/members?key={validKey}
 ```
 
-#### DELETE /vteams/{id}/members/{id} (protected)
+## DELETE /vteams/{id}/members/{id} (protected)
 Deletes a user from a v-team
-
-**Curl Example**
 
 ```
 curl -i -X DELETE http://localhost:5000/vteams/{id}/members/{id}?key={validKey}
@@ -219,20 +178,16 @@ curl -i -X DELETE http://localhost:5000/vteams/{id}/members/{id}?key={validKey}
 #### DELETE /vteams/{id} (protected)
 Deletes a v-team
 
-**Curl Example**
-
 ```
 curl -i -X DELETE http://localhost:5000/vteams/{id}?key={validKey}
 ```
 
-===
 
-## Login ##
 
-#### POST /logins (public)
+# Login
+
+## POST /logins (public)
 Returns valid key or empty string. The valid key expires in MongoDB after x number of seconds. You should save this key as a cookie. Only store hashed passwords on server: <http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt>
-
-**Curl Example**
 
 ```
 curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "securePassword!!!" }' http://localhost:5000/logins
