@@ -1,28 +1,27 @@
-# UX API #
+# Employee API #
 
-The UX API is a RESTful API to get more information from each UX team member.  The information includes:
+The Employee API is a RESTful API to get information from each employee.  The information includes:
 
 * Background information
-* Skill Ratings (password protected)
+* Skill Ratings (protected access)
 * Current and past projects
 * Deparment information
 * Virtual Team (V-Team) information
 
 ### Framework ###
 
-* NodeJS + Express + Mongoose + PassportJS * MongoDB <http://localhost:28017/>
+* NodeJS + Express + Mongoose + MongoDB <http://localhost:28017/>
 * JSONP compatible
-* Example: <http://blog.wercker.com/2013/06/20/Getting-started-with-Node-Mongoose-MongoDB-Part1.html>
 
 
 
 ### Security ###
 
-* IP Whitelisting (if necessary) [List of Sears IPs](https://wiki.intra.sears.com/confluence/display/ECOMMIT/Do+Not+Shun+for+InfoProt)
+* Authentication required for skills: login and auto-expiring keys
+* IP Whitelisting (if necessary) [List of IPs](https://wiki.intra.sears.com/confluence/display/ECOMMIT/Do+Not+Shun+for+InfoProt)
 * Password Protection for skill ratings
-* Look into this for Google authentication: <http://stackoverflow.com/questions/13657162/restricting-login-access-passport-js-google-authentication>
-* ensureAuthentication example: <https://github.com/jaredhanson/passport-google/blob/master/examples/signon/app.js>
-* multiple callbacks, see next(): <http://expressjs.com/3x/api.html#app.all>
+
+
 
 
 ===
@@ -30,12 +29,12 @@ The UX API is a RESTful API to get more information from each UX team member.  T
 ## Users ##
 
 #### GET /users (public)
-Returns JSON feed of all UX member names and their IDs
+Returns JSON feed of all employees and their IDs
 
 **Curl Example**
 
 ```
-curl -i -X GET http://localhost/users
+curl -i -X GET http://localhost:5000/users
 ```
 
 #### GET /users/{id},{id} (public/protected)
@@ -44,7 +43,8 @@ Returns JSON feed of one of more users specified by id. If you pass a valid key 
 **Curl Example**
 
 ```
-curl -i -X GET http://localhost/users/5069b47aa8927,65354b47xh8927
+curl -i -X GET http://localhost:5000/users/{id},{id}
+curl -i -X GET http://localhost:5000/users/{id},{id}?key={validKey}
 ```
 
 #### POST /users (protected)
@@ -53,7 +53,7 @@ Adds a new user to the collection
 **Curl Example**
 
 ```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost/users
+curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost:5000/users?key={validKey}
 ```
 
 #### PUT /users/{id} (protected)
@@ -62,7 +62,7 @@ Modifies required user information (name, headshot, job title and start date)
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"jobTitle": "CEO"}' http://localhost/users/ad3ofj4dff96ds
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"jobTitle": "CEO"}' http://localhost:5000/users/{id}?key={validKey}
 ```
 
 #### PUT /users/{id}/skills (protected)
@@ -71,7 +71,7 @@ Modifies a user skill and ratings
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost/users/ad3ofj4dff96ds/skills
+curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/{id}/skills?key={validKey}
 ```
 
 #### PUT /users/{id}/profile (protected)
@@ -80,7 +80,7 @@ Modifies a user profile
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "Past Projects", "details": "Kmart Fashion"}, {"title": "Top Strengths", "details": "Arm Wrestling"}]' http://localhost/users/ad3ofj4dff96dsi4oajf/profile
+curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "Past Projects", "details": "Kmart Fashion"}, {"title": "Top Strengths", "details": "Arm Wrestling"}]' http://localhost:5000/users/{id}/profile?key={validKey}
 ```
 
 #### DELETE /users/{id} (protected)
@@ -89,7 +89,7 @@ Deletes a user
 **Curl Example**
 
 ```
-curl -i -X DELETE http://localhost/users/ad3ofj4dff96ds
+curl -i -X DELETE http://localhost:5000/users/{id}?key={validKey}
 ```
 ===
 
@@ -101,7 +101,7 @@ Returns JSON feed of all department names and their IDs
 **Curl Example**
 
 ```
-curl -i -X GET http://localhost/departments
+curl -i -X GET http://localhost:5000/departments
 ```
 
 #### GET /departments/{id},{id} (public)
@@ -110,7 +110,7 @@ Returns JSON feed of one and more departments with user IDs that belong to them
 **Curl Example**
 
 ```
-curl -i -X GET http://localhost/departments/50fdghdfgha8927,cvfdgdf7xh8927
+curl -i -X GET http://localhost:5000/departments/{id},{id}
 ```
 
 #### POST /departments (protected)
@@ -119,7 +119,7 @@ Adds a new department
 **Curl Example**
 
 ```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers" }' http://localhost/departments
+curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers" }' http://localhost:5000/departments?key={validKey}
 ```
 
 #### PUT /departments/{id} (protected)
@@ -128,7 +128,7 @@ Modify a department name
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Project Managers" }' http://localhost/departments/aofijeoafjef
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Project Managers" }' http://localhost:5000/departments/{id}?key={validKey}
 ```
 
 #### PUT /departments/{id}/members (protected)
@@ -137,7 +137,7 @@ Add a user(s) to a department
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/531a2875e454ce0ad42d6465/members
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/{id}/members?key={validKey}
 ```
 
 #### DELETE /departments/{id}/members/{id} (protected)
@@ -146,7 +146,7 @@ Deletes a user from a department
 **Curl Example**
 
 ```
-curl -i -X DELETE http://localhost/departments/ad3ofj4dff96ds/members/dsfoajefaefoj
+curl -i -X DELETE http://localhost:5000/departments/{id}/members/{id}?key={validKey}
 ```
 
 #### DELETE /departments/{id} (protected)
@@ -155,7 +155,7 @@ Deletes a department
 **Curl Example**
 
 ```
-curl -i -X DELETE http://localhost/departments/ad3ofj4dff96ds
+curl -i -X DELETE http://localhost:5000/departments/{id}?key={validKey}
 ```
 
 ===
@@ -168,7 +168,7 @@ Returns JSON feed of all v-team names and their IDs
 **Curl Example**
 
 ```
-curl -i -X GET http://localhost/vteams
+curl -i -X GET http://localhost:5000/vteams
 ```
 
 #### GET /vteams/{id},{id} (public)
@@ -177,7 +177,7 @@ Returns JSON feed of one and more v-teams with user IDs that belong to them
 **Curl Example**
 
 ```
-curl -i -X GET http://localhost/vteams/50fdghdfgha8927,cvfdgdf7xh8927
+curl -i -X GET http://localhost:5000/vteams/{id},{id}
 ```
 
 #### POST /vteams (protected)
@@ -186,7 +186,7 @@ Adds a new v-team
 **Curl Example**
 
 ```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Card" }' http://localhost/vteams
+curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Card" }' http://localhost:5000/vteams?key={validKey}
 ```
 
 #### PUT /vteams/{id} (protected)
@@ -195,7 +195,7 @@ Modify a v-team name
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost/vteams/aofijeoafjef
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost:5000/vteams/{id}?key={validKey}
 ```
 
 #### PUT /vteams/{id}/members (protected)
@@ -204,7 +204,7 @@ Add a user(s) to a v-team
 **Curl Example**
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '["5opldghdfgha8927","cvfdgrnb7xh8927"]' http://localhost/vteams/aofijeoafjef/members
+curl -i -X PUT -H 'Content-Type: application/json' -d '["5opldghdfgha8927","cvfdgrnb7xh8927"]' http://localhost:5000/vteams/{id}/members?key={validKey}
 ```
 
 #### DELETE /vteams/{id}/members/{id} (protected)
@@ -213,7 +213,7 @@ Deletes a user from a v-team
 **Curl Example**
 
 ```
-curl -i -X DELETE http://localhost/vteams/ad3ofj4dff96ds/members/dsfoajefaefoj
+curl -i -X DELETE http://localhost:5000/vteams/{id}/members/{id}?key={validKey}
 ```
 
 #### DELETE /vteams/{id} (protected)
@@ -222,7 +222,7 @@ Deletes a v-team
 **Curl Example**
 
 ```
-curl -i -X DELETE http://localhost/vteams/ad3ofj4dff96ds
+curl -i -X DELETE http://localhost:5000/vteams/{id}?key={validKey}
 ```
 
 ===
@@ -235,7 +235,7 @@ Returns valid key or empty string. The valid key expires in MongoDB after x numb
 **Curl Example**
 
 ```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "securePassword!!!" }' http://localhost/logins
+curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "securePassword!!!" }' http://localhost:5000/logins
 ```
 
 
@@ -342,9 +342,8 @@ use baseball
 show databases
 db.createCollection("users")
 show collections
-db.users.insert( { name: "Jose Pulgar", headshot: "http://goo.gl/dofijdf", startDate: new Date(2014,1,1) } )
 db.users.find()
-db.users.find({ _id: ObjectId("5319ebfde454ce0ad42d6464")})   // find Jose by ID
+db.users.find({ _id: ObjectId("5319ebfde454ce0ad42d6464")})
 ````
 
 # MongoDB Syntax #
@@ -493,5 +492,6 @@ db.keys.insert(
 ````
 
 ## Other Notes ##
-RESTful API example: <http://developers.flattr.net/api/resources/things/#get-multiple-things>
+* RESTful API example: <http://developers.flattr.net/api/resources/things/#get-multiple-things>
+* ensureAuthentication example: <https://github.com/jaredhanson/passport-google/blob/master/examples/signon/app.js>
 
