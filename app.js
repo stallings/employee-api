@@ -1,9 +1,12 @@
 /* 
 Todo:
-- Add IP white listning https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
+- When deleting a user, delete from all departments/vteams
 - Add email and Skype and FTE/Contractor/Third-Party
 - Add user tags (ASAP/PDP)
 - Clean up JSONP replies, instead of returning id, return the whole object?
+
+Maybe?
+- Add IP white listing https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
 */
 
 // Requires
@@ -39,7 +42,7 @@ function myConsole(data) {
     }
 }
 
-// Modify this later by passing a level number
+// Modify this later by passing a level number, add it at the end???
 function checkAuth(req, res, next) {
     if (req.query.key != undefined) {
       Key.find({'_id': req.query.key}, function(err, result){
@@ -579,7 +582,7 @@ app.delete('/vteams/:vteamid', checkAuth, function(req, res) {
 
 
 /* ********************************* */
-// Route: POST /login
+// Route: POST /logins
 // Description: Get key
 //
 // Sample curl:
