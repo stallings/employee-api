@@ -40,6 +40,35 @@ function myConsole(data) {
     }
 }
 
+function validKey(key) {
+    Key.find({'_id': key}, function(err, result){
+        if (err) {
+            return false;
+        } else if (!result.length) {
+            return false;
+        } else {
+            return true;
+        }
+    });     
+}
+
+// Modify this later by passing a level number
+function checkAuth(req, res, next) {
+    if (req.query.key != undefined) {
+      Key.find({'_id': req.query.key}, function(err, result){
+            if (err) {
+                res.jsonp(401, { error: 'Not authorized' });
+            } else if (!result.length) {
+                res.jsonp(401, { error: 'Not authorized' });
+            } else {
+                next();
+            }
+        });
+    } else {
+      res.jsonp(401, { error: 'Not authorized' });
+    }
+}
+
 /* ********************************* */
 // Connect to MongoDB
 /* ********************************* */
@@ -80,8 +109,18 @@ app.get('/users', function(req, res) {
 // curl -i -X GET http://localhost:5000/users/id,id
 /* ********************************* */
 app.get('/users/:userid', function(req, res) {
+    
+    // Don't return skills unless valid key passed
+    var filter = '-skills';
+    if (req.query.key != undefined) {
+        myConsole('validKey(req.query.key) returns: ' + validKey(req.query.key));
+        if (validKey(req.query.key)) {
+            filter = '';
+        }
+    }
+    
     User.find({
-    '_id': { $in: req.params.userid.split(",")}}, function(err, user){
+    '_id': { $in: req.params.userid.split(",")}}, filter, function(err, user){
         if (err) {
             myConsole("Error: GET /users/" + req.params.userid);
             myConsole(err);
@@ -103,7 +142,7 @@ app.get('/users/:userid', function(req, res) {
 // Sample curl:
 // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost:5000/users
 /* ********************************* */
-app.post('/users', function(req, res) {
+app.post('/users', checkAuth, function(req, res) {
   var myUser = new User({name: req.body.name, headshot: req.body.headshot, startDate: req.body.startDate, jobTitle: req.body.jobTitle});
     myUser.save(function (err) {
     if (err) {
@@ -122,7 +161,7 @@ app.post('/users', function(req, res) {
 // Sample curl:
 // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf, "startDate": "2014-01-01", "jobTitle": "Manageadfdfdsfr"}' http://localhost:5000/users/531f6a31cf9b3bdb1580eef9
 /* ********************************* */
-app.put('/users/:userid', function(req, res) {
+app.put('/users/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.userid };
 
     User.update(query, {name: req.body.name, headshot: req.body.headshot, startDate: req.body.startDate, jobTitle: req.body.jobTitle}, function (err, numberAffected, raw) {
@@ -140,9 +179,9 @@ app.put('/users/:userid', function(req, res) {
 // Description: Add/Modify Skills
 //
 // Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/53209a24eae268ac0da6b5eb/skills
+// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/5329c3807b9162050c607554/skills
 /* ********************************* */
-app.put('/users/:userid/skills', function(req, res) {
+app.put('/users/:userid/skills', checkAuth, function(req, res) {
     var query = { _id: req.params.userid };
 
     // Remove other skills
@@ -154,7 +193,7 @@ app.put('/users/:userid/skills', function(req, res) {
     });
     
     // Add all skills
-    User.update(query, {$addToSet : { skills: { $each: req.body } }}, { upsert: true }, function (err, numberAffected, raw) {
+    User.update(query, {$addToSet : { skills: { $each: req.body } }}, function (err, numberAffected, raw) {
         if (err) {
             myConsole('Error: PUT /users/' + req.params.userid + '/skills');
             res.jsonp(500, { error: err.name + ' - ' + err.message });
@@ -173,9 +212,9 @@ app.put('/users/:userid/skills', function(req, res) {
 // Description: Add/Modify Profile
 //
 // Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "details": "5.0"}, {"title": "CSS", "details": "4.5"}]' http://localhost:5000/users/53209a24eae268ac0da6b5eb/profile
+// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "School", "details": "University of Puerto Rico"}, {"title": "Cat", "details": "Nina"}]' http://localhost:5000/users/5329c3807b9162050c607554/profile
 /* ********************************* */
-app.put('/users/:userid/profile', function(req, res) {
+app.put('/users/:userid/profile', checkAuth, function(req, res) {
     var query = { _id: req.params.userid };
 
     // Remove existing Profile
@@ -187,7 +226,7 @@ app.put('/users/:userid/profile', function(req, res) {
     });
     
     // Add profile
-    User.update(query, {$addToSet : { profile: { $each: req.body } }}, { upsert: true }, function (err, numberAffected, raw) {
+    User.update(query, {$addToSet : { profile: { $each: req.body } }}, function (err, numberAffected, raw) {
         if (err) {
             myConsole('Error: PUT /users/' + req.params.userid + '/profile');
             res.jsonp(500, { error: err.name + ' - ' + err.message });
@@ -208,7 +247,7 @@ app.put('/users/:userid/profile', function(req, res) {
 // Sample curl:
 // curl -i -X DELETE http://localhost:5000/users/5320b47c98c923ce106f094a
 /* ********************************* */
-app.delete('/users/:userid', function(req, res) {
+app.delete('/users/:userid', checkAuth, function(req, res) {
     User.findByIdAndRemove(req.params.userid, function (err, resource) {
         if (err) { 
             myConsole('Error: DELETE /users/' + req.params.userid);
@@ -273,7 +312,7 @@ app.get('/departments/:departmentid', function(req, res) {
 // Sample curl:
 // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers"}' http://localhost:5000/departments
 /* ********************************* */
-app.post('/departments', function(req, res) {
+app.post('/departments', checkAuth, function(req, res) {
   var myDepartment = new Department({name: req.body.name});
     myDepartment.save(function (err) {
     if (err) {
@@ -292,7 +331,7 @@ app.post('/departments', function(req, res) {
 // Sample curl:
 // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Front End Developers"}' http://localhost:5000/departments/531f6a31cf9b3bdb1580eef9
 /* ********************************* */
-app.put('/departments/:departmentid', function(req, res) {
+app.put('/departments/:departmentid', checkAuth, function(req, res) {
     var query = { _id: req.params.departmentid };
 
     Department.update(query, {name: req.body.name}, function (err, numberAffected, raw) {
@@ -312,7 +351,7 @@ app.put('/departments/:departmentid', function(req, res) {
 // Sample curl:
 // curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/531a2875e454ce0ad42d6465/members
 /* ********************************* */
-app.put('/departments/:departmentid/members', function(req, res) {
+app.put('/departments/:departmentid/members', checkAuth, function(req, res) {
     var query = { _id: req.params.departmentid };
 
     Department.update(query, { $addToSet: { members: req.body.user } }, function (err, numberAffected, raw) {
@@ -336,7 +375,7 @@ app.put('/departments/:departmentid/members', function(req, res) {
 // Sample curl:
 // curl -i -X DELETE http://localhost:5000/departments/531a2875e454ce0ad42d6465/members/531f6a31cf9b3bdb1580eef9
 /* ********************************* */
-app.delete('/departments/:departmentid/members/:userid', function(req, res) {
+app.delete('/departments/:departmentid/members/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.departmentid };
 
     Department.update(query, { $pull: { members: req.params.userid } }, function (err, numberAffected, raw) {
@@ -360,7 +399,7 @@ app.delete('/departments/:departmentid/members/:userid', function(req, res) {
 // Sample curl:
 // curl -i -X DELETE http://localhost:5000/departments/5321ed85b1d521421389276e
 /* ********************************* */
-app.delete('/departments/:departmentid', function(req, res) {
+app.delete('/departments/:departmentid', checkAuth, function(req, res) {
     Department.findByIdAndRemove(req.params.departmentid, function (err, resource) {
         if (err) { 
             myConsole('Error: DELETE /departments/' + req.params.departmentid);
@@ -425,7 +464,7 @@ app.get('/vteams/:vteamid', function(req, res) {
 // Sample curl:
 // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Cards"}' http://localhost:5000/vteams
 /* ********************************* */
-app.post('/vteams', function(req, res) {
+app.post('/vteams', checkAuth, function(req, res) {
   var myVTeam = new VTeam({name: req.body.name});
     myVTeam.save(function (err) {
     if (err) {
@@ -444,7 +483,7 @@ app.post('/vteams', function(req, res) {
 // Sample curl:
 // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Baseball Cards Phase 2"}' http://localhost:5000/vteams/531f6a31cf9b3bdb1580eef9
 /* ********************************* */
-app.put('/vteams/:vteamid', function(req, res) {
+app.put('/vteams/:vteamid', checkAuth, function(req, res) {
     var query = { _id: req.params.vteamid };
 
     VTeam.update(query, {name: req.body.name}, function (err, numberAffected, raw) {
@@ -464,7 +503,7 @@ app.put('/vteams/:vteamid', function(req, res) {
 // Sample curl:
 // curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/vteams/531a2875e454ce0ad42d6465/members
 /* ********************************* */
-app.put('/vteams/:vteamid/members', function(req, res) {
+app.put('/vteams/:vteamid/members', checkAuth, function(req, res) {
     var query = { _id: req.params.vteamid };
 
     VTeam.update(query, { $addToSet: { members: req.body.user } }, function (err, numberAffected, raw) {
@@ -488,7 +527,7 @@ app.put('/vteams/:vteamid/members', function(req, res) {
 // Sample curl:
 // curl -i -X DELETE http://localhost:5000/vteams/531a2875e454ce0ad42d6465/members/531f6a31cf9b3bdb1580eef9
 /* ********************************* */
-app.delete('/vteams/:vteamid/members/:userid', function(req, res) {
+app.delete('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.vteamid };
 
     VTeam.update(query, { $pull: { members: req.params.userid } }, function (err, numberAffected, raw) {
@@ -512,7 +551,7 @@ app.delete('/vteams/:vteamid/members/:userid', function(req, res) {
 // Sample curl:
 // curl -i -X DELETE http://localhost:5000/vteams/5321ed85b1d521421389276e
 /* ********************************* */
-app.delete('/vteams/:vteamid', function(req, res) {
+app.delete('/vteams/:vteamid', checkAuth, function(req, res) {
     VTeam.findByIdAndRemove(req.params.vteamid, function (err, resource) {
         if (err) { 
             myConsole('Error: DELETE /vteams/' + req.params.vteamid);
@@ -534,7 +573,7 @@ app.delete('/vteams/:vteamid', function(req, res) {
 // Description: Get key
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "mypass"}' http://localhost:5000/logins
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
 /* ********************************* */
 app.post('/logins', function(req, res) {
     
