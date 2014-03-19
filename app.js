@@ -320,7 +320,7 @@ app.get('/departments/:departmentid', function(req, res) {
 // Description: Add a department
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers"}' http://localhost:5000/departments
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers"}' http://localhost:5000/departments?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
 app.post('/departments', checkAuth, function(req, res) {
   var myDepartment = new Department({name: req.body.name});
@@ -355,16 +355,16 @@ app.put('/departments/:departmentid', checkAuth, function(req, res) {
 });
 
 /* ********************************* */
-// Route: PUT /departments/id/members
+// Route: PUT /departments/id/members/id
 // Description: Add a user to a department
 //
 // Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/531a2875e454ce0ad42d6465/members
+// curl -i -X PUT http://localhost:5000/departments/532a010810536e2128234c89/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
-app.put('/departments/:departmentid/members', checkAuth, function(req, res) {
+app.put('/departments/:departmentid/members/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.departmentid };
 
-    Department.update(query, { $addToSet: { members: req.body.user } }, function (err, numberAffected, raw) {
+    Department.update(query, { $addToSet: { members: req.params.userid } }, function (err, numberAffected, raw) {
         if (err) {
            myConsole('Error: PUT /departments/' + req.params.departmentid + '/members');
            res.jsonp(500, { error: err.name + ' - ' + err.message });
@@ -383,7 +383,7 @@ app.put('/departments/:departmentid/members', checkAuth, function(req, res) {
 // Description: Remove a user from a department
 //
 // Sample curl:
-// curl -i -X DELETE http://localhost:5000/departments/531a2875e454ce0ad42d6465/members/531f6a31cf9b3bdb1580eef9
+// curl -i -X DELETE http://localhost:5000/departments/531a2875e454ce0ad42d6465/members/531f6a31cf9b3bdb150eef8?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
 app.delete('/departments/:departmentid/members/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.departmentid };
@@ -472,7 +472,7 @@ app.get('/vteams/:vteamid', function(req, res) {
 // Description: Add a vteam
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Cards"}' http://localhost:5000/vteams
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Cards"}' http://localhost:5000/vteams?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
 app.post('/vteams', checkAuth, function(req, res) {
   var myVTeam = new VTeam({name: req.body.name});
@@ -507,16 +507,16 @@ app.put('/vteams/:vteamid', checkAuth, function(req, res) {
 });
 
 /* ********************************* */
-// Route: PUT /vteams/id/members
+// Route: PUT /vteams/id/members/id
 // Description: Add a user to a vteam
 //
 // Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/vteams/531a2875e454ce0ad42d6465/members
+// curl -i -X PUT http://localhost:5000/vteams/532a02a910536e2128234c8b/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
-app.put('/vteams/:vteamid/members', checkAuth, function(req, res) {
+app.put('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.vteamid };
 
-    VTeam.update(query, { $addToSet: { members: req.body.user } }, function (err, numberAffected, raw) {
+    VTeam.update(query, { $addToSet: { members: req.params.userid } }, function (err, numberAffected, raw) {
         if (err) {
            myConsole('Error: PUT /vteams/' + req.params.vteamid + '/members');
            res.jsonp(500, { error: err.name + ' - ' + err.message });
@@ -535,7 +535,7 @@ app.put('/vteams/:vteamid/members', checkAuth, function(req, res) {
 // Description: Remove a user from a vteam
 //
 // Sample curl:
-// curl -i -X DELETE http://localhost:5000/vteams/531a2875e454ce0ad42d6465/members/531f6a31cf9b3bdb1580eef9
+// curl -i -X DELETE http://localhost:5000/vteams/532a01c510536e2128234c8a/members/531f6a31cf9b3bdb1580eef9?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
 app.delete('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.vteamid };
@@ -559,7 +559,7 @@ app.delete('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
 // Description: Delete a vteam
 //
 // Sample curl:
-// curl -i -X DELETE http://localhost:5000/vteams/5321ed85b1d521421389276e
+// curl -i -X DELETE http://localhost:5000/vteams/532a01c510536e2128234c8a?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
 app.delete('/vteams/:vteamid', checkAuth, function(req, res) {
     VTeam.findByIdAndRemove(req.params.vteamid, function (err, resource) {

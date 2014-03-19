@@ -108,11 +108,11 @@ Modify a department name
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Project Managers" }' http://localhost:5000/departments/{id}?key={validKey}
 ```
 
-## PUT /departments/{id}/members (protected)
+## PUT /departments/{id}/members/{id} (protected)
 Add a user(s) to a department
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"user": "531f6a31cf9b3bdb1580eef9"}' http://localhost:5000/departments/{id}/members?key={validKey}
+curl -i -X PUT http://localhost:5000/departments/{id}/members/{id}?key={validKey}
 ```
 
 ## DELETE /departments/{id}/members/{id} (protected)
@@ -161,11 +161,11 @@ Modify a v-team name
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost:5000/vteams/{id}?key={validKey}
 ```
 
-## PUT /vteams/{id}/members (protected)
+## PUT /vteams/{id}/members/{id} (protected)
 Add a user(s) to a v-team
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '["5opldghdfgha8927","cvfdgrnb7xh8927"]' http://localhost:5000/vteams/{id}/members?key={validKey}
+curl -i -X PUT http://localhost:5000/vteams/{id}/members/{id}?key={validKey}
 ```
 
 ## DELETE /vteams/{id}/members/{id} (protected)
