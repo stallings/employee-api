@@ -3,8 +3,7 @@ Todo:
 - Add IP white listning https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
 - Add email and Skype and FTE/Contractor/Third-Party
 - Add user tags (ASAP/PDP)
-- Clean up JSONP replies, instead of returning id, return the whole object
-- Special functions should pass a key as URL parameter
+- Clean up JSONP replies, instead of returning id, return the whole object?
 */
 
 // Requires
@@ -38,18 +37,6 @@ function myConsole(data) {
     if (logging) {
         console.log(data);   
     }
-}
-
-function validKey(key) {
-    Key.find({'_id': key}, function(err, result){
-        if (err) {
-            return false;
-        } else if (!result.length) {
-            return false;
-        } else {
-            return true;
-        }
-    });     
 }
 
 // Modify this later by passing a level number
@@ -109,31 +96,54 @@ app.get('/users', function(req, res) {
 // curl -i -X GET http://localhost:5000/users/id,id
 /* ********************************* */
 app.get('/users/:userid', function(req, res) {
+
+    // By default, don't return skills
+    var filter = '-skills';    
     
-    // Don't return skills unless valid key passed
-    var filter = '-skills';
+    // If API key is passed, check if valid, if so, return skills
     if (req.query.key != undefined) {
-        myConsole('validKey(req.query.key) returns: ' + validKey(req.query.key));
-        if (validKey(req.query.key)) {
-            filter = '';
-        }
-    }
+      Key.find({'_id': req.query.key}, function(err, result){
+            if (err) {
+                filter = '-skills';
+            } else if (!result.length) {
+                filter = '-skills';
+            } else {
+                filter = '';
+            }
     
-    User.find({
-    '_id': { $in: req.params.userid.split(",")}}, filter, function(err, user){
-        if (err) {
-            myConsole("Error: GET /users/" + req.params.userid);
-            myConsole(err);
-            res.jsonp(500, { error: err.name + ' - ' + err.message });
-        } else if (!user.length) { 
-            myConsole("Warning: GET /users/" + req.params.userid + " No results");
-            res.jsonp(404, { error: 'User does not exist.' });
-        } else {
-            myConsole("Successful: GET /users/" + req.params.userid);
-            res.jsonp(user);
-        }
-    });    
+            User.find({'_id': { $in: req.params.userid.split(",")}}, filter, function(err, user){
+                if (err) {
+                    myConsole("Error: GET /users/" + req.params.userid);
+                    myConsole(err);
+                    res.jsonp(500, { error: err.name + ' - ' + err.message });
+                } else if (!user.length) { 
+                    myConsole("Warning: GET /users/" + req.params.userid + " No results");
+                    res.jsonp(404, { error: 'No users found' });
+                } else {
+                    myConsole("Successful: GET /users/" + req.params.userid);
+                    res.jsonp(user);
+                }
+            });  
+      });
+    
+    // Else, just return users without skills
+    } else {
+            User.find({'_id': { $in: req.params.userid.split(",")}}, filter, function(err, user){
+                if (err) {
+                    myConsole("Error: GET /users/" + req.params.userid);
+                    myConsole(err);
+                    res.jsonp(500, { error: err.name + ' - ' + err.message });
+                } else if (!user.length) { 
+                    myConsole("Warning: GET /users/" + req.params.userid + " No results");
+                    res.jsonp(404, { error: 'No users found' });
+                } else {
+                    myConsole("Successful: GET /users/" + req.params.userid);
+                    res.jsonp(user);
+                }
+            });  
+    }
 });
+
 
 /* ********************************* */
 // Route: POST /users
