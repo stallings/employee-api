@@ -140,10 +140,13 @@ app.get('/users/:userid', function(req, res) {
                     myConsole("Successful: GET /users/" + req.params.userid);
                     
                     // Here we are going to add more data (department/vteam)
+                    
+                    // For loop for each user, do a department find.
+                    
                     myConsole(user.length);  // length of results
                     myConsole(user[0]._id);  // reference to ID
-                    user[0].department = [];
-                    user[0].currentProjects = [];  // allows us to add extra data
+                    user[0].department = 'Department Goes here';  // getDepartment(user[i]._id);
+                    user[0].currentProjects = [{ name: "Baseball Cards", id: "dslfafdlkfjdsf"}];  // getProjects(user[i]._id);
                     user[0].pastProjects = [];  // allows us to add extra data
                     res.jsonp(user);
                 }
