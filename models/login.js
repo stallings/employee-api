@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var loginSchema = new Schema({
-  username: { type: String, required: true },
+  username: { type: String, lowercase: true, required: true },
   password: { type: String, required: true },
   level: { type: Number, required: true }
 });

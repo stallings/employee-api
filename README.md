@@ -283,4 +283,6 @@ db.users.find()
 
 ## Other Notes ##
 * Example RESTful API: <http://developers.flattr.net/api/resources/things/>
+* IP White Listing: <https://www.npmjs.org/package/express-ipfilter> <https://www.npmjs.org/package/ipfilter>
+* Mongoose Schema validation: <http://mongoosejs.com/docs/validation.html>
 

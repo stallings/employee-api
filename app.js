@@ -1,9 +1,8 @@
 /* 
 Todo:
 - Add Tags model (ASAP/PDP), tags can have members so you can easily see the people with those skills
-
-Maybe?
-- Add IP white listing https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
+- Org chart: who is manager, who are direct reports
+- Should we get all user information from one API call? Combine at the GET level?
 */
 
 // Requires
@@ -111,7 +110,7 @@ app.get('/users/:userid', function(req, res) {
                 filter = '';
             }
     
-            User.find({'_id': { $in: req.params.userid.split(",")}}, filter, function(err, user){
+            User.find({'_id': { $in: req.params.userid.split(",")}}, filter).lean().exec(function(err, user){
                 if (err) {
                     myConsole("Error: GET /users/" + req.params.userid);
                     myConsole(err);
@@ -121,6 +120,7 @@ app.get('/users/:userid', function(req, res) {
                     res.jsonp(404, { error: 'No users found' });
                 } else {
                     myConsole("Successful: GET /users/" + req.params.userid);
+                    user[0].heythere = "blah";  // allows us to add extra data
                     res.jsonp(user);
                 }
             });  
@@ -128,7 +128,7 @@ app.get('/users/:userid', function(req, res) {
     
     // Else, just return users without skills
     } else {
-            User.find({'_id': { $in: req.params.userid.split(",")}}, filter, function(err, user){
+            User.find({'_id': { $in: req.params.userid.split(",")}}, filter).lean().exec(function(err, user){
                 if (err) {
                     myConsole("Error: GET /users/" + req.params.userid);
                     myConsole(err);
@@ -138,9 +138,16 @@ app.get('/users/:userid', function(req, res) {
                     res.jsonp(404, { error: 'No users found' });
                 } else {
                     myConsole("Successful: GET /users/" + req.params.userid);
+                    
+                    // Here we are going to add more data (department/vteam)
+                    myConsole(user.length);  // length of results
+                    myConsole(user[0]._id);  // reference to ID
+                    user[0].department = [];
+                    user[0].currentProjects = [];  // allows us to add extra data
+                    user[0].pastProjects = [];  // allows us to add extra data
                     res.jsonp(user);
                 }
-            });  
+            });
     }
 });
 
@@ -239,13 +246,11 @@ app.delete('/users/:userid', checkAuth, function(req, res) {
             Department.update({}, {$pull: { members: req.params.userid}}, {multi: true}, function (err, numberAffected, raw) {
                 if (err) {
                     myConsole('Error: Unable to delete ' + req.params.userid + ' from departments.');
-                    res.jsonp(500, { error: err.name + ' - ' + err.message });
                 }
             });
             VTeam.update({}, {$pull: { members: req.params.userid}}, {multi: true}, function (err, numberAffected, raw) {
                 if (err) {
                     myConsole('Error: Unable to delete ' + req.params.userid + ' from vteams.');
-                    res.jsonp(500, { error: err.name + ' - ' + err.message });
                 }
             });
         } else {
@@ -456,7 +461,7 @@ app.get('/vteams/:vteamid', function(req, res) {
 // Description: Add a vteam. Validation done at schema level.
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Cards"}' http://localhost:5000/vteams?key=5329ce5315a953d40d7d3cd4
+// curl -i -X POST -H 'Content-Type: application/json' -d'{"name": "Baseball Cards", "status": "in progress"}' http://localhost:5000/vteams?key=532b0ded565784050ab40b02
 /* ********************************* */
 app.post('/vteams', checkAuth, function(req, res) {
     var myVTeam = new VTeam(req.body);
