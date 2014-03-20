@@ -1,6 +1,5 @@
 /* 
 Todo:
-- When deleting a user, delete from all departments/vteams
 - Add Tags model (ASAP/PDP), tags can have members so you can easily see the people with those skills
 
 Maybe?
@@ -237,6 +236,18 @@ app.delete('/users/:userid', checkAuth, function(req, res) {
             res.jsonp({ message: 'User deleted' });
             
             // Now we need to delete from Departments/VTeams/Tags
+            Department.update({}, {$pull: { members: req.params.userid}}, {multi: true}, function (err, numberAffected, raw) {
+                if (err) {
+                    myConsole('Error: Unable to delete ' + req.params.userid + ' from departments.');
+                    res.jsonp(500, { error: err.name + ' - ' + err.message });
+                }
+            });
+            VTeam.update({}, {$pull: { members: req.params.userid}}, {multi: true}, function (err, numberAffected, raw) {
+                if (err) {
+                    myConsole('Error: Unable to delete ' + req.params.userid + ' from vteams.');
+                    res.jsonp(500, { error: err.name + ' - ' + err.message });
+                }
+            });
         } else {
             myConsole('Warning: DELETE /users/' + req.params.userid + ' User not found');
             res.jsonp(404, { error: 'User not found' });
