@@ -4,7 +4,6 @@ Todo:
 - When deleting a user, delete from all departments/vteams
 - Add email and Skype and FTE/Contractor/Third-Party
 - Add user tags (ASAP/PDP)
-- Clean up JSONP replies, instead of returning id, return the whole object?
 
 Maybe?
 - Add IP white listing https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
@@ -163,8 +162,8 @@ app.post('/users', checkAuth, function(req, res) {
         myConsole('Error: POST /users/ Unable to create user');
         res.jsonp(500, { error: err.name + ' - ' + err.message, more_info: 'name and jobTitle fields are required when creating a user'});
     } else {
-        myConsole("Successful: POST /users/" + req.params.userid);
-        res.jsonp({'id' : myUser._id});
+        myConsole("Successful: POST /users/" + myUser._id);
+        res.jsonp(myUser);
     }
   });    
 });
@@ -195,7 +194,7 @@ app.put('/users/:userid', checkAuth, function(req, res) {
 // Description: Add/Modify Skills
 //
 // Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/5329c3807b9162050c607554/skills
+// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/532b153bb1abf6610e011858/skills?key=532b0ded565784050ab40b02
 /* ********************************* */
 app.put('/users/:userid/skills', checkAuth, function(req, res) {
     var query = { _id: req.params.userid };
@@ -259,8 +258,8 @@ app.delete('/users/:userid', checkAuth, function(req, res) {
 // curl -i -X GET http://localhost:5000/departments
 /* ********************************* */
 app.get('/departments', function(req, res) {
-  Department.find({}, 'name', function(err, users) {
-     res.jsonp(users);
+  Department.find({}, 'name', function(err, departments) {
+     res.jsonp(departments);
   });
 });
 
@@ -293,18 +292,19 @@ app.get('/departments/:departmentid', function(req, res) {
 // Description: Add a department
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers"}' http://localhost:5000/departments?key=5329ce5315a953d40d7d3cd4
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers"}' http://localhost:5000/departments?key=532b0ded565784050ab40b02
 /* ********************************* */
 app.post('/departments', checkAuth, function(req, res) {
-  var myDepartment = new Department({name: req.body.name});
+    var myDepartment = new Department(req.body);
     myDepartment.save(function (err) {
-    if (err) {
-           myConsole('Error: POST /departments/ Unable to create department');
-           res.jsonp(500, { error: err.name + ' - ' + err.message });
-    } else {
-        res.jsonp({'id' : myDepartment._id});
-    }
-  });
+        if (err) {
+            myConsole('Error: POST /departments/ Unable to create department');
+            res.jsonp(500, { error: err.name + ' - ' + err.message });
+        } else {
+            myConsole("Successful: POST /departments/" + myDepartment._id);
+            res.jsonp(myDepartment);
+        }
+    });
 });
 
 /* ********************************* */
@@ -316,12 +316,12 @@ app.post('/departments', checkAuth, function(req, res) {
 /* ********************************* */
 app.put('/departments/:departmentid', checkAuth, function(req, res) {
     var query = { _id: req.params.departmentid };
-
-    Department.update(query, {name: req.body.name}, function (err, numberAffected, raw) {
+    Department.update(query, req.body, function (err, numberAffected, raw) {
         if (err) {
-           myConsole('Error: PUT /departments/' + req.params.departmentid);
-           res.jsonp(500, { error: err.name + ' - ' + err.message });
+            myConsole('Error: PUT /departments/' + req.params.departmentid);
+            res.jsonp(500, { error: err.name + ' - ' + err.message });
         } else {
+            myConsole("Successful: PUT /departments/" + req.params.departmentid);
             res.jsonp({'id' : req.params.departmentid});
         }
     });
@@ -411,8 +411,8 @@ app.delete('/departments/:departmentid', checkAuth, function(req, res) {
 // curl -i -X GET http://localhost:5000/vteams
 /* ********************************* */
 app.get('/vteams', function(req, res) {
-  VTeam.find({}, 'name', function(err, users) {
-     res.jsonp(users);
+  VTeam.find({}, 'name', function(err, vteams) {
+     res.jsonp(vteams);
   });
 });
 
@@ -442,19 +442,20 @@ app.get('/vteams/:vteamid', function(req, res) {
 
 /* ********************************* */
 // Route: POST /vteams
-// Description: Add a vteam
+// Description: Add a vteam. Validation done at schema level.
 //
 // Sample curl:
 // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Cards"}' http://localhost:5000/vteams?key=5329ce5315a953d40d7d3cd4
 /* ********************************* */
 app.post('/vteams', checkAuth, function(req, res) {
-  var myVTeam = new VTeam({name: req.body.name});
+    var myVTeam = new VTeam(req.body);
     myVTeam.save(function (err) {
     if (err) {
-           myConsole('Error: POST /vteams/ Unable to create vteam');
-           res.jsonp(500, { error: err.name + ' - ' + err.message });
+        myConsole('Error: POST /vteams/ Unable to create vteam');
+        res.jsonp(500, { error: err.name + ' - ' + err.message });
     } else {
-        res.jsonp({'id' : myVTeam._id});
+        myConsole("Successful: POST /vteams/" + myVTeam._id);
+        res.jsonp(myVTeam);
     }
   });
 });
@@ -468,8 +469,7 @@ app.post('/vteams', checkAuth, function(req, res) {
 /* ********************************* */
 app.put('/vteams/:vteamid', checkAuth, function(req, res) {
     var query = { _id: req.params.vteamid };
-
-    VTeam.update(query, {name: req.body.name}, function (err, numberAffected, raw) {
+    VTeam.update(query, req.body, function (err, numberAffected, raw) {
         if (err) {
            myConsole('Error: PUT /vteams/' + req.params.vteamid);
            res.jsonp(500, { error: err.name + ' - ' + err.message });
@@ -574,16 +574,17 @@ app.post('/logins', function(req, res) {
                     var myKey = new Key({'level': user.level });
                     myKey.save(function (err) {
                         if (err) {
-                               myConsole('Error: Unable to save key');
-                               res.jsonp(500, { error: err.name + ' - ' + err.message });
+                            myConsole('Error: Unable to save key');
+                            res.jsonp(500, { error: err.name + ' - ' + err.message });
                         } else {
+                            myConsole('Successful: Valid key sent');
                             res.jsonp({'key' : myKey._id});
                         }
                     });
-              } else{
-                myConsole("Error: POST /login Incorrect password");
-                res.jsonp(500, { error: 'Incorrect password' });
-              }
+                } else {
+                    myConsole("Error: POST /login Incorrect password");
+                    res.jsonp(500, { error: 'Incorrect password' });
+                }
              });
         }
     });    

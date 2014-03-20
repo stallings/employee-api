@@ -189,20 +189,20 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
 
 ===
 
-## MongoDB JSON Data Structure Examples ##
+# MongoDB JSON Data Sample Entries
 
-#### User ####
+## User
 ```
 {
-   "_id": "2o3jr42398rjorj234f",
-   "name": "John Smith",
-   "headshot": "http://goo.gl/oafjewnefa",
-   "startDate": ISODate("2014-02-01T06:00:00Z"),
-   "jobTitle": "UX Architect",
-   "email": "jpulgar@searshc.com",
-   "skype": "josepulgarbird",
-   "employeeType": "FTE",
-   "skills": [
+    "_id" : ObjectId("5328bf85e1711fd3d24ce442"),
+    "name": "John Smith",
+    "headshot": "http://goo.gl/oafjewnefa",
+    "startDate": ISODate("2014-02-01T06:00:00Z"),
+    "jobTitle": "UX Architect",
+    "email": "jsmith@searshc.com",
+    "skype": "johnsmithsears",
+    "employeeType": "FTE",
+    "skills": [
                 {
                   "title": "User Research",
                   "rating": "3.5"
@@ -211,49 +211,50 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
                   "title": "Information Architecture",
                   "rating": "4.0"
                 }
-              ]
- }
+    ]
+}
 ```
 
-#### Departments ####
+## Departments
 ````
 {
-   "_id": "2oeargargarg98rjorj234f",
-   "name": "Project Managers",
-   "members": [ "2o3jr42398rjorj234f", "2o3jrgsbtahthsh234f", "2o3jrjkhdjhjorj234f", "2o3jhmgjfhjkgjkhgfjk234f" ]
+    "_id" : ObjectId("532b1d1db09bcfff1020a9aa"),
+    "name" : "Project Managers",
+    "members" : [  ObjectId("5329f663c43b5a461b507c5a") ]
  }
 ````
 
-#### Virtual Teams ####
+## Virtual Teams
 ````
 {
-   "_id": "2oeargargarg98rjorj234f",
-   "name": "Kmart Fashion",
-   "4dfy": "203948093",
-   "members": [ "2o3jr42398rjorj234f", "2o3jrgsbtahthsh234f", "2o3jrjkhdjhjorj234f", "2o3jhmgjfhjkgjkhgfjk234f" ]
- }
-````
-
- 
-#### Logins ####
-````
-{
-   "_id": "2oeargargarg98rjorj234f",
-   "username": "jpulgar",
-   "password": "securepassword"
- }
-````
-
-#### Keys ####
-````
-{
-   "_id": "2oeargargarg98rjorj234f",
-   "createdAt" : ISODate("2014-03-10T19:17:12.487Z"),
-   "key": "dasfoisjfoaffdsafsdafdsafsadfdoafmadsfoj"
+    "_id" : ObjectId("532a02a910536e2128234c8b"),
+    "name" : "Baseball Cards",
+    "members" : [  ObjectId("5329f663c43b5a461b507c5a") ]
 }
 ````
 
-===
+ 
+## Logins
+````
+{ 
+    "_id" : ObjectId("5328bf85e1711fd3d24ce442"),
+    "username" : "jpulgar",
+    "password" : "$2a$10$VhRfJASWXb5qVhqH2TUsdOCdtMpyI8cwpTBOviB70T/ca6Dv9S616",
+    "level" : 3
+}
+````
+
+## Keys
+````
+{
+    "_id" : ObjectId("532b0ded565784050ab40b02"),
+    "level" : 3,
+    "createdAt" : ISODate("2014-03-20T15:49:01.537Z")
+}
+
+````
+
+
 
 ## How to Install MongoDB ##
 These instructions are for Mac.  It assumes you already have Homebrew installed. Lines 3-4 set Mongo to autostart with Mac.  Lines 5-6 sets a location for the databases.
@@ -277,155 +278,9 @@ show databases
 db.createCollection("users")
 show collections
 db.users.find()
-db.users.find({ _id: ObjectId("5319ebfde454ce0ad42d6464")})
 ````
 
-# MongoDB Syntax #
-
-## Add a Document ##
-Example of adding a user.
-
-````
-db.users.insert(
-	{ 
-		name: "Jose Pulgar", 
-		headshot: "http://goo.gl/dofijdf", 
-		startDate: new Date(2014,1,1) 
-	}
-)
-````
-
-## Update Document Field ##
-Example of updating a user user.
-
-````
-db.users.update(
-   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
-   {
-      $set: { name: "John Smith" }
-   }
-)
-````
-
-## Remove a Document ##
-Example of removing a user.
-
-````
-db.users.remove( { _id: ObjectId("5319ebfde454ce0ad42d6464")} )
-````
-
-## Remove Document Field ##
-Example of removing a user field.
-
-````
-db.users.update(
-   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
-   {
-      $unset: {
-         startDate: ""
-      }
-   }
-)
-````
-
-## Insert/Update Subdocument Field ##
-Example of adding a user skill.
-
-````
-db.users.update(
-   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
-   {
-      $set: {
-         skills: [
-            {
-               title: "User Research",
-               rating: 3.5
-            }
-         ]
-      }
-   },
-   { upsert: true }
-)
-````
-
-## Remove Subdocument Field ##
-Example of removing a user skill.
-
-````
-db.users.update(
-   { _id: ObjectId("5319ebfde454ce0ad42d6464")},
-   {
-      $pull: {
-         skills: { title: "User Research" }
-      }
-   }
-)
-````
-
-
-## Add member(s) to a team ##
-Example of adding members to a team
-
-````
-db.departments.update(
-   { _id: ObjectId("531a2875e454ce0ad42d6465")},
-   {
-      $addToSet: {
-         members: { 
-         	$each: [ 
-         		ObjectId("531a2875e454ce0ad42d6461"), 				ObjectId("531a2875e454ce0ad42d6462")
-         	]
-         }
-      }
-   }
-)
-````
-
-## Remove member from a team ##
-Example of removing member from a department or v-team
-
-````
-db.departments.update(
-   { _id: ObjectId("531a2875e454ce0ad42d6465")},
-   {
-      $pull: {
-         members: ObjectId("531a2875e454ce0ad42d6461")
-      }
-   }
-)
-````
-
-## Add Login ##
-Add a login to the list.
-
-````
-db.logins.insert(
-    { 
-        username: "jpulgar", 
-        password: "securepassword"
-    }
-)
-````
-
-## Set global Key expiration time ##
-
-````
-db.keys.ensureIndex( { "createdAt": 1 }, { expireAfterSeconds: 10 } )
-````
-
-
-## Add Key ##
-Add a key to the list. They auto expire based on the seconds above.
-
-````
-db.keys.insert(
-    { 
-	    "createdAt": new Date(),
-        key: "afjodifmoew24o52nm3oi4nmroim4nrt"    }
-)
-````
 
 ## Other Notes ##
-* RESTful API example: <http://developers.flattr.net/api/resources/things/#get-multiple-things>
-* ensureAuthentication example: <https://github.com/jaredhanson/passport-google/blob/master/examples/signon/app.js>
+* Example RESTful API: <http://developers.flattr.net/api/resources/things/#get-multiple-things>
 
