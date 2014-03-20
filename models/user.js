@@ -8,11 +8,15 @@ var skillSchema = new Schema({
 });
 
 var userSchema = new Schema({
-  name: { type: String, required: true },
-  headshot: { type: String },
-  startDate: { type: Date },
-  jobTitle: { type: String, required: true },
-  skills: [skillSchema]
+    name: { type: String, required: true },
+    headshot: { type: String },
+    startDate: { type: Date },
+    jobTitle: { type: String, required: true },
+    headshot: { type: String },
+    email: { type: String },
+    employeeType: { type: String },
+    skype: { type: String },
+    skills: [skillSchema]
 });
 
 module.exports = mongoose.model('User', userSchema);

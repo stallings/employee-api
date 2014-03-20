@@ -282,5 +282,5 @@ db.users.find()
 
 
 ## Other Notes ##
-* Example RESTful API: <http://developers.flattr.net/api/resources/things/#get-multiple-things>
+* Example RESTful API: <http://developers.flattr.net/api/resources/things/>
 

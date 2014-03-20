@@ -1,9 +1,7 @@
 /* 
 Todo:
-- When adding a user, make all fields variable, use schema to test field validity
 - When deleting a user, delete from all departments/vteams
-- Add email and Skype and FTE/Contractor/Third-Party
-- Add user tags (ASAP/PDP)
+- Add Tags model (ASAP/PDP), tags can have members so you can easily see the people with those skills
 
 Maybe?
 - Add IP white listing https://www.npmjs.org/package/express-ipfilter  https://www.npmjs.org/package/ipfilter
@@ -237,6 +235,8 @@ app.delete('/users/:userid', checkAuth, function(req, res) {
         } else if (resource) {
             myConsole('Success: DELETE /users/' + req.params.userid);
             res.jsonp({ message: 'User deleted' });
+            
+            // Now we need to delete from Departments/VTeams/Tags
         } else {
             myConsole('Warning: DELETE /users/' + req.params.userid + ' User not found');
             res.jsonp(404, { error: 'User not found' });
