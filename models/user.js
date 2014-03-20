@@ -7,18 +7,12 @@ var skillSchema = new Schema({
     rating: { type: Number, max: 5, required: true }
 });
 
-var profileSchema = new Schema({
-    title: { type: String, required: true },
-    details: { type: String, required: true }
-});
-
 var userSchema = new Schema({
   name: { type: String, required: true },
-  headshot: { type: String, required: true },
-  startDate: { type: Date, required: true },
+  headshot: { type: String },
+  startDate: { type: Date },
   jobTitle: { type: String, required: true },
-  skills: [skillSchema],
-  profile: [profileSchema]
+  skills: [skillSchema]
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,5 +1,6 @@
 /* 
 Todo:
+- When adding a user, make all fields variable, use schema to test field validity
 - When deleting a user, delete from all departments/vteams
 - Add email and Skype and FTE/Contractor/Third-Party
 - Add user tags (ASAP/PDP)
@@ -150,38 +151,40 @@ app.get('/users/:userid', function(req, res) {
 
 /* ********************************* */
 // Route: POST /users
-// Description: Add a user
+// Description: Add a user. Validation happens at schema level
 //
 // Sample curl:
-// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost:5000/users
+// curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Billy Archibald", "jobTitle": "President"}' http://localhost:5000/users?key=532b0ded565784050ab40b02
 /* ********************************* */
 app.post('/users', checkAuth, function(req, res) {
-  var myUser = new User({name: req.body.name, headshot: req.body.headshot, startDate: req.body.startDate, jobTitle: req.body.jobTitle});
+  var myUser = new User(req.body);
     myUser.save(function (err) {
     if (err) {
-           myConsole('Error: POST /users/ Unable to create user');
-           res.jsonp(500, { error: err.name + ' - ' + err.message });
+        myConsole('Error: POST /users/ Unable to create user');
+        res.jsonp(500, { error: err.name + ' - ' + err.message, more_info: 'name and jobTitle fields are required when creating a user'});
     } else {
+        myConsole("Successful: POST /users/" + req.params.userid);
         res.jsonp({'id' : myUser._id});
     }
-  });
+  });    
 });
 
 /* ********************************* */
 // Route: PUT /users/id
-// Description: Modify required user information
+// Description: Modify required user information. Validation happens at schema level.
 //
 // Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf, "startDate": "2014-01-01", "jobTitle": "Manageadfdfdsfr"}' http://localhost:5000/users/531f6a31cf9b3bdb1580eef9
+// curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Nina Pulgar"}' http://localhost:5000/users/532b153bb1abf6610e011858?key=532b0ded565784050ab40b02
 /* ********************************* */
 app.put('/users/:userid', checkAuth, function(req, res) {
     var query = { _id: req.params.userid };
 
-    User.update(query, {name: req.body.name, headshot: req.body.headshot, startDate: req.body.startDate, jobTitle: req.body.jobTitle}, function (err, numberAffected, raw) {
+    User.update(query, req.body, function (err, numberAffected, raw) {
         if (err) {
-           myConsole('Error: PUT /users/' + req.params.userid);
-           res.jsonp(500, { error: err.name + ' - ' + err.message });
+            myConsole('Error: PUT /users/' + req.params.userid);
+            res.jsonp(500, { error: err.name + ' - ' + err.message });
         } else {
+            myConsole("Successful: PUT /users/" + req.params.userid);
             res.jsonp({'id' : req.params.userid});
         }
     });
@@ -215,39 +218,6 @@ app.put('/users/:userid/skills', checkAuth, function(req, res) {
             res.jsonp({'id' : req.params.userid});
         } else {
             myConsole('Warning: PUT /users/' + req.params.userid + '/skills no rows affected!');
-            res.jsonp(500, { error: 'No rows affected' });
-        }
-    });
-});
-
-/* ********************************* */
-// Route: PUT /users/id/profile
-// Description: Add/Modify Profile
-//
-// Sample curl:
-// curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "School", "details": "University of Puerto Rico"}, {"title": "Cat", "details": "Nina"}]' http://localhost:5000/users/5329c3807b9162050c607554/profile
-/* ********************************* */
-app.put('/users/:userid/profile', checkAuth, function(req, res) {
-    var query = { _id: req.params.userid };
-
-    // Remove existing Profile
-    User.update(query, {$set: { profile: [] }}, function (err) {
-       if (err) { 
-           myConsole('Error: Unable to delete user profile!');
-           res.jsonp(500, { error: 'Unable to delete user profile' });
-       } 
-    });
-    
-    // Add profile
-    User.update(query, {$addToSet : { profile: { $each: req.body } }}, function (err, numberAffected, raw) {
-        if (err) {
-            myConsole('Error: PUT /users/' + req.params.userid + '/profile');
-            res.jsonp(500, { error: err.name + ' - ' + err.message });
-        } else if (numberAffected) {
-            myConsole('Success: PUT /users/' + req.params.userid + '/profile');
-            res.jsonp({'id' : req.params.userid});
-        } else {
-            myConsole('Warning: PUT /users/' + req.params.userid + '/profile no rows affected!');
             res.jsonp(500, { error: 'No rows affected' });
         }
     });

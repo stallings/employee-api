@@ -63,13 +63,6 @@ Modifies a user skill and ratings
 curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/{id}/skills?key={validKey}
 ```
 
-## PUT /users/{id}/profile (protected)
-Modifies a user profile
-
-```
-curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "Past Projects", "details": "Kmart Fashion"}, {"title": "Top Strengths", "details": "Arm Wrestling"}]' http://localhost:5000/users/{id}/profile?key={validKey}
-```
-
 ## DELETE /users/{id} (protected)
 Deletes a user
 
@@ -217,20 +210,6 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
                 {
                   "title": "Information Architecture",
                   "rating": "4.0"
-                }
-              ],
-   "profile": [
-                {
-                  "title": "Current Project",
-                  "details": "PDP"
-                },
-                {
-                  "title": "Past Projects",
-                  "details": "Parts & Services, Profile"
-                },
-                {
-                  "title": "Top Strengths",
-                  "details": "Collaborator.  Ability to lead large projects.  Well-rounded in design, UX and technology."
                 }
               ]
  }
