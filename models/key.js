@@ -1,8 +1,7 @@
 // Levels: 1 - Manager, 2 - Director, 3 - VP
 // Key expires every X number of seconds
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
 var keySchema = new Schema({
   level: { type: Number, required: true },
