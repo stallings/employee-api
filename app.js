@@ -1,8 +1,9 @@
 /* 
 Todo:
 - Add Tags model (ASAP/PDP), tags can have members so you can easily see the people with those skills
+
+Future:
 - Org chart: who is manager, who are direct reports
-- Should we get all user information from one API call? Combine at the GET level?
 */
 
 // Requires
@@ -95,22 +96,10 @@ app.get('/users', function(req, res) {
 // curl -i -X GET http://localhost:5000/users/id,id
 /* ********************************* */
 app.get('/users/:userid', function(req, res) {
-
-    // By default, don't return skills
-    var filter = '-skills';    
     
-    // If API key is passed, check if valid, if so, return skills
-    if (req.query.key != undefined) {
-      Key.find({'_id': req.query.key}, function(err, result){
-            if (err) {
-                filter = '-skills';
-            } else if (!result.length) {
-                filter = '-skills';
-            } else {
-                filter = '';
-            }
-    
-            User.find({'_id': { $in: req.params.userid.split(",")}}, filter).lean().exec(function(err, user){
+    // If multiple users requested, return basic info
+    if (req.params.userid.length != 24) {
+            User.find({'_id': { $in: req.params.userid.split(",")}}, '-skills').lean().exec(function(err, user){
                 if (err) {
                     myConsole("Error: GET /users/" + req.params.userid);
                     myConsole(err);
@@ -120,39 +109,64 @@ app.get('/users/:userid', function(req, res) {
                     res.jsonp(404, { error: 'No users found' });
                 } else {
                     myConsole("Successful: GET /users/" + req.params.userid);
-                    user[0].heythere = "blah";  // allows us to add extra data
-                    res.jsonp(user);
-                }
-            });  
-      });
-    
-    // Else, just return users without skills
-    } else {
-            User.find({'_id': { $in: req.params.userid.split(",")}}, filter).lean().exec(function(err, user){
-                if (err) {
-                    myConsole("Error: GET /users/" + req.params.userid);
-                    myConsole(err);
-                    res.jsonp(500, { error: err.name + ' - ' + err.message });
-                } else if (!user.length) { 
-                    myConsole("Warning: GET /users/" + req.params.userid + " No results");
-                    res.jsonp(404, { error: 'No users found' });
-                } else {
-                    myConsole("Successful: GET /users/" + req.params.userid);
-                    
-                    // Here we are going to add more data (department/vteam)
-                    
-                    // For loop for each user, do a department find.
-                    
-                    myConsole(user.length);  // length of results
-                    myConsole(user[0]._id);  // reference to ID
-                    user[0].department = 'Department Goes here';  // getDepartment(user[i]._id);
-                    user[0].currentProjects = [{ name: "Baseball Cards", id: "dslfafdlkfjdsf"}];  // getProjects(user[i]._id);
-                    user[0].pastProjects = [];  // allows us to add extra data
                     res.jsonp(user);
                 }
             });
+    
+    // If only one user requested, return more detailed information
+    } else {
+        User.find({'_id': req.params.userid}).lean().exec(function(err, user){
+            if (err) {
+                myConsole("Error: GET /users/" + req.params.userid);
+                myConsole(err);
+                res.jsonp(500, { error: err.name + ' - ' + err.message });
+            } else if (!user.length) { 
+                myConsole("Warning: GET /users/" + req.params.userid + " No results");
+                res.jsonp(404, { error: 'No users found' });
+            } else {
+
+                // Get Departments
+                Department.find({members: { $in : [req.params.userid] }}).select('name').sort('name').lean().exec(function (err, departments) {
+                    if (err) { 
+                        user[0].departments = err.name + ' - ' + err.message;
+                    } else {
+                        user[0].departments = departments;
+
+                        // Get VTeams
+                        VTeam.find({members: { $in : [req.params.userid] }}).select('name').sort('name').lean().exec(function (err, vteams) {
+                            if (err) { 
+                                user[0].vteams = err.name + ' - ' + err.message;
+                            } else {
+                                user[0].vteams = vteams;
+                                myConsole("Successful: GET /users/" + req.params.userid);
+
+                                // If valid key, send skills
+                                if (req.query.key != undefined) {
+                                    Key.find({'_id': req.query.key}).lean().exec(function(err, result){
+                                       if (err) {
+                                           delete user[0].skills; 
+                                           res.jsonp(user);
+                                        } else if (!result.length) {
+                                            delete user[0].skills; 
+                                            res.jsonp(user);
+                                        } else {
+                                            res.jsonp(user);
+                                        }
+                                    });
+                                // Otherwise, don't include skills
+                                } else {
+                                    delete user[0].skills; 
+                                    res.jsonp(user);
+                                }
+                            }
+                        }); 
+                    }
+                }); 
+            }
+        });
     }
 });
+
 
 
 /* ********************************* */
