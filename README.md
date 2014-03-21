@@ -13,8 +13,6 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * NodeJS + Express + Mongoose + MongoDB <http://localhost:28017/>
 * JSONP compatible
 
-
-
 ## Security ##
 
 * Authentication required for skills: login and auto-expiring keys
@@ -22,7 +20,10 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * IP Whitelisting (if necessary) [List of IPs](https://wiki.intra.sears.com/confluence/display/ECOMMIT/Do+Not+Shun+for+InfoProt)
 * Password Protection for skill ratings
 
+## To Do ##
 
+* Add ability to add tags to users, projects and vteams
+* Org chart functionality: who is your manager, who are your direct reports
 
 
 # Users #

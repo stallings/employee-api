@@ -1,11 +1,10 @@
 // Requires
-var mongoose = require('mongoose');
-
-// Add Models
-var Login = require('./models/login');
+var mongoose = require('mongoose'),
+    database = require('../config/database'),
+    Login = require('../models/login');
 
 // Connect to MongoDB
-mongoose.connect( 'mongodb://localhost/baseball', function(err) { 
+mongoose.connect(database.url, function(err) { 
     if (err) myConsole('Error: Unable to connect to MongoDB!');
 });
 
