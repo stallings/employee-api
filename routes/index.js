@@ -6,6 +6,7 @@ var Department = require('../models/department');
 var VTeam = require('../models/vteam');
 var Login = require('../models/login');
 var Key = require('../models/key');
+var bcrypt = require('bcrypt');
 
 
 /* ********************************* */
