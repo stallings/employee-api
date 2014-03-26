@@ -2,10 +2,19 @@
 var express  = require('express'),
     mongoose = require('mongoose'),
     bcrypt   = require('bcrypt'),
+    cors = require('cors'),
     database = require('./config/database');
 
 // Create Express App and use JSON/urlencoded parsing middleware
 var app = express();
+
+// Set up CORS (Cross-Origin Resource Sharing)
+var corsOptions = {
+  origin: '*'
+};
+
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded());
 

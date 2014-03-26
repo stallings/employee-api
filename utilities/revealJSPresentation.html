@@ -43,19 +43,21 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h2>Employee<br/>RESTful API</h2>
-					<h4>Built with NodeJS + Mongo DB</h4>
-					<!-- <p>
-						<small>Created by <a href="http://www.josepulgar.com">Jose Pulgar</a></small>
-					</p> -->
+					<h2>Let's Make An API</h2>
+					<p><br/><br/><br/><small>This presentation is sponsored by Pebble<br/>
+					<i>Pebble: Keeping secrets from contractors since 2011</i></small></p>
 				</section>
 
 				<section>
 					<h2>Problem</h2>
-					<p>
-						Create employee information repository<br/>
-						with following requirements:
-					</p>
+					<p><br/>Create employee data repository website with:</p>
+						<ul>
+							<li>General information</li>
+							<li>Current/past projects</li>
+							<li>Skill ratings</li>
+						</ul>
+
+					<p class="fragment"><br/><br/>It should have the following requirements:</p>
 						<ul>
 							<li class="fragment">Reusable</li>
 							<li class="fragment">Expandable</li>
@@ -69,12 +71,12 @@
 				</section>
 	
 				<section>
-						<h2>Let's build it in ASAP!</h2>
+						<h2>Let's make it in ASAP!</h2>
 						<h2 class="fragment" style="color: #FF0000;">Hahaha! No.</h2>
 				</section>
 	
 				<section>
-						<h2>Let's built it with<br/>PHP + mySQL!</h2>
+						<h2>Let's make it with<br/>PHP + mySQL!</h2>
 						<h3 class="fragment" style="color: orange;">Maybe but . . .</h3>
 						<ul>
 							<li class="fragment">Only FEDs with PHP knowledge can assist</li>
@@ -84,8 +86,9 @@
 				</section>
 	
 				<section>
-						<h2>Let's built it with<br/>NodeJS + Mongo DB!</h2>
-						<h2 class="fragment" style="color: #00FF00;">Whatever,<br/>dig your own grave.</h2>
+						<h2>Let's make an API instead!</h2>
+						<h3 class="fragment">Sure... but how?</h3>
+						<h2 class="fragment" style="color: #00FF00;"><br/>NodeJS and Mongo DB</h2>
 				</section>
 	
 
@@ -140,16 +143,17 @@
 				<section>
 					<h2>Mongoose Library</h2>
 					<ul>
-						<li class="fragment">Simplifies Mongo DB connectivity</li>
-						<li class="fragment">Data Schema</li>
-						<li class="fragment">Automatic Data Validation</li>
+						<li class="fragment">Simplifies Mongo DB usage</li>
+						<li class="fragment">Provides data schema</li>
+						<li class="fragment">Automatic data validation</li>
 					</ul>
 				</section>
 
 				<section>
 					<h2>Mongo DB</h2>
 					<ul>
-						<li class="fragment">JSON Data Model</li>
+						<li class="fragment">JSON-like documents</li>
+						<li class="fragment">Dynamic schemas</li>
 						<li class="fragment">Auto expiring documents</li>
 					</ul>
 				</section>
@@ -158,6 +162,26 @@
 					<h2>This sounds great<br/>but complicated...</h2>
 					<h2 class="fragment" style="color: #00FF00;">It's not!</h2>
 				</section>
+
+                <section>
+                    <h2>Folder Structure</h2>
+                    <pre><code data-trim contenteditable>
+package.json
+app.js
++-- models
+     |-- user.js
+     |-- department.js
+     |-- key.js
+     |-- login.js
++-- routes
+     |-- index.js
++-- config
+     |-- database.js	
++-- node_modules	
+                    </code></pre>
+
+<p><small>Assumptions: NodeJS and Mongo DB are installed locally</small></p>
+                </section>
 
 				<section>
 					<h2>Step 1</h2>
@@ -181,12 +205,13 @@
 
 				<section>
 					<h2>Step 2</h2>
-					<p>Create a <b>app.js</b> file.<br/>
-					This creates and launches our application on port 5000</p>
+					<p>Create a <b>app.js</b> file.</p>
 
 						<pre><code data-trim contenteditable>
-var express = require('express'), mongoose = require('mongoose'), 
-    bcrypt = require('bcrypt'), database = require('./config/database');
+var express = require('express'),
+    mongoose = require('mongoose'), 
+    bcrypt = require('bcrypt'),
+    database = require('./config/database');
 
 // Create app and use JSON/urlencoded parsing middleware
 var app = express();
@@ -195,19 +220,30 @@ app.use(express.urlencoded());
 
 require('./routes')(app);
 
-mongoose.connect(database.url, function(err) { 
-    if (err) myConsole('Error: Unable to connect to MongoDB!');
-});
+mongoose.connect(database.url);
 
 var server = app.listen(5000, function() {
-    console.log('Listening on: http://localhost:%d', server.address().port);
+  console.log('Listening on: http://localhost:%d', server.address().port);
 });
 						</code></pre>
 				</section>
 
-
 				<section>
 					<h2>Step 3</h2>
+					<p>Install Dependencies</p>
+						<pre><code data-trim contenteditable>
+npm install
+						</code></pre>
+					<p>Run Application</p>
+						<pre><code data-trim contenteditable>
+node app.js
+						</code></pre>
+
+					<p class="fragment"><br/>You are now running a web service on port 5000!</hp>
+				</section>
+
+				<section>
+					<h2>Step 4</h2>
 					<p><b>Create Models</b> to define our data schema and validation.</p>
 
 						<pre><code data-trim contenteditable>
@@ -223,7 +259,7 @@ var userSchema = new Schema({
     headshot: { type: String },
     startDate: { type: Date },
     jobTitle: { type: String, required: true },
-    headshot: { type: String },
+    email: { type: String },
     skills: [skillSchema]
 });
 
@@ -233,11 +269,17 @@ module.exports = mongoose.model('User', userSchema);
 
 
 				<section>
-					<h2>Step 4</h2>
-					<p><b>Define Routes</b></p>
-					<p>Routes are URL schema, which describe<br/>the interfaces for making requests to your web app.</p>
-					<img width="550" height="216" src="http://josepulgar.com/expressRouting.gif" alt="Routing">
-					<p class="fragment">Let's look at a few examples...</p>
+					<h2>Step 5: Define Routes</h2>
+					<p>Routes are URL schema, that describe<br/>the interfaces for making requests to your web app.</p>
+
+
+<p class="fragment"><br/><br/>Route Examples:</p>
+<p class="fragment"><b>GET /users</b> &rarr; returns all users</p>
+<p class="fragment"><b>POST /login {JSON Data}</b> &rarr; returns key if valid</p>
+<p class="fragment"><b>GET /users/{userID}</b> &rarr; returns one user</p>
+
+
+					<p class="fragment"><br/><br/>Let's look at the code...</p>
 				</section>
 
 
@@ -249,6 +291,10 @@ module.exports = mongoose.model('User', userSchema);
 					<p>Get all user names and IDs</p>
 
 						<pre><code data-trim contenteditable>
+// Curl request:
+curl -i -X GET http://localhost:5000/users
+						</code></pre>
+						<pre><code data-trim contenteditable>
 // Define user model
 var User = require('../models/user');
 
@@ -257,10 +303,6 @@ app.get('/users', function(req, res) {
      res.jsonp(users);
   });
 });
-						</code></pre>
-						<pre><code data-trim contenteditable>
-// Curl request:
-curl -i -X GET http://localhost:5000/users
 						</code></pre>
 						<pre><code data-trim contenteditable>
 // Output:
@@ -276,6 +318,11 @@ curl -i -X GET http://localhost:5000/users
 					<p>Creates a new user</p>
 
 						<pre><code data-trim contenteditable>
+curl -i -X POST -H 'Content-Type: application/json' 
+     -d '{"name": "Billy Mitchell", "jobTitle": "Being Awesome"}'
+     http://localhost:5000/users?key=532b0ded565784050ab40b02
+						</code></pre>
+						<pre><code data-trim contenteditable>
 app.post('/users', checkAuth, function(req, res) {
   var myUser = new User(req.body);
     myUser.save(function (err) {
@@ -288,14 +335,8 @@ app.post('/users', checkAuth, function(req, res) {
     } });  });
 						</code></pre>
 						<pre><code data-trim contenteditable>
-curl -i -X POST -H 'Content-Type: application/json' 
-     -d '{"name": "Billy Mitchell", "jobTitle": "Being Awesome"}'
-     http://localhost:5000/users?key=532b0ded565784050ab40b02
-						</code></pre>
-						<pre><code data-trim contenteditable>
 { "__v": 0, "name": "Billy Mitchell", "jobTitle": "Being Awesome",
   "_id": "53306c5770a229ab13ab56d2", "skills": [] }
-
 						</code></pre>
 				</section>
 
@@ -305,6 +346,10 @@ curl -i -X POST -H 'Content-Type: application/json'
 					<h2>DELETE /users/{userid}</h2>
 					<p>Deletes a user</p>
 
+						<pre><code data-trim contenteditable>
+curl -i -X DELETE http://localhost:5000/users/53306c5770a229ab13ab56d2
+                                         ?key=532b0ded565784050ab40b02
+						</code></pre>
 						<pre><code data-trim contenteditable>
 app.delete('/users/:userid', checkAuth, function(req, res) {
  User.findByIdAndRemove(req.params.userid, function (err, resource) {
@@ -319,6 +364,9 @@ app.delete('/users/:userid', checkAuth, function(req, res) {
    res.jsonp(404, { error: 'User not found' });
   }
 });});
+						</code></pre>
+						<pre><code data-trim contenteditable>
+{ "message": "User deleted" }
 						</code></pre>
 				</section>
 
@@ -342,50 +390,72 @@ DELETE /users/{id}</p>
 
 				<section>
 					<h2>Security</h2>
-					<p>Protect against malicious users that try to:</p>
+
+					<p><br/>We need to do the following:<br/></p>
 					<ul>
-						<li class="fragment">Steal Mongo DB data files</li>
-						<li class="fragment">Read/modify data through protected API functions</li>
+						<li>Encrypt passwords</li>
+						<li>Set protected routes</li>
 					</ul>
 				</section>
 
 
 				<section>
 					<h2>Encrypt Passwords</h2>
-					<p>Use <b>bcrypt</b> to hash passwords before storing.</p>
+					<p>Hash and salt passwords with <b>bcrypt</b></p>
 
 					<pre><code data-trim contenteditable>
-node addUser.js bmitchell secretpassword 3
+node addUser.js bmitchell secretpassword
 					</code></pre>
+					<p>Save it:</p>
 					<pre><code data-trim contenteditable>
-
-var mongoose = require('mongoose'), bcrypt = require('bcrypt'),
-    Login = require('../models/login');
-
-bcrypt.hash(process.argv[3], 10, function( err, bcryptedPassword) {
-    var query = { username: process.argv[2] };
-    Login.update(query, {$set: { username: process.argv[2].toLowerCase(), 
-                 password: bcryptedPassword, level: process.argv[4] }}, 
-                 { upsert: true }, function (err, numberAffected, raw) {
-        if (err) { 
-            console.log('Error: Unable to add user');
-        } else {
-            console.log('User added: ' + process.argv[2].toLowerCase());
-
-        }
-}); });
+bcrypt.hash('secretpassword', 10, function( err, bcryptedPassword) {
+    // Store bcryptedPassword in Mongo
+});
+					</code></pre>
+					<p>Check it:</p>
+					<pre><code data-trim contenteditable>
+bcrypt.compare('secretpassword', bcryptedPassword, function(err, match) {
+    // match returns true if valid
+});
 					</code></pre>
 				</section>
 
 				<section>
-					<h2>Temporary Keys</h2>
+					<h2>Protected Routes<br/><br/></h2>
 					<ul>
-						<li>Valid key is needed to use protected API functions</li>
-						<li>Keys should expire after a set amount of time</li>
-						<li>Mongo allows us to set a TTL for documents.</li>
-						<li>TTL stands for "Time To Live"</li>
-						<li>If a malicious user obtained a key, it would expire soon</li>
+						<li>Need to protect routes that modify users</li>
+						<li>POST PUT DELETE commands</li>
+						<li>Administrators: read/write</li>
+						<li>Public: read-only</li>
 					</ul>
+					<p class="fragment" style="color: orange;"><br/><br/>How do we do this?</p>
+				</section>
+
+				<section>
+					<h2>API Keys</h2>
+					<p>Require keys when modifying users<br/><br/>
+					<b>POST</b> /login <span style="color:#08088A;">{username/password}</span><br/>
+					&darr;<br/>
+					Obtain Key<br/>
+					&darr;<br/>
+					<b>POST</b> /users?key={valid key} <span style="color:#08088A;">{new user data}</span>
+
+				</section>
+
+				<section>
+					<h2>Temporary Keys</h2>
+					<p><br/>Another layer of protection</p>
+					<ul>
+						<li>Expire keys after X amount of time</li>
+						<li>Mongo has TTL built in for documents</li>
+						<li>TTL stands for "Time To Live"</li>
+					</ul>
+					<p><br/>Defined at the schema level:</p>
+					<pre><code data-trim contenteditable>
+var keySchema = new Schema({
+  createdAt: { type: Date, expires: 3600, default: Date.now, unique: true }
+});
+					</code></pre>
 				</section>
 
 				<section>
