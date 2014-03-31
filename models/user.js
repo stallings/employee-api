@@ -11,7 +11,6 @@ var userSchema = new Schema({
     headshot: { type: String },
     startDate: { type: Date },
     jobTitle: { type: String, required: true },
-    headshot: { type: String },
     email: { type: String },
     employeeType: { type: String },
     skype: { type: String },

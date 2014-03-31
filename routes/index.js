@@ -20,7 +20,7 @@ function myConsole(data) {
 }
 
 function checkAuth(req, res, next) {
-    if (req.query.key != undefined) {
+    if (req.query.key !== undefined) {
       Key.find({'_id': req.query.key}, function(err, result){
             if (err) {
                 res.jsonp(401, { error: 'Not authorized' });
@@ -119,7 +119,7 @@ app.get('/users/:userid', function(req, res) {
                                 myConsole("Successful: GET /users/" + req.params.userid);
 
                                 // If valid key, send skills
-                                if (req.query.key != undefined) {
+                                if (req.query.key !== undefined) {
                                     Key.find({'_id': req.query.key}).lean().exec(function(err, result){
                                        if (err) {
                                            delete user[0].skills; 
@@ -602,4 +602,4 @@ app.post('/logins', function(req, res) {
 });
     
     
-}
+};
