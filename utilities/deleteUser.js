@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
     Login = require('../models/login');
 
 // Connect to MongoDB
-mongoose.connect(database.url, function (err) {
+mongoose.connect(database.url, function(err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
@@ -18,7 +18,7 @@ mongoose.connect(database.url, function (err) {
         var query = {
             username: process.argv[2]
         };
-        Login.findOneAndRemove(query, function (err, user) {
+        Login.findOneAndRemove(query, function(err, user) {
             if (err) {
                 console.log('Error: Unable to delete user');
             } else {

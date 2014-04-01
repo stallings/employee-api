@@ -1,7 +1,7 @@
 // Requires
-var express  = require('express'),
+var express = require('express'),
     mongoose = require('mongoose'),
-    bcrypt   = require('bcrypt'),
+    bcrypt = require('bcrypt'),
     cors = require('cors'),
     database = require('./config/database');
 
@@ -10,9 +10,9 @@ var app = express();
 
 // Set up CORS (Cross-Origin Resource Sharing)
 var corsOptions = {
-  origin: '*'
+    origin: '*'
 };
- 
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use(express.urlencoded());
 require('./routes')(app);
 
 // Connect to Mongo Database and start server
-mongoose.connect(database.url, function(err) { 
+mongoose.connect(database.url, function(err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
@@ -32,6 +32,3 @@ mongoose.connect(database.url, function(err) {
         });
     }
 });
-
-
-

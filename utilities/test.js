@@ -52,6 +52,3 @@ curl -i -X PUT http://localhost:5000/departments/532b1d1db09bcfff1020a9aa/member
 
 
 */
-
-
-

@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Login = require('../models/login');
 
 // Connect to MongoDB
-mongoose.connect(database.url, function (err) {
+mongoose.connect(database.url, function(err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
@@ -13,7 +13,7 @@ mongoose.connect(database.url, function (err) {
             .find({})
             .select('username level')
             .sort('username')
-            .exec(function (err, user) {
+            .exec(function(err, user) {
                 if (err) {
                     console.log('Error: Unable to list users');
                 } else {

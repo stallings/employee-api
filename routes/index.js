@@ -25,7 +25,7 @@ function checkAuth(req, res, next) {
     if (req.query.key !== undefined) {
         Key.find({
             '_id': req.query.key
-        }, function (err, result) {
+        }, function(err, result) {
             if (err) {
                 res.jsonp(401, {
                     error: 'Not authorized'
@@ -49,7 +49,7 @@ function checkAuth(req, res, next) {
 /* ********************************* */
 // Export Routes
 /* ********************************* */
-module.exports = function (app) {
+module.exports = function(app) {
     "use strict";
     /* ********************************* */
     // Route: GET /
@@ -58,7 +58,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/
     /* ********************************* */
-    app.get('/', function (req, res) {
+    app.get('/', function(req, res) {
         res.jsonp({
             'version': '1.0'
         });
@@ -72,8 +72,8 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
-    app.get('/users', function (req, res) {
-        User.find({}, 'name', function (err, users) {
+    app.get('/users', function(req, res) {
+        User.find({}, 'name', function(err, users) {
             res.jsonp(users);
         });
     });
@@ -85,7 +85,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/id,id
     /* ********************************* */
-    app.get('/users/:userid', function (req, res) {
+    app.get('/users/:userid', function(req, res) {
 
         // If multiple users requested, return basic info
         if (req.params.userid.length != 24) {
@@ -93,7 +93,7 @@ module.exports = function (app) {
                 '_id': {
                     $in: req.params.userid.split(",")
                 }
-            }, '-skills').lean().exec(function (err, user) {
+            }, '-skills').lean().exec(function(err, user) {
                 if (err) {
                     myConsole("Error: GET /users/" + req.params.userid);
                     myConsole(err);
@@ -115,7 +115,7 @@ module.exports = function (app) {
         } else {
             User.find({
                 '_id': req.params.userid
-            }).lean().exec(function (err, user) {
+            }).lean().exec(function(err, user) {
                 if (err) {
                     myConsole("Error: GET /users/" + req.params.userid);
                     myConsole(err);
@@ -134,7 +134,7 @@ module.exports = function (app) {
                         members: {
                             $in: [req.params.userid]
                         }
-                    }).select('name').sort('name').lean().exec(function (err, departments) {
+                    }).select('name').sort('name').lean().exec(function(err, departments) {
                         if (err) {
                             user[0].departments = err.name + ' - ' + err.message;
                         } else {
@@ -145,7 +145,7 @@ module.exports = function (app) {
                                 members: {
                                     $in: [req.params.userid]
                                 }
-                            }).select('name').sort('name').lean().exec(function (err, vteams) {
+                            }).select('name').sort('name').lean().exec(function(err, vteams) {
                                 if (err) {
                                     user[0].vteams = err.name + ' - ' + err.message;
                                 } else {
@@ -156,7 +156,7 @@ module.exports = function (app) {
                                     if (req.query.key !== undefined) {
                                         Key.find({
                                             '_id': req.query.key
-                                        }).lean().exec(function (err, result) {
+                                        }).lean().exec(function(err, result) {
                                             if (err) {
                                                 delete user[0].skills;
                                                 res.jsonp(user);
@@ -190,9 +190,9 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Billy Archibald", "jobTitle": "President"}' http://localhost:5000/users?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.post('/users', checkAuth, function (req, res) {
+    app.post('/users', checkAuth, function(req, res) {
         var myUser = new User(req.body);
-        myUser.save(function (err) {
+        myUser.save(function(err) {
             if (err) {
                 myConsole('Error: POST /users/ Unable to create user');
                 res.jsonp(500, {
@@ -213,12 +213,12 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Nina Pulgar"}' http://localhost:5000/users/532b153bb1abf6610e011858?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.put('/users/:userid', checkAuth, function (req, res) {
+    app.put('/users/:userid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.userid
         };
 
-        User.update(query, req.body, function (err, numberAffected, raw) {
+        User.update(query, req.body, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /users/' + req.params.userid);
                 res.jsonp(500, {
@@ -240,7 +240,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/532b153bb1abf6610e011858/skills?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.put('/users/:userid/skills', checkAuth, function (req, res) {
+    app.put('/users/:userid/skills', checkAuth, function(req, res) {
         var query = {
             _id: req.params.userid
         };
@@ -250,7 +250,7 @@ module.exports = function (app) {
             $set: {
                 skills: []
             }
-        }, function (err) {
+        }, function(err) {
             if (err) {
                 myConsole('Error: Unable to delete user skills!');
                 res.jsonp(500, {
@@ -266,7 +266,7 @@ module.exports = function (app) {
                     $each: req.body
                 }
             }
-        }, function (err, numberAffected, raw) {
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /users/' + req.params.userid + '/skills');
                 res.jsonp(500, {
@@ -293,8 +293,8 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/users/5320b47c98c923ce106f094a
     /* ********************************* */
-    app.delete('/users/:userid', checkAuth, function (req, res) {
-        User.findByIdAndRemove(req.params.userid, function (err, resource) {
+    app.delete('/users/:userid', checkAuth, function(req, res) {
+        User.findByIdAndRemove(req.params.userid, function(err, resource) {
             if (err) {
                 myConsole('Error: DELETE /users/' + req.params.userid);
                 res.jsonp(500, {
@@ -313,7 +313,7 @@ module.exports = function (app) {
                     }
                 }, {
                     multi: true
-                }, function (err, numberAffected, raw) {
+                }, function(err, numberAffected, raw) {
                     if (err) {
                         myConsole('Error: Unable to delete ' + req.params.userid + ' from departments.');
                     }
@@ -324,7 +324,7 @@ module.exports = function (app) {
                     }
                 }, {
                     multi: true
-                }, function (err, numberAffected, raw) {
+                }, function(err, numberAffected, raw) {
                     if (err) {
                         myConsole('Error: Unable to delete ' + req.params.userid + ' from vteams.');
                     }
@@ -351,8 +351,8 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/departments
     /* ********************************* */
-    app.get('/departments', function (req, res) {
-        Department.find({}, 'name', function (err, departments) {
+    app.get('/departments', function(req, res) {
+        Department.find({}, 'name', function(err, departments) {
             res.jsonp(departments);
         });
     });
@@ -364,12 +364,12 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/departments/id,id
     /* ********************************* */
-    app.get('/departments/:departmentid', function (req, res) {
+    app.get('/departments/:departmentid', function(req, res) {
         Department.find({
             '_id': {
                 $in: req.params.departmentid.split(",")
             }
-        }, function (err, department) {
+        }, function(err, department) {
             if (err) {
                 myConsole("Error: GET /departments/" + req.params.departmentid);
                 myConsole(err);
@@ -395,9 +395,9 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers"}' http://localhost:5000/departments?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.post('/departments', checkAuth, function (req, res) {
+    app.post('/departments', checkAuth, function(req, res) {
         var myDepartment = new Department(req.body);
-        myDepartment.save(function (err) {
+        myDepartment.save(function(err) {
             if (err) {
                 myConsole('Error: POST /departments/ Unable to create department');
                 res.jsonp(500, {
@@ -417,11 +417,11 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Front End Developers"}' http://localhost:5000/departments/531f6a31cf9b3bdb1580eef9
     /* ********************************* */
-    app.put('/departments/:departmentid', checkAuth, function (req, res) {
+    app.put('/departments/:departmentid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.departmentid
         };
-        Department.update(query, req.body, function (err, numberAffected, raw) {
+        Department.update(query, req.body, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /departments/' + req.params.departmentid);
                 res.jsonp(500, {
@@ -443,7 +443,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT http://localhost:5000/departments/532a010810536e2128234c89/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.put('/departments/:departmentid/members/:userid', checkAuth, function (req, res) {
+    app.put('/departments/:departmentid/members/:userid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.departmentid
         };
@@ -452,7 +452,7 @@ module.exports = function (app) {
             $addToSet: {
                 members: req.params.userid
             }
-        }, function (err, numberAffected, raw) {
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /departments/' + req.params.departmentid + '/members');
                 res.jsonp(500, {
@@ -479,7 +479,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/departments/531a2875e454ce0ad42d6465/members/531f6a31cf9b3bdb150eef8?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.delete('/departments/:departmentid/members/:userid', checkAuth, function (req, res) {
+    app.delete('/departments/:departmentid/members/:userid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.departmentid
         };
@@ -488,7 +488,7 @@ module.exports = function (app) {
             $pull: {
                 members: req.params.userid
             }
-        }, function (err, numberAffected, raw) {
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: DELETE /departments/' + req.params.departmentid + '/members/' + req.params.userid);
                 res.jsonp(500, {
@@ -515,8 +515,8 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/departments/5321ed85b1d521421389276e
     /* ********************************* */
-    app.delete('/departments/:departmentid', checkAuth, function (req, res) {
-        Department.findByIdAndRemove(req.params.departmentid, function (err, resource) {
+    app.delete('/departments/:departmentid', checkAuth, function(req, res) {
+        Department.findByIdAndRemove(req.params.departmentid, function(err, resource) {
             if (err) {
                 myConsole('Error: DELETE /departments/' + req.params.departmentid);
                 res.jsonp(500, {
@@ -549,8 +549,8 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/vteams
     /* ********************************* */
-    app.get('/vteams', function (req, res) {
-        VTeam.find({}, 'name', function (err, vteams) {
+    app.get('/vteams', function(req, res) {
+        VTeam.find({}, 'name', function(err, vteams) {
             res.jsonp(vteams);
         });
     });
@@ -562,12 +562,12 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/vteams/id,id
     /* ********************************* */
-    app.get('/vteams/:vteamid', function (req, res) {
+    app.get('/vteams/:vteamid', function(req, res) {
         VTeam.find({
             '_id': {
                 $in: req.params.vteamid.split(",")
             }
-        }, function (err, vteam) {
+        }, function(err, vteam) {
             if (err) {
                 myConsole("Error: GET /vteams/" + req.params.vteamid);
                 myConsole(err);
@@ -593,9 +593,9 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d'{"name": "Baseball Cards", "status": "in progress"}' http://localhost:5000/vteams?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.post('/vteams', checkAuth, function (req, res) {
+    app.post('/vteams', checkAuth, function(req, res) {
         var myVTeam = new VTeam(req.body);
-        myVTeam.save(function (err) {
+        myVTeam.save(function(err) {
             if (err) {
                 myConsole('Error: POST /vteams/ Unable to create vteam');
                 res.jsonp(500, {
@@ -615,11 +615,11 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Baseball Cards Phase 2"}' http://localhost:5000/vteams/531f6a31cf9b3bdb1580eef9
     /* ********************************* */
-    app.put('/vteams/:vteamid', checkAuth, function (req, res) {
+    app.put('/vteams/:vteamid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.vteamid
         };
-        VTeam.update(query, req.body, function (err, numberAffected, raw) {
+        VTeam.update(query, req.body, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /vteams/' + req.params.vteamid);
                 res.jsonp(500, {
@@ -640,7 +640,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT http://localhost:5000/vteams/532a02a910536e2128234c8b/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.put('/vteams/:vteamid/members/:userid', checkAuth, function (req, res) {
+    app.put('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.vteamid
         };
@@ -649,7 +649,7 @@ module.exports = function (app) {
             $addToSet: {
                 members: req.params.userid
             }
-        }, function (err, numberAffected, raw) {
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /vteams/' + req.params.vteamid + '/members');
                 res.jsonp(500, {
@@ -676,7 +676,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/vteams/532a01c510536e2128234c8a/members/531f6a31cf9b3bdb1580eef9?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.delete('/vteams/:vteamid/members/:userid', checkAuth, function (req, res) {
+    app.delete('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
         var query = {
             _id: req.params.vteamid
         };
@@ -685,7 +685,7 @@ module.exports = function (app) {
             $pull: {
                 members: req.params.userid
             }
-        }, function (err, numberAffected, raw) {
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: DELETE /vteams/' + req.params.vteamid + '/members/' + req.params.userid);
                 res.jsonp(500, {
@@ -712,8 +712,8 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/vteams/532a01c510536e2128234c8a?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.delete('/vteams/:vteamid', checkAuth, function (req, res) {
-        VTeam.findByIdAndRemove(req.params.vteamid, function (err, resource) {
+    app.delete('/vteams/:vteamid', checkAuth, function(req, res) {
+        VTeam.findByIdAndRemove(req.params.vteamid, function(err, resource) {
             if (err) {
                 myConsole('Error: DELETE /vteams/' + req.params.vteamid);
                 res.jsonp(500, {
@@ -742,11 +742,11 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
     /* ********************************* */
-    app.post('/logins', function (req, res) {
+    app.post('/logins', function(req, res) {
 
         Login.findOne({
             'username': req.body.username
-        }, function (err, user) {
+        }, function(err, user) {
             if (err) {
                 myConsole("Error: POST /login");
                 myConsole(err);
@@ -759,12 +759,12 @@ module.exports = function (app) {
                     error: 'User does not exist'
                 });
             } else {
-                bcrypt.compare(req.body.password, user.password, function (err, doesMatch) {
+                bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
                         var myKey = new Key({
                             'level': user.level
                         });
-                        myKey.save(function (err) {
+                        myKey.save(function(err) {
                             if (err) {
                                 myConsole('Error: Unable to save key');
                                 res.jsonp(500, {

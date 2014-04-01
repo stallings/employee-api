@@ -1,8 +1,12 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     "use strict";
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        jsbeautifier: {
+            files: ['Gruntfile.js', 'app.js', 'config/*.js', 'models/*.js', 'routes/*.js', 'utilities/*.js'],
+            options: {}
+        },
         jshint: {
             files: ['Gruntfile.js', 'app.js', 'config/*.js', 'models/*.js', 'routes/*.js', 'utilities/*.js'],
             options: {
@@ -20,5 +24,6 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.registerTask('default', ['jshint']);
+    grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.registerTask('default', ['jsbeautifier', 'jshint']);
 };

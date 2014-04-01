@@ -4,8 +4,16 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var keySchema = new Schema({
-  level: { type: Number, required: true },
-  createdAt: { type: Date, expires: 60*60*8, default: Date.now, unique: true }
+    level: {
+        type: Number,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        expires: 60 * 60 * 8,
+        default: Date.now,
+        unique: true
+    }
 });
 
 module.exports = mongoose.model('Key', keySchema);
