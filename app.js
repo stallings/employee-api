@@ -21,12 +21,17 @@ app.use(express.urlencoded());
 // Set routes
 require('./routes')(app);
 
-// Connect to Mongo Database
+// Connect to Mongo Database and start server
 mongoose.connect(database.url, function(err) { 
-    if (err) myConsole('Error: Unable to connect to MongoDB!');
+    "use strict";
+    if (err) {
+        console.log('Error: Unable to connect to MongoDB!');
+    } else {
+        var server = app.listen(5000, function() {
+            console.log('Employee API Listening on: http://localhost:%d', server.address().port);
+        });
+    }
 });
 
-// Start server
-var server = app.listen(5000, function() {
-    console.log('Employee API Listening on: http://localhost:%d', server.address().port);
-});
+
+

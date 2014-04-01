@@ -1,3 +1,5 @@
+/*
+
 // Requires
 var mongoose = require('mongoose'),
     database = require('../config/database'),
@@ -20,6 +22,10 @@ Department
             process.exit(0);   
         }
     });
+
+*/
+
+
 
 
 /*
