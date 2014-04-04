@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var vteamSchema = new Schema({
+var projectSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -16,4 +16,4 @@ var vteamSchema = new Schema({
     members: [ObjectId]
 });
 
-module.exports = mongoose.model('VTeam', vteamSchema);
+module.exports = mongoose.model('Project', projectSchema);

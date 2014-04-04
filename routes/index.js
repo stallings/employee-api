@@ -3,7 +3,7 @@
 /* ********************************* */
 var User = require('../models/user');
 var Department = require('../models/department');
-var VTeam = require('../models/vteam');
+var Project = require('../models/project');
 var Login = require('../models/login');
 var Key = require('../models/key');
 var bcrypt = require('bcrypt');
@@ -140,16 +140,16 @@ module.exports = function(app) {
                         } else {
                             user[0].departments = departments;
 
-                            // Get VTeams
-                            VTeam.find({
+                            // Get Projects
+                            Project.find({
                                 members: {
                                     $in: [req.params.userid]
                                 }
-                            }).select('name').sort('name').lean().exec(function(err, vteams) {
+                            }).select('name').sort('name').lean().exec(function(err, projects) {
                                 if (err) {
-                                    user[0].vteams = err.name + ' - ' + err.message;
+                                    user[0].projects = err.name + ' - ' + err.message;
                                 } else {
-                                    user[0].vteams = vteams;
+                                    user[0].projects = projects;
                                     myConsole("Successful: GET /users/" + req.params.userid);
 
                                     // If valid key, send skills
@@ -218,7 +218,9 @@ module.exports = function(app) {
             _id: req.params.userid
         };
 
-        User.update(query, { $set: req.body }, function(err, numberAffected, raw) {
+        User.update(query, {
+            $set: req.body
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /users/' + req.params.userid);
                 res.jsonp(500, {
@@ -306,7 +308,7 @@ module.exports = function(app) {
                     message: 'User deleted'
                 });
 
-                // Now we need to delete from Departments/VTeams/Tags
+                // Now we need to delete from Departments/Projects/Tags
                 Department.update({}, {
                     $pull: {
                         members: req.params.userid
@@ -318,7 +320,7 @@ module.exports = function(app) {
                         myConsole('Error: Unable to delete ' + req.params.userid + ' from departments.');
                     }
                 });
-                VTeam.update({}, {
+                Project.update({}, {
                     $pull: {
                         members: req.params.userid
                     }
@@ -326,7 +328,7 @@ module.exports = function(app) {
                     multi: true
                 }, function(err, numberAffected, raw) {
                     if (err) {
-                        myConsole('Error: Unable to delete ' + req.params.userid + ' from vteams.');
+                        myConsole('Error: Unable to delete ' + req.params.userid + ' from projects.');
                     }
                 });
             } else {
@@ -421,7 +423,9 @@ module.exports = function(app) {
         var query = {
             _id: req.params.departmentid
         };
-        Department.update(query, { $set: req.body }, function(err, numberAffected, raw) {
+        Department.update(query, {
+            $set: req.body
+        }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /departments/' + req.params.departmentid);
                 res.jsonp(500, {
@@ -543,191 +547,193 @@ module.exports = function(app) {
 
 
     /* ********************************* */
-    // Route: GET /vteams
-    // Description: Get all vteams names and IDs
+    // Route: GET /projects
+    // Description: Get all project names and IDs
     //
     // Sample curl:
-    // curl -i -X GET http://localhost:5000/vteams
+    // curl -i -X GET http://localhost:5000/projects
     /* ********************************* */
-    app.get('/vteams', function(req, res) {
-        VTeam.find({}, 'name', function(err, vteams) {
-            res.jsonp(vteams);
+    app.get('/projects', function(req, res) {
+        Project.find({}, 'name', function(err, projects) {
+            res.jsonp(projects);
         });
     });
 
     /* ********************************* */
-    // Route: GET /vteams/id,id
-    // Description: Get one or more vteams
+    // Route: GET /projects/id,id
+    // Description: Get one or more projects
     //
     // Sample curl:
-    // curl -i -X GET http://localhost:5000/vteams/id,id
+    // curl -i -X GET http://localhost:5000/projects/id,id
     /* ********************************* */
-    app.get('/vteams/:vteamid', function(req, res) {
-        VTeam.find({
+    app.get('/projects/:projectid', function(req, res) {
+        Project.find({
             '_id': {
-                $in: req.params.vteamid.split(",")
+                $in: req.params.projectid.split(",")
             }
-        }, function(err, vteam) {
+        }, function(err, project) {
             if (err) {
-                myConsole("Error: GET /vteams/" + req.params.vteamid);
+                myConsole("Error: GET /projects/" + req.params.projectid);
                 myConsole(err);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
-            } else if (!vteam.length) {
-                myConsole("Warning: GET /vteams/" + req.params.vteamid + " No results");
+            } else if (!project.length) {
+                myConsole("Warning: GET /projects/" + req.params.projectid + " No results");
                 res.jsonp(404, {
-                    error: 'No vteams found'
+                    error: 'No projects found'
                 });
             } else {
-                myConsole("Successful: GET /vteams/" + req.params.vteamid);
-                res.jsonp(vteam);
+                myConsole("Successful: GET /projects/" + req.params.projectid);
+                res.jsonp(project);
             }
         });
     });
 
     /* ********************************* */
-    // Route: POST /vteams
-    // Description: Add a vteam. Validation done at schema level.
+    // Route: POST /projects
+    // Description: Add a project. Validation done at schema level.
     //
     // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d'{"name": "Baseball Cards", "status": "in progress"}' http://localhost:5000/vteams?key=532b0ded565784050ab40b02
+    // curl -i -X POST -H 'Content-Type: application/json' -d'{"name": "Baseball Cards", "status": "in progress"}' http://localhost:5000/projects?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.post('/vteams', checkAuth, function(req, res) {
-        var myVTeam = new VTeam(req.body);
-        myVTeam.save(function(err) {
+    app.post('/projects', checkAuth, function(req, res) {
+        var myProject = new Project(req.body);
+        myProject.save(function(err) {
             if (err) {
-                myConsole('Error: POST /vteams/ Unable to create vteam');
+                myConsole('Error: POST /projects/ Unable to create project');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else {
-                myConsole("Successful: POST /vteams/" + myVTeam._id);
-                res.jsonp(myVTeam);
+                myConsole("Successful: POST /projects/" + myProject._id);
+                res.jsonp(myProject);
             }
         });
     });
 
     /* ********************************* */
-    // Route: PUT /vteams/id
-    // Description: Modify required vteam information
+    // Route: PUT /projects/id
+    // Description: Modify required project information
     //
     // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Baseball Cards Phase 2"}' http://localhost:5000/vteams/531f6a31cf9b3bdb1580eef9
+    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Baseball Cards Phase 2"}' http://localhost:5000/projects/531f6a31cf9b3bdb1580eef9
     /* ********************************* */
-    app.put('/vteams/:vteamid', checkAuth, function(req, res) {
+    app.put('/projects/:projectid', checkAuth, function(req, res) {
         var query = {
-            _id: req.params.vteamid
+            _id: req.params.projectid
         };
-        VTeam.update(query, { $set: req.body }, function(err, numberAffected, raw) {
+        Project.update(query, {
+            $set: req.body
+        }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: PUT /vteams/' + req.params.vteamid);
+                myConsole('Error: PUT /projects/' + req.params.projectid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else {
                 res.jsonp({
-                    'id': req.params.vteamid
+                    'id': req.params.projectid
                 });
             }
         });
     });
 
     /* ********************************* */
-    // Route: PUT /vteams/id/members/id
-    // Description: Add a user to a vteam
+    // Route: PUT /projects/id/members/id
+    // Description: Add a user to a project
     //
     // Sample curl:
-    // curl -i -X PUT http://localhost:5000/vteams/532a02a910536e2128234c8b/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
+    // curl -i -X PUT http://localhost:5000/projects/532a02a910536e2128234c8b/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.put('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
+    app.put('/projects/:projectid/members/:userid', checkAuth, function(req, res) {
         var query = {
-            _id: req.params.vteamid
+            _id: req.params.projectid
         };
 
-        VTeam.update(query, {
+        Project.update(query, {
             $addToSet: {
                 members: req.params.userid
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: PUT /vteams/' + req.params.vteamid + '/members');
+                myConsole('Error: PUT /projects/' + req.params.projectid + '/members');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (numberAffected) {
-                myConsole('Success: PUT /vteams/' + req.params.vteamid + '/members');
+                myConsole('Success: PUT /projects/' + req.params.projectid + '/members');
                 res.jsonp({
                     'id': req.params.userid
                 });
             } else {
-                myConsole('Warning: PUT /vteams/' + req.params.vteamid + '/members VTeam not found!');
+                myConsole('Warning: PUT /projects/' + req.params.projectid + '/members Project not found!');
                 res.jsonp(404, {
-                    error: 'VTeam not found'
+                    error: 'Project not found'
                 });
             }
         });
     });
 
     /* ********************************* */
-    // Route: DELETE /vteams/id/members/id
-    // Description: Remove a user from a vteam
+    // Route: DELETE /projects/id/members/id
+    // Description: Remove a user from a project
     //
     // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/vteams/532a01c510536e2128234c8a/members/531f6a31cf9b3bdb1580eef9?key=5329ce5315a953d40d7d3cd4
+    // curl -i -X DELETE http://localhost:5000/projects/532a01c510536e2128234c8a/members/531f6a31cf9b3bdb1580eef9?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.delete('/vteams/:vteamid/members/:userid', checkAuth, function(req, res) {
+    app.delete('/projects/:projectid/members/:userid', checkAuth, function(req, res) {
         var query = {
-            _id: req.params.vteamid
+            _id: req.params.projectid
         };
 
-        VTeam.update(query, {
+        Project.update(query, {
             $pull: {
                 members: req.params.userid
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: DELETE /vteams/' + req.params.vteamid + '/members/' + req.params.userid);
+                myConsole('Error: DELETE /projects/' + req.params.projectid + '/members/' + req.params.userid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (numberAffected) {
-                myConsole('Success: DELETE /vteams/' + req.params.vteamid + '/members/' + req.params.userid);
+                myConsole('Success: DELETE /projects/' + req.params.projectid + '/members/' + req.params.userid);
                 res.jsonp({
-                    message: req.params.userid + ' removed from vteam'
+                    message: req.params.userid + ' removed from project'
                 });
             } else {
-                myConsole('Warning: DELETE /vteams/' + req.params.vteamid + '/members/' + req.params.userid + ' VTeam not found!');
+                myConsole('Warning: DELETE /projects/' + req.params.projectid + '/members/' + req.params.userid + ' Project not found!');
                 res.jsonp(404, {
-                    error: 'VTeam not found'
+                    error: 'Project not found'
                 });
             }
         });
     });
 
     /* ********************************* */
-    // Route: DELETE /vteams/id
-    // Description: Delete a vteam
+    // Route: DELETE /projects/id
+    // Description: Delete a Project
     //
     // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/vteams/532a01c510536e2128234c8a?key=5329ce5315a953d40d7d3cd4
+    // curl -i -X DELETE http://localhost:5000/projects/532a01c510536e2128234c8a?key=5329ce5315a953d40d7d3cd4
     /* ********************************* */
-    app.delete('/vteams/:vteamid', checkAuth, function(req, res) {
-        VTeam.findByIdAndRemove(req.params.vteamid, function(err, resource) {
+    app.delete('/projects/:projectid', checkAuth, function(req, res) {
+        Project.findByIdAndRemove(req.params.projectid, function(err, resource) {
             if (err) {
-                myConsole('Error: DELETE /vteams/' + req.params.vteamid);
+                myConsole('Error: DELETE /projects/' + req.params.projectid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (resource) {
-                myConsole('Success: DELETE /vteams/' + req.params.vteamid);
+                myConsole('Success: DELETE /projects/' + req.params.projectid);
                 res.jsonp({
-                    message: 'VTeam deleted'
+                    message: 'Project deleted'
                 });
             } else {
-                myConsole('Warning: DELETE /vteams/' + req.params.vteamid + ' VTeam not found');
+                myConsole('Warning: DELETE /projects/' + req.params.projectid + ' Project not found');
                 res.jsonp(404, {
-                    error: 'VTeam not found'
+                    error: 'Project not found'
                 });
             }
         });

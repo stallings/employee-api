@@ -6,7 +6,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * Skill Ratings (protected access)
 * Current and past projects
 * Deparment information
-* Virtual Team (V-Team) information
+* Project information
 
 ## Framework ##
 
@@ -23,7 +23,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 ## To Do ##
 
 * Change all the Mongoose find() to use lean()
-* Add ability to add tags to users and vteams.  Structure name:ASAP members:[users,vteams]
+* Add ability to add tags to users and projects.  Structure name:ASAP members:[users,projects]
 * Org chart functionality: who is your manager, who are your direct reports
 
 
@@ -126,55 +126,55 @@ curl -i -X DELETE http://localhost:5000/departments/{id}?key={validKey}
 
 
 
-# Virtual Teams
+# Projects
 
-## GET /vteams (public)
-Returns JSON feed of all v-team names and their IDs
-
-```
-curl -i -X GET http://localhost:5000/vteams
-```
-
-## GET /vteams/{id},{id} (public)
-Returns JSON feed of one and more v-teams with user IDs that belong to them
+## GET /projects (public)
+Returns JSON feed of all project names and their IDs
 
 ```
-curl -i -X GET http://localhost:5000/vteams/{id},{id}
+curl -i -X GET http://localhost:5000/projects
 ```
 
-## POST /vteams (protected)
-Adds a new v-team
+## GET /projects/{id},{id} (public)
+Returns JSON feed of one and more projects with user IDs that belong to them
 
 ```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Card" }' http://localhost:5000/vteams?key={validKey}
+curl -i -X GET http://localhost:5000/projects/{id},{id}
 ```
 
-## PUT /vteams/{id} (protected)
-Modify a v-team name
+## POST /projects (protected)
+Adds a new project
 
 ```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost:5000/vteams/{id}?key={validKey}
+curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Baseball Card" }' http://localhost:5000/projects?key={validKey}
 ```
 
-## PUT /vteams/{id}/members/{id} (protected)
-Add a user(s) to a v-team
+## PUT /projects/{id} (protected)
+Modify a project
 
 ```
-curl -i -X PUT http://localhost:5000/vteams/{id}/members/{id}?key={validKey}
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Baseball Card" }' http://localhost:5000/projects/{id}?key={validKey}
 ```
 
-## DELETE /vteams/{id}/members/{id} (protected)
-Deletes a user from a v-team
+## PUT /projects/{id}/members/{id} (protected)
+Add a user(s) to a project
 
 ```
-curl -i -X DELETE http://localhost:5000/vteams/{id}/members/{id}?key={validKey}
+curl -i -X PUT http://localhost:5000/projects/{id}/members/{id}?key={validKey}
 ```
 
-#### DELETE /vteams/{id} (protected)
-Deletes a v-team
+## DELETE /projects/{id}/members/{id} (protected)
+Deletes a user from a project
 
 ```
-curl -i -X DELETE http://localhost:5000/vteams/{id}?key={validKey}
+curl -i -X DELETE http://localhost:5000/projects/{id}/members/{id}?key={validKey}
+```
+
+#### DELETE /projects/{id} (protected)
+Deletes a project
+
+```
+curl -i -X DELETE http://localhost:5000/projects/{id}?key={validKey}
 ```
 
 
@@ -226,7 +226,7 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
  }
 ````
 
-## Virtual Teams
+## Projects
 ````
 {
     "_id" : ObjectId("532a02a910536e2128234c8b"),
