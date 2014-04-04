@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
 var skillSchema = new Schema({
     title: {
@@ -32,12 +33,19 @@ var userSchema = new Schema({
         type: String
     },
     employeeType: {
-        type: String
+        type: String,
+        enum: ['FTE', 'Contractor']
+    },
+    department: {
+        type: String,
+        enum: ['PjM', 'Copy', 'FED', 'UXA', 'Visual Design', 'User Research']
     },
     skype: {
         type: String
     },
-    skills: [skillSchema]
+    skills: [skillSchema],
+    manager: ObjectId,
+    directs: [ObjectId]
 });
 
 module.exports = mongoose.model('User', userSchema);
