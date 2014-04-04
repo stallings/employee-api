@@ -22,6 +22,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
+* Change all .updates from Model.update(query, { name: 'jason borne' }, options, callback) to Model.update(query, { $set: { name: 'jason borne' }}, options, callback)
 * Change all the Mongoose find() to use lean()
 * Add ability to add tags to users and vteams.  Structure name:ASAP members:[users,vteams]
 * Org chart functionality: who is your manager, who are your direct reports
