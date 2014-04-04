@@ -218,7 +218,7 @@ module.exports = function(app) {
             _id: req.params.userid
         };
 
-        User.update(query, req.body, function(err, numberAffected, raw) {
+        User.update(query, { $set: req.body }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /users/' + req.params.userid);
                 res.jsonp(500, {
@@ -421,7 +421,7 @@ module.exports = function(app) {
         var query = {
             _id: req.params.departmentid
         };
-        Department.update(query, req.body, function(err, numberAffected, raw) {
+        Department.update(query, { $set: req.body }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /departments/' + req.params.departmentid);
                 res.jsonp(500, {
@@ -619,7 +619,7 @@ module.exports = function(app) {
         var query = {
             _id: req.params.vteamid
         };
-        VTeam.update(query, req.body, function(err, numberAffected, raw) {
+        VTeam.update(query, { $set: req.body }, function(err, numberAffected, raw) {
             if (err) {
                 myConsole('Error: PUT /vteams/' + req.params.vteamid);
                 res.jsonp(500, {

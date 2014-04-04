@@ -20,7 +20,6 @@ mongoose.connect(database.url, function(err) {
         };
         Login.update(query, {
             $set: {
-                username: process.argv[2],
                 level: process.argv[3]
             }
         }, function(err, numberAffected, raw) {
