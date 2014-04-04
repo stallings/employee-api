@@ -73,59 +73,6 @@ curl -i -X DELETE http://localhost:5000/users/{id}?key={validKey}
 ```
 
 
-# Departments #
-
-## GET /departments (public)
-Returns JSON feed of all department names and their IDs
-
-```
-curl -i -X GET http://localhost:5000/departments
-```
-
-## GET /departments/{id},{id} (public)
-Returns JSON feed of one and more departments with user IDs that belong to them
-
-```
-curl -i -X GET http://localhost:5000/departments/{id},{id}
-```
-
-## POST /departments (protected)
-Adds a new department
-
-```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Project Managers" }' http://localhost:5000/departments?key={validKey}
-```
-
-## PUT /departments/{id} (protected)
-Modify a department name
-
-```
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Awesome Project Managers" }' http://localhost:5000/departments/{id}?key={validKey}
-```
-
-## PUT /departments/{id}/members/{id} (protected)
-Add a user(s) to a department
-
-```
-curl -i -X PUT http://localhost:5000/departments/{id}/members/{id}?key={validKey}
-```
-
-## DELETE /departments/{id}/members/{id} (protected)
-Deletes a user from a department
-
-```
-curl -i -X DELETE http://localhost:5000/departments/{id}/members/{id}?key={validKey}
-```
-
-## DELETE /departments/{id} (protected)
-Deletes a department
-
-```
-curl -i -X DELETE http://localhost:5000/departments/{id}?key={validKey}
-```
-
-
-
 # Projects
 
 ## GET /projects (public)
@@ -204,6 +151,8 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
     "email": "jsmith@searshc.com",
     "skype": "johnsmithsears",
     "employeeType": "FTE",
+    "department": "FED",
+    "strangths": ["Leadership", "Prototyping"],
     "skills": [
                 {
                   "title": "User Research",
@@ -217,20 +166,13 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
 }
 ```
 
-## Departments
-````
-{
-    "_id" : ObjectId("532b1d1db09bcfff1020a9aa"),
-    "name" : "Project Managers",
-    "members" : [  ObjectId("5329f663c43b5a461b507c5a") ]
- }
-````
-
 ## Projects
 ````
 {
     "_id" : ObjectId("532a02a910536e2128234c8b"),
     "name" : "Baseball Cards",
+    "description" : "An awesome project",
+    "tags" : [ "ASAP" ]
     "members" : [  ObjectId("5329f663c43b5a461b507c5a") ]
 }
 ````

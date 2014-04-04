@@ -78,6 +78,27 @@ module.exports = function(app) {
     });
 
     /* ********************************* */
+    // Route: GET /users/search/string
+    // Description: Get all names that contain the string
+    //
+    // Sample curl:
+    // curl -i -X GET http://localhost:5000/users/search/string
+    /* ********************************* */
+    app.get('/users/search/:string', function(req, res) {
+        var regex = new RegExp(req.params.string, 'i');
+        User.find({ name: regex }, 'name', function(err, users) {
+            if (err) {
+                myConsole('Error: GET /users/search/' + req.params.string);
+                res.jsonp(500, {
+                    error: err.name + ' - ' + err.message
+                });
+            } else {
+                res.jsonp(users);
+            }
+        });
+    });
+    
+    /* ********************************* */
     // Route: GET /users/id,id
     // Description: Get one or more users
     //

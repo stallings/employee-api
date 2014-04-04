@@ -13,6 +13,10 @@ var projectSchema = new Schema({
         lowercase: true,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     members: [ObjectId]
 });
 
