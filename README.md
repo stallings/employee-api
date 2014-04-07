@@ -7,6 +7,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * Current and past projects
 * Deparment information
 * Project information
+* Lower database hits to 1 read for common operations
 
 ## Framework ##
 
@@ -22,9 +23,10 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
-* Use names as _id, build a function to change name (reduce database calls)
 * Use project names as _id?
-* Add an option to find by fullname http://localhost:5000/users/Nina Pulgar (don't forget to add %'s for spaces etc
+* Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc
+* Add resources to change Employee Name
+* Add resource to change Project Name?
 * Change all the Mongoose find() to use lean()
 * Org chart functionality: who is your manager, who are your direct reports
 

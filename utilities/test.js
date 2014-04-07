@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     Department = require('../models/department');
 
 // Connect to MongoDB
-mongoose.connect(database.url, function(err) { 
+mongoose.connect(database.url, function(err) {
     if (err) myConsole('Error: Unable to connect to MongoDB!');
 });
 
@@ -15,11 +15,11 @@ Department
     .select('name')
     .sort('name')
     .exec(function (err, departments) {
-        if (err) { 
+        if (err) {
             console.log(err);
         } else {
             console.log(departments);
-            process.exit(0);   
+            process.exit(0);
         }
     });
 
@@ -31,15 +31,17 @@ Department
 /*
 
 // Get key
-curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
+curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "jpulgar", "password": "password"}' http://localhost:5000/logins
 
-Temp key: 533ef59e650e9190037bfb98"
+Temp key: 534314d5c58d0b0609367fc9
+
+// Add user and skills
+curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald", "jobTitle": "Cat"}' http://localhost:5000/users?key=534314d5c58d0b0609367fc9
+curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/Billy%20Archibald/skills?key=534314d5c58d0b0609367fc9
+
 
 curl -i -X PUT -H 'Content-Type: application/json' -d '{"jobTitle": "Making Hot Sauce"}' http://localhost:5000/users/532c5681a3a6efcb054896e4?key=533ef59e650e9190037bfb98
 
-// Add user and skills
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Billy Archibald", "jobTitle": "Cat"}' http://localhost:5000/users?key=532c561aa3a6efcb054896e3
-curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/532c5681a3a6efcb054896e4/skills?key=533ef59e650e9190037bfb98
 
 // Create department
 curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "FED"}' http://localhost:5000/departments?key=532c561aa3a6efcb054896e3

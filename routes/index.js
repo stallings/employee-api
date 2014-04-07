@@ -174,7 +174,6 @@ module.exports = function(app) {
                         delete user[0].skills;
                         res.jsonp(user);
                     }
-
                 }
             });
         }
@@ -327,7 +326,7 @@ module.exports = function(app) {
     // curl -i -X GET http://localhost:5000/projects
     /* ********************************* */
     app.get('/projects', function(req, res) {
-        Project.find({}, 'name', function(err, projects) {
+        Project.find({}, '_id', function(err, projects) {
             res.jsonp(projects);
         });
     });
