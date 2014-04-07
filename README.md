@@ -22,9 +22,12 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
+* Use names as _id, build a function to change name (reduce database calls)
+* Use project names as _id?
+* Add an option to find by fullname http://localhost:5000/users/Nina Pulgar (don't forget to add %'s for spaces etc
 * Change all the Mongoose find() to use lean()
-* Add ability to add tags to users and projects.  Structure name:ASAP members:[users,projects]
 * Org chart functionality: who is your manager, who are your direct reports
+
 
 
 # Users #
