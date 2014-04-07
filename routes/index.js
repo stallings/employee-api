@@ -109,8 +109,8 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/:userid', function(req, res) {
 
-        // If multiple users requested, return basic info
-        if (req.params.userid.length != 24) {
+        // If multiple users requested, return info for each (less than individual)
+        if (req.params.userid.indexOf(',') != -1) {
             User.find({
                 '_id': {
                     $in: req.params.userid.split(",")
@@ -151,53 +151,30 @@ module.exports = function(app) {
                     });
                 } else {
 
-                    // Get Departments
-                    Department.find({
-                        members: {
-                            $in: [req.params.userid]
-                        }
-                    }).select('name').sort('name').lean().exec(function(err, departments) {
-                        if (err) {
-                            user[0].departments = err.name + ' - ' + err.message;
-                        } else {
-                            user[0].departments = departments;
 
-                            // Get Projects
-                            Project.find({
-                                members: {
-                                    $in: [req.params.userid]
-                                }
-                            }).select('name').sort('name').lean().exec(function(err, projects) {
-                                if (err) {
-                                    user[0].projects = err.name + ' - ' + err.message;
-                                } else {
-                                    user[0].projects = projects;
-                                    myConsole("Successful: GET /users/" + req.params.userid);
+                    myConsole("Successful: GET /users/" + req.params.userid);
 
-                                    // If valid key, send skills
-                                    if (req.query.key !== undefined) {
-                                        Key.find({
-                                            '_id': req.query.key
-                                        }).lean().exec(function(err, result) {
-                                            if (err) {
-                                                delete user[0].skills;
-                                                res.jsonp(user);
-                                            } else if (!result.length) {
-                                                delete user[0].skills;
-                                                res.jsonp(user);
-                                            } else {
-                                                res.jsonp(user);
-                                            }
-                                        });
-                                        // Otherwise, don't include skills
-                                    } else {
-                                        delete user[0].skills;
-                                        res.jsonp(user);
-                                    }
-                                }
-                            });
-                        }
-                    });
+                    // If valid key, send skills
+                    if (req.query.key !== undefined) {
+                        Key.find({
+                            '_id': req.query.key
+                        }).lean().exec(function(err, result) {
+                            if (err) {
+                                delete user[0].skills;
+                                res.jsonp(user);
+                            } else if (!result.length) {
+                                delete user[0].skills;
+                                res.jsonp(user);
+                            } else {
+                                res.jsonp(user);
+                            }
+                        });
+                        // Otherwise, don't include skills
+                    } else {
+                        delete user[0].skills;
+                        res.jsonp(user);
+                    }
+
                 }
             });
         }
@@ -233,7 +210,7 @@ module.exports = function(app) {
     // Description: Modify required user information. Validation happens at schema level.
     //
     // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Nina Pulgar"}' 'http://localhost:5000/users/Jose Pulgar?key=532b0ded565784050ab40b02'
+    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"department": "FED"}' 'http://localhost:5000/users/Jose Pulgar?key=532b0ded565784050ab40b02'
     /* ********************************* */
     app.put('/users/:userid', checkAuth, function(req, res) {
         var query = {
@@ -328,30 +305,6 @@ module.exports = function(app) {
                 myConsole('Success: DELETE /users/' + req.params.userid);
                 res.jsonp({
                     message: 'User deleted'
-                });
-
-                // Now we need to delete from Departments/Projects/Tags
-                Department.update({}, {
-                    $pull: {
-                        members: req.params.userid
-                    }
-                }, {
-                    multi: true
-                }, function(err, numberAffected, raw) {
-                    if (err) {
-                        myConsole('Error: Unable to delete ' + req.params.userid + ' from departments.');
-                    }
-                });
-                Project.update({}, {
-                    $pull: {
-                        members: req.params.userid
-                    }
-                }, {
-                    multi: true
-                }, function(err, numberAffected, raw) {
-                    if (err) {
-                        myConsole('Error: Unable to delete ' + req.params.userid + ' from projects.');
-                    }
                 });
             } else {
                 myConsole('Warning: DELETE /users/' + req.params.userid + ' User not found');
@@ -566,7 +519,7 @@ module.exports = function(app) {
     // Description: Get key
     //
     // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "jpulgar", "password": "password"}' http://localhost:5000/logins
     /* ********************************* */
     app.post('/logins', function(req, res) {
 
