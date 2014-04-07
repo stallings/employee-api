@@ -72,7 +72,7 @@ module.exports = function(app) {
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
     app.get('/users', function(req, res) {
-        User.find({}, 'name department jobTitle employeeType', function(err, users) {
+        User.find({}, 'department jobTitle employeeType', function(err, users) {
             res.jsonp(users);
         });
     });
@@ -86,7 +86,9 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/search/:string', function(req, res) {
         var regex = new RegExp(req.params.string, 'i');
-        User.find({ name: regex }, 'name', function(err, users) {
+        User.find({
+            _id: regex
+        }, '_id', function(err, users) {
             if (err) {
                 myConsole('Error: GET /users/search/' + req.params.string);
                 res.jsonp(500, {
@@ -97,7 +99,7 @@ module.exports = function(app) {
             }
         });
     });
-    
+
     /* ********************************* */
     // Route: GET /users/id,id
     // Description: Get one or more users
@@ -208,7 +210,7 @@ module.exports = function(app) {
     // Description: Add a user. Validation happens at schema level
     //
     // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Billy Archibald", "jobTitle": "President"}' http://localhost:5000/users?key=532b0ded565784050ab40b02
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald", "jobTitle": "President"}' http://localhost:5000/users?key=532b0ded565784050ab40b02
     /* ********************************* */
     app.post('/users', checkAuth, function(req, res) {
         var myUser = new User(req.body);
@@ -217,7 +219,7 @@ module.exports = function(app) {
                 myConsole('Error: POST /users/ Unable to create user');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message,
-                    more_info: 'name and jobTitle fields are required when creating a user'
+                    more_info: '_id and jobTitle fields are required when creating a user'
                 });
             } else {
                 myConsole("Successful: POST /users/" + myUser._id);
@@ -231,7 +233,7 @@ module.exports = function(app) {
     // Description: Modify required user information. Validation happens at schema level.
     //
     // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Nina Pulgar"}' http://localhost:5000/users/532b153bb1abf6610e011858?key=532b0ded565784050ab40b02
+    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Nina Pulgar"}' 'http://localhost:5000/users/Jose Pulgar?key=532b0ded565784050ab40b02'
     /* ********************************* */
     app.put('/users/:userid', checkAuth, function(req, res) {
         var query = {

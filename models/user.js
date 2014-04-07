@@ -15,7 +15,7 @@ var skillSchema = new Schema({
 });
 
 var userSchema = new Schema({
-    name: {
+    _id: {
         type: String,
         required: true
     },
@@ -44,8 +44,8 @@ var userSchema = new Schema({
         type: String
     },
     skills: [skillSchema],
-    manager: ObjectId,
-    directs: [ObjectId]
+    manager: String,
+    directs: [String]
 });
 
 module.exports = mongoose.model('User', userSchema);

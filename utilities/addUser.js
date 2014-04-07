@@ -22,11 +22,10 @@ mongoose.connect(database.url, function(err) {
                 console.log('Error: Unable to bcrypt password');
             } else {
                 var query = {
-                    username: process.argv[2]
+                    _id: process.argv[2].toLowerCase()
                 };
                 Login.update(query, {
                     $set: {
-                        username: process.argv[2].toLowerCase(),
                         password: bcryptedPassword,
                         level: process.argv[4]
                     }
@@ -35,6 +34,7 @@ mongoose.connect(database.url, function(err) {
                 }, function(err, numberAffected, raw) {
                     if (err) {
                         console.log('Error: Unable to add user');
+                        console.log(err.message);
                     } else {
                         console.log('User added: ' + process.argv[2].toLowerCase());
                         process.exit(0);

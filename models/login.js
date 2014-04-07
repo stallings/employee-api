@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var loginSchema = new Schema({
-    username: {
+    _id: {
         type: String,
         lowercase: true,
         required: true

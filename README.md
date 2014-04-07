@@ -146,8 +146,7 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
 ## User
 ```
 {
-    "_id" : ObjectId("5328bf85e1711fd3d24ce442"),
-    "name": "John Smith",
+    "_id" : "John Smith",
     "headshot": "http://goo.gl/oafjewnefa",
     "startDate": ISODate("2014-02-01T06:00:00Z"),
     "jobTitle": "UX Architect",
@@ -155,7 +154,11 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
     "skype": "johnsmithsears",
     "employeeType": "FTE",
     "department": "FED",
-    "strangths": ["Leadership", "Prototyping"],
+    "manager": "First Last",
+    "directs": ["First Last", "First Last"],
+    "strengths": ["Leadership", "Prototyping"],
+    "currentProjects": ["Project Name", "Project Name"],
+    "pastProjects": ["Baseball Cards"],
     "skills": [
                 {
                   "title": "User Research",
@@ -172,20 +175,18 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
 ## Projects
 ````
 {
-    "_id" : ObjectId("532a02a910536e2128234c8b"),
-    "name" : "Baseball Cards",
-    "description" : "An awesome project",
-    "tags" : [ "ASAP" ]
+    "_id" : "Baseball Cards",
+    "description" : "An awesome project using NodeJS and RESTful API",
+    "tags" : [ "NodeJS", "MongoDB" ]
     "members" : [  ObjectId("5329f663c43b5a461b507c5a") ]
 }
 ````
 
- 
+
 ## Logins
 ````
-{ 
-    "_id" : ObjectId("5328bf85e1711fd3d24ce442"),
-    "username" : "jpulgar",
+{
+    "_id" : "jpulgar",
     "password" : "$2a$10$VhRfJASWXb5qVhqH2TUsdOCdtMpyI8cwpTBOviB70T/ca6Dv9S616",
     "level" : 3
 }
@@ -232,4 +233,3 @@ db.users.find()
 * Example RESTful API: <http://developers.flattr.net/api/resources/things/>
 * IP White Listing: <https://www.npmjs.org/package/express-ipfilter> <https://www.npmjs.org/package/ipfilter>
 * Mongoose Schema validation: <http://mongoosejs.com/docs/validation.html>
-

@@ -11,14 +11,14 @@ mongoose.connect(database.url, function(err) {
     } else {
         Login
             .find({})
-            .select('username level')
-            .sort('username')
+            .select('_id level')
+            .sort('_id')
             .exec(function(err, user) {
                 if (err) {
                     console.log('Error: Unable to list users');
                 } else {
                     for (var i = 0; i < user.length; i++) {
-                        console.log('%s %s', user[i].username, user[i].level);
+                        console.log('%s %s', user[i]._id, user[i].level);
                     }
                     process.exit(0);
                 }

@@ -16,7 +16,7 @@ mongoose.connect(database.url, function(err) {
         console.log('Error: Unable to connect to MongoDB!');
     } else {
         var query = {
-            username: process.argv[2]
+            _id: process.argv[2]
         };
         Login.update(query, {
             $set: {
