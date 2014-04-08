@@ -63,12 +63,12 @@
 				<section>
 						<h2>Possible Solutions</h2>
 				</section>
-	
+
 				<section>
 						<h2>Let's make an ASAP page!</h2>
 						<h2 class="fragment" style="color: #FF0000;">Hahaha! No.</h2>
 				</section>
-	
+
 				<section>
 						<h2>Let's make a site with<br/>PHP + mySQL!</h2>
 						<h3 class="fragment" style="color: orange;">Maybe but . . .</h3>
@@ -78,7 +78,7 @@
 							<li class="fragment">Information not easily shared</li>
 						</ul>
 				</section>
-	
+
 				<section>
 						<h2>Let's make an API instead!</h2>
 						<h2 class="fragment" style="color: #00FF00;">OK! But why?</h2>
@@ -89,7 +89,7 @@
 							<li class="fragment">Restricted (when necessary)</li>
 						</ul>
 				</section>
-	
+
 				<section>
 						<h2>Building an API</h2>
 						<h3 class="fragment"><br/>That sounds complicated. . .</h3>
@@ -139,7 +139,7 @@
 					<p>
 						Platform for building fast, scalable network applications
 					</p>
-					
+
 					<ul>
 						<li class="fragment">Built on Chrome's super-fast V8 JavaScript engine</li>
 						<li class="fragment">Non-blocking I/O and asynchronous events</li>
@@ -157,7 +157,7 @@
 			      font-family: "Symbol Signs";
 			      src: url("http://josepulgar.com/symbol-signs-webfont.woff");
 			    }
-			    .mySymbols { font-size: 2.0em !important; 
+			    .mySymbols { font-size: 2.0em !important;
 			    	font-family: "Symbol Signs", serif !important;
 			    }
 				</style>
@@ -188,6 +188,15 @@
 				</section>
 
 				<section>
+					<h2>Mongo DB</h2>
+					<ul>
+						<li class="fragment">JSON-like documents</li>
+						<li class="fragment">Dynamic schemas</li>
+						<li class="fragment">Auto expiring documents</li>
+					</ul>
+				</section>
+
+				<section>
 					<h2>Mongoose Library</h2>
 					<ul>
 						<li class="fragment">Simplifies Mongo DB usage</li>
@@ -196,14 +205,7 @@
 					</ul>
 				</section>
 
-				<section>
-					<h2>Mongo DB</h2>
-					<ul>
-						<li class="fragment">JSON-like documents</li>
-						<li class="fragment">Dynamic schemas</li>
-						<li class="fragment">Auto expiring documents</li>
-					</ul>
-				</section>
+
 
 				<section>
 					<h2>This sounds great<br/>but complicated...</h2>
@@ -223,8 +225,8 @@ app.js
 +-- routes
      |-- index.js
 +-- config
-     |-- database.js	
-+-- node_modules	
+     |-- database.js
++-- node_modules
                     </code></pre>
 
 <p><small>Assumptions: NodeJS and Mongo DB are installed locally</small></p>
@@ -236,7 +238,7 @@ app.js
 						This defines our application and all dependencies.</p>
 
 						<pre><code data-trim contenteditable>
-{ 
+{
     "name": "employee-api",
     "description": "RESTful API to get employee information",
     "version": "0.0.1",
@@ -256,7 +258,7 @@ app.js
 
 						<pre><code data-trim contenteditable>
 var express = require('express'),
-    mongoose = require('mongoose'), 
+    mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     database = require('./config/database');
 
@@ -296,7 +298,7 @@ node app.js
 						<pre><code data-trim contenteditable>
 var mongoose = require('mongoose'), Schema = mongoose.Schema;
 
-var skillSchema = new Schema({ 
+var skillSchema = new Schema({
     title: { type: String, required: true },
     rating: { type: Number, max: 5, required: true }
 });
@@ -346,15 +348,15 @@ curl -i -X GET http://localhost:5000/users
 var User = require('../models/user');
 
 app.get('/users', function(req, res) {
-  User.find({}, 'name', function(err, users) {
+  User.find({}, '_id jobTitle', function(err, users) {
      res.jsonp(users);
   });
 });
 						</code></pre>
 						<pre><code data-trim contenteditable>
 // Output:
-[ { "_id": "532b153bb1abf6610e011858", "name": "John Smith" },
-  { "_id": "532c5681a3a6efcb054896e4", "name": "Billy Mitchell" } ]
+[ { "_id": "John Smith", "jobTitle": "FED" },
+  { "_id": "Nina Pulgar", "jobTitle": "Cat" } ]
 						</code></pre>
 				</section>
 
@@ -365,8 +367,8 @@ app.get('/users', function(req, res) {
 					<p>Creates a new user</p>
 
 						<pre><code data-trim contenteditable>
-curl -i -X POST -H 'Content-Type: application/json' 
-     -d '{"name": "Billy Mitchell", "jobTitle": "Being Awesome"}'
+curl -i -X POST -H 'Content-Type: application/json'
+     -d '{"_id": "Billy Mitchell", "jobTitle": "Hot Sauce Maker"}'
      http://localhost:5000/users?key=532b0ded565784050ab40b02
 						</code></pre>
 						<pre><code data-trim contenteditable>
@@ -382,8 +384,7 @@ app.post('/users', checkAuth, function(req, res) {
 });
 						</code></pre>
 						<pre><code data-trim contenteditable>
-{ "__v": 0, "name": "Billy Mitchell", "jobTitle": "Being Awesome",
-  "_id": "53306c5770a229ab13ab56d2", "skills": [] }
+{ "__v": 0, "_id": "Billy Mitchell", "jobTitle": "Hot Sauce Maker", "skills": [] }
 						</code></pre>
 				</section>
 
@@ -394,15 +395,15 @@ app.post('/users', checkAuth, function(req, res) {
 					<p>Deletes a user</p>
 
 						<pre><code data-trim contenteditable>
-curl -i -X DELETE http://localhost:5000/users/53306c5770a229ab13ab56d2
+curl -i -X DELETE http://localhost:5000/users/Billy%20Mitchell
                                          ?key=532b0ded565784050ab40b02
 						</code></pre>
 						<pre><code data-trim contenteditable>
 app.delete('/users/:userid', checkAuth, function(req, res) {
-  
+
   User.findByIdAndRemove(req.params.userid, function (err, resource) {
-    
-    if (err) { 
+
+    if (err) {
       res.jsonp(500, { error: err.name + ' - ' + err.message });
     } else if (resource) {
       res.jsonp({ message: 'User deleted' });
@@ -517,8 +518,37 @@ var keySchema = new Schema({
 				</section>
 
 				<section>
+					<h2>JSON/JSONP</h2>
+					<p><br/>ExpressJS: res.jsonp(users);<br/><br/></p>
+					<img width="713" height="138" src="http://josepulgar.com/jsonAndjsonp.gif" alt="json">
+				</section>
+
+				<section>
+					<h2>CORS</h2>
+					<p>Cross-Origin Resource Sharing</p>
+					<pre><code data-trim contenteditable>
+// Requires
+var express = require('express'), cors = require('cors');
+
+// Create Express App
+var app = express();
+
+// Set up CORS (Cross-Origin Resource Sharing)
+var corsOptions = {
+    origin: '*'
+};
+
+app.use(cors(corsOptions));
+					</code></pre>
+
+<p><br/>Cross-domain with error checking.<br/>No IE7-9 without extension:<br/>
+MoonScript / jQuery-ajaxTransport-XDomainRequest</p>
+
+				</section>
+
+				<section>
 					<h2>Project Link</h2>
-					<p>Employee API: <a href="https://bitbucket.org/jpulgar">https://bitbucket.org/jpulgar</a><br/><br/><br/></p>
+					<p><a href="https://github.com/jpulgar/employee-api">https://github.com/jpulgar/employee-api</a><br/><br/><br/></p>
 					<h2>Questions?</h2>
 				</section>
 
