@@ -59,7 +59,7 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/', function(req, res) {
         res.jsonp({
-            'version': '1.0'
+            'version': '0.0.1'
         });
     });
 
@@ -166,7 +166,23 @@ module.exports = function(app) {
                                 delete user[0].skills;
                                 res.jsonp(user);
                             } else {
-                                res.jsonp(user);
+                                // Valid key, now check if it's VP status: 3 OR Manager Status: 2 and a direct report
+                                // If result is level 3, return everything
+
+                                // VP - return everything
+                                if (result[0].level === 3) {
+                                    res.jsonp(user);
+                                    // Director - return direct report and their direct reports
+                                } else if (result[0].level === 2) {
+
+                                    // Manager - return direct reports
+                                } else if (result[0].level === 1) {
+
+                                    // Return without skills
+                                } else {
+                                    delete user[0].skills;
+                                    res.jsonp(user);
+                                }
                             }
                         });
                         // Otherwise, don't include skills
@@ -539,6 +555,15 @@ module.exports = function(app) {
             } else {
                 bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
+
+                        // When creating a key, add that person's direct reports and lower level direct reports
+                        // this will take longer returning the first key but faster checks later
+                        // Create direct reports by adding all of user direct reports and all of those users direct reports
+
+                        // VP - can have empty direct reports array
+                        // Director - most complex direct reports since it will be 2 layers
+                        // Manager - simple, only one level
+
                         var myKey = new Key({
                             'level': user.level
                         });

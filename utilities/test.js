@@ -36,12 +36,12 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "jpulgar", "pass
 Temp key: 53442478daec93cb0a30dd1a
 
 // Add user and skills
-curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald", "jobTitle": "Cat"}' http://localhost:5000/users?key=534314d5c58d0b0609367fc9
-curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/Billy%20Archibald/skills?key=534314d5c58d0b0609367fc9
+curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Nina Pulgar", "jobTitle": "Cat"}' http://localhost:5000/users?key=53442478daec93cb0a30dd1a
+curl -i -X PUT -H 'Content-Type: application/json' -d '[{"_id": "HTML", "rating": "5.0"}, {"_id": "CSS", "rating": "4.5"}]' http://localhost:5000/users/Nina%20Pulgar/skills?key=53442478daec93cb0a30dd1a
 
 // Create a project
-curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Baseball Cards", "status": in progress", "description": "An awesome project"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
-
+curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Baseball Cards", "status": "in progress", "description": "An awesome project"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
+curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Kmart Fashion", "status": "complete", "description": "A fashon project"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
 
 // Add user to vteam
 
