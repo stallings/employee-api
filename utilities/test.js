@@ -33,23 +33,14 @@ Department
 // Get key
 curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "jpulgar", "password": "password"}' http://localhost:5000/logins
 
-Temp key: 534314d5c58d0b0609367fc9
+Temp key: 53442478daec93cb0a30dd1a
 
 // Add user and skills
 curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald", "jobTitle": "Cat"}' http://localhost:5000/users?key=534314d5c58d0b0609367fc9
 curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/Billy%20Archibald/skills?key=534314d5c58d0b0609367fc9
 
-
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"jobTitle": "Making Hot Sauce"}' http://localhost:5000/users/532c5681a3a6efcb054896e4?key=533ef59e650e9190037bfb98
-
-
-// Create department
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "FED"}' http://localhost:5000/departments?key=532c561aa3a6efcb054896e3
-
-// Add user to department
-curl -i -X PUT http://localhost:5000/departments/532c5793a3a6efcb054896e7/members/532c5681a3a6efcb054896e4?key=532c561aa3a6efcb054896e3
-curl -i -X PUT http://localhost:5000/departments/532b1d1db09bcfff1020a9aa/members/532c5681a3a6efcb054896e4?key=532c561aa3a6efcb054896e3
-
+// Create a project
+curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Baseball Cards", "status": in progress", "description": "An awesome project"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
 
 
 // Add user to vteam

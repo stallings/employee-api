@@ -238,7 +238,7 @@ module.exports = function(app) {
     // Description: Add/Modify Skills
     //
     // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/532b153bb1abf6610e011858/skills?key=532b0ded565784050ab40b02
+    // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/John%20Smith/skills?key=532b0ded565784050ab40b02
     /* ********************************* */
     app.put('/users/:userid/skills', checkAuth, function(req, res) {
         var query = {
@@ -291,7 +291,7 @@ module.exports = function(app) {
     // Description: Delete a user
     //
     // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/users/5320b47c98c923ce106f094a
+    // curl -i -X DELETE http://localhost:5000/users/John%20Smith
     /* ********************************* */
     app.delete('/users/:userid', checkAuth, function(req, res) {
         User.findByIdAndRemove(req.params.userid, function(err, resource) {
@@ -367,7 +367,7 @@ module.exports = function(app) {
     // Description: Add a project. Validation done at schema level.
     //
     // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d'{"name": "Baseball Cards", "status": "in progress"}' http://localhost:5000/projects?key=532b0ded565784050ab40b02
+    // curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Baseball Cards", "status": "in progress"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
     /* ********************************* */
     app.post('/projects', checkAuth, function(req, res) {
         var myProject = new Project(req.body);
@@ -389,7 +389,7 @@ module.exports = function(app) {
     // Description: Modify required project information
     //
     // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"name": "Baseball Cards Phase 2"}' http://localhost:5000/projects/531f6a31cf9b3bdb1580eef9
+    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"description": "Another fashion project"}' http://localhost:5000/projects/Kmart%20Fashion/?key=53442478daec93cb0a30dd1a
     /* ********************************* */
     app.put('/projects/:projectid', checkAuth, function(req, res) {
         var query = {
@@ -416,7 +416,7 @@ module.exports = function(app) {
     // Description: Add a user to a project
     //
     // Sample curl:
-    // curl -i -X PUT http://localhost:5000/projects/532a02a910536e2128234c8b/members/5329f663c43b5a461b507c5a?key=5329ce5315a953d40d7d3cd4
+    // curl -i -X PUT http://localhost:5000/projects/Kmart%20Fashion/members/Nina%20Pulgar?key=53442478daec93cb0a30dd1a
     /* ********************************* */
     app.put('/projects/:projectid/members/:userid', checkAuth, function(req, res) {
         var query = {
@@ -452,7 +452,7 @@ module.exports = function(app) {
     // Description: Remove a user from a project
     //
     // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/projects/532a01c510536e2128234c8a/members/531f6a31cf9b3bdb1580eef9?key=5329ce5315a953d40d7d3cd4
+    // curl -i -X DELETE http://localhost:5000/projects/Kmart%20Fashion/members/Nina%20Pulgar?key=53442478daec93cb0a30dd1a
     /* ********************************* */
     app.delete('/projects/:projectid/members/:userid', checkAuth, function(req, res) {
         var query = {
@@ -488,7 +488,7 @@ module.exports = function(app) {
     // Description: Delete a Project
     //
     // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/projects/532a01c510536e2128234c8a?key=5329ce5315a953d40d7d3cd4
+    // curl -i -X DELETE http://localhost:5000/projects/Kmart%20Fashion?key=53442478daec93cb0a30dd1a
     /* ********************************* */
     app.delete('/projects/:projectid', checkAuth, function(req, res) {
         Project.findByIdAndRemove(req.params.projectid, function(err, resource) {

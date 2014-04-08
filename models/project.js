@@ -17,7 +17,7 @@ var projectSchema = new Schema({
         type: String,
         required: true
     },
-    members: [ObjectId]
+    members: [String]
 });
 
 module.exports = mongoose.model('Project', projectSchema);
