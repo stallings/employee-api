@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             options: {}
         },
         jshint: {
-            files: ['Gruntfile.js', 'app.js', 'config/*.js', 'models/*.js', 'routes/*.js', 'utilities/*.js'],
+            files: ['<%= jsbeautifier.files %>'],
             options: {
                 strict: true,
                 globals: {
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ['<%= jshint.files %>'],
+            files: ['<%= jsbeautifier.files %>'],
             tasks: ['jshint']
         }
     });
