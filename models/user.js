@@ -1,9 +1,8 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    Schema = mongoose.Schema;
 
 var skillSchema = new Schema({
-    title: {
+    _id: {
         type: String,
         required: true
     },

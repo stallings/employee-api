@@ -238,7 +238,7 @@ module.exports = function(app) {
     // Description: Add/Modify Skills
     //
     // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"title": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/John%20Smith/skills?key=532b0ded565784050ab40b02
+    // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"_id": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/John%20Smith/skills?key=532b0ded565784050ab40b02
     /* ********************************* */
     app.put('/users/:userid/skills', checkAuth, function(req, res) {
         var query = {
