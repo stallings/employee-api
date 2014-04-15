@@ -1,7 +1,7 @@
 // Requires
 var mongoose = require('mongoose'),
     database = require('../config/database'),
-    Login = require('../models/login');
+    User = require('../models/user');
 
 // Connect to MongoDB
 mongoose.connect(database.url, function(err) {
@@ -9,7 +9,7 @@ mongoose.connect(database.url, function(err) {
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
     } else {
-        Login
+        User
             .find({})
             .select('_id level')
             .sort('_id')

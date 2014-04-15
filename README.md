@@ -22,7 +22,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * Password Protection for skill ratings
 
 ## To Do ##
-
+* Add level checks by checking direct reports in key
 * Use project names as _id?
 * Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc
 * Add resources to change Employee Name

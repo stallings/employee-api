@@ -1,13 +1,13 @@
 if (process.argv.length != 4) {
-    console.log('Usage: node updateUserLevel.js [username] [level]');
-    console.log('Usage: node updateUserLevel.js jpulgar 3');
+    console.log('Usage: node updateUserLevel.js ["Full Name"] [level]');
+    console.log('Usage: node updateUserLevel.js "Jose Pulgar" 5');
     process.exit(0);
 }
 
 // Requires
 var mongoose = require('mongoose'),
     database = require('../config/database'),
-    Login = require('../models/login');
+    User = require('../models/user');
 
 // Connect to MongoDB
 mongoose.connect(database.url, function(err) {
@@ -18,7 +18,7 @@ mongoose.connect(database.url, function(err) {
         var query = {
             _id: process.argv[2]
         };
-        Login.update(query, {
+        User.update(query, {
             $set: {
                 level: process.argv[3]
             }
@@ -26,7 +26,7 @@ mongoose.connect(database.url, function(err) {
             if (err) {
                 console.log('Error: Unable to update user level');
             } else {
-                console.log('User ' + process.argv[2] + ' level modified.');
+                console.log(process.argv[2] + ' level modified to: ' + process.argv[3]);
                 process.exit(0);
             }
         });

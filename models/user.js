@@ -18,6 +18,18 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    level: {
+        type: Number,
+        required: true
+    },
     headshot: {
         type: String
     },
@@ -26,7 +38,6 @@ var userSchema = new Schema({
     },
     jobTitle: {
         type: String,
-        required: true
     },
     email: {
         type: String

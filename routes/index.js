@@ -34,6 +34,8 @@ function checkAuth(req, res, next) {
                     error: 'Not authorized'
                 });
             } else {
+                // Are we VP? then next()
+                // Else, check if userid is in result.directReports array, if yes next() if not 401 not authorized
                 next();
             }
         });
@@ -44,6 +46,39 @@ function checkAuth(req, res, next) {
     }
 }
 
+// Makes a key
+function makeKey (level, user, directs, res){
+  var myKey = new Key({
+      'level': level,
+      'self': user,
+      'edit': directs
+  });
+  myKey.save(function(err) {
+      if (err) {
+          myConsole('Error: Unable to save key');
+          res.jsonp(500, {
+              error: err.name + ' - ' + err.message
+          });
+      } else {
+          myConsole('Successful: Valid key sent');
+          res.jsonp({
+              'key': myKey._id
+          });
+      }
+  });
+}
+
+// For Director level - Finds 2 levels of direct reports
+function getSubDirects (level, user, myUsers, res) {
+  User.find({ _id: { $in: myUsers } }, 'directs', function(err, users) {
+      for(var i = 0; i < users.length; i++) {
+          for(var j = 0; j < users[i].directs.length; j++) {
+            myUsers.push(users[i].directs[j]);
+        }
+      }
+      makeKey(level, user, myUsers, res);
+  });
+}
 
 /* ********************************* */
 // Export Routes
@@ -534,11 +569,11 @@ module.exports = function(app) {
     // Description: Get key
     //
     // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "jpulgar", "password": "password"}' http://localhost:5000/logins
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
     /* ********************************* */
     app.post('/logins', function(req, res) {
 
-        Login.findOne({
+        User.findOne({
             'username': req.body.username
         }, function(err, user) {
             if (err) {
@@ -556,30 +591,15 @@ module.exports = function(app) {
                 bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
 
-                        // When creating a key, add that person's direct reports and lower level direct reports
-                        // this will take longer returning the first key but faster checks later
-                        // Create direct reports by adding all of user direct reports and all of those users direct reports
+                        var myDirects = [];
+                        if (user.level === 2) {
+                            makeKey(user.level, user._id, user.directs, res);
+                        } else if (user.level === 3) {
+                            getSubDirects(user.level, user._id, user.directs, res);
+                        } else {
+                            makeKey(user.level, user._id, [], res);
+                        }
 
-                        // VP - can have empty direct reports array
-                        // Director - most complex direct reports since it will be 2 layers
-                        // Manager - simple, only one level
-
-                        var myKey = new Key({
-                            'level': user.level
-                        });
-                        myKey.save(function(err) {
-                            if (err) {
-                                myConsole('Error: Unable to save key');
-                                res.jsonp(500, {
-                                    error: err.name + ' - ' + err.message
-                                });
-                            } else {
-                                myConsole('Successful: Valid key sent');
-                                res.jsonp({
-                                    'key': myKey._id
-                                });
-                            }
-                        });
                     } else {
                         myConsole("Error: POST /login Incorrect password");
                         res.jsonp(500, {

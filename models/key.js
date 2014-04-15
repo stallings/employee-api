@@ -1,9 +1,8 @@
-// Levels: 1 - Manager, 2 - Director, 3 - VP
-
-// VP + Lana: full access
-// Director: full access to managers and their directs
-// Manager: full access to direct reports only
-// Individual Contributor: default access, no valid login
+// Levels:
+// 1 - Individual Contributor
+// 2 - Manager
+// 3 - Director
+// 4 - VP
 
 // Key expires every X number of seconds
 var mongoose = require('mongoose'),
@@ -14,7 +13,11 @@ var keySchema = new Schema({
         type: Number,
         required: true
     },
-    directReports: {
+    self: {
+        type: String,
+        required: true
+    },
+    edit: {
         type: [String]
     },
     createdAt: {
