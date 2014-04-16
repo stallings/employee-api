@@ -38,7 +38,7 @@ function checkAuth(req, res, next) {
                 if (key[0].level === 4) {
                     next();
 
-                // If we are Director/Manager
+                    // If we are Director/Manager
                 } else if ((key[0].level === 2) || (key[0].level === 3)) {
 
                     // If no userid is passed, we are creating project/user (allow)
@@ -56,7 +56,7 @@ function checkAuth(req, res, next) {
                         }
                     }
 
-                // Regular users are not allowed to edit anything
+                    // Regular users are not allowed to edit anything
                 } else {
                     res.jsonp(401, {
                         error: 'Not authorized. Regular users not allowed to edit.'
@@ -218,7 +218,6 @@ module.exports = function(app) {
                     });
                 } else {
 
-
                     myConsole("Successful: GET /users/" + req.params.userid);
 
                     // If valid key, send skills
@@ -237,25 +236,31 @@ module.exports = function(app) {
                                 if (key[0].level === 4) {
                                     res.jsonp(user);
 
-                                // Director - return direct report and their direct reports skills
-                                } else if (key[0].level === 3) {
-                                    // If they are requesting themselves, return all info
-                                    // Else If the are requesting direct report (2 levels), return all info
-                                    // Else, delete the skills
+                                    // Director/Manager - return skill for themselves and direct reports
+                                } else if ((key[0].level === 3) || (key[0].level === 2)) {
 
-                                // Manager - return direct reports skills
-                                } else if (key[0].level === 2) {
                                     // If they are requesting themselves, return all info
-                                    // If the are requesting direct report, return all info
-                                    // Else, delete the skills
+                                    if (key[0].self === req.params.userid) {
+                                        res.jsonp(user);
+                                        // Else If the are requesting direct reports, return all info
+                                    } else if (key[0].edit.indexOf(req.params.userid) !== -1) {
+                                        res.jsonp(user);
+                                        // Else, delete the skills
+                                    } else {
+                                        delete user[0].skills;
+                                        res.jsonp(user);
+                                    }
 
-                                // Regular User - Return without skills
+                                    // Regular Users
                                 } else {
                                     // If they are requesting just themselves, return all info
-
-                                    // Else delete the user skills
-                                    delete user[0].skills;
-                                    res.jsonp(user);
+                                    if (key[0].self === req.params.userid) {
+                                        res.jsonp(user);
+                                        // Else delete the user skills
+                                    } else {
+                                        delete user[0].skills;
+                                        res.jsonp(user);
+                                    }
                                 }
                             }
                         });

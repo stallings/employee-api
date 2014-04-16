@@ -27,7 +27,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc
 * Add utility script to Employee Name _id
 * Add utility script to Project Name _id
-* Org chart generator
+* Org chart generator https://developers.google.com/chart/interactive/docs/gallery/orgchart https://code.google.com/apis/ajax/playground/?type=visualization#org_chart
 
 
 
@@ -151,6 +151,9 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
     "headshot": "http://goo.gl/oafjewnefa",
     "startDate": ISODate("2014-02-01T06:00:00Z"),
     "jobTitle": "UX Architect",
+    "username": "jpulgar",
+    "password": "$2a$10$FEUvnoMB73s6T4aSZiZDyOi/2KJ92Pz6bQC1UmyRr.EM3bc2I9TXG",
+    "level": 1,
     "email": "jsmith@searshc.com",
     "skype": "johnsmithsears",
     "employeeType": "FTE",
@@ -184,21 +187,22 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
 ````
 
 
-## Logins
-````
-{
-    "_id" : "jpulgar",
-    "password" : "$2a$10$VhRfJASWXb5qVhqH2TUsdOCdtMpyI8cwpTBOviB70T/ca6Dv9S616",
-    "level" : 3
-}
-````
-
 ## Keys
 ````
 {
-    "_id" : ObjectId("532b0ded565784050ab40b02"),
     "level" : 3,
-    "createdAt" : ISODate("2014-03-20T15:49:01.537Z")
+	"self" : "Jose Pulgar",
+	"_id" : ObjectId("534eb2cd483362d60e3356e6"),
+	"createdAt" : ISODate("2014-04-16T16:41:49.297Z"),
+	"edit" : [
+		"Manager1",
+		"Manager2",
+		"Manager3",
+		"Test",
+		"Contributor1",
+		"Contributor2",
+		"Contributor3"
+	]
 }
 
 ````
