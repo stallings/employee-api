@@ -24,19 +24,44 @@ function checkAuth(req, res, next) {
     if (req.query.key !== undefined) {
         Key.find({
             '_id': req.query.key
-        }, function(err, result) {
+        }, function(err, key) {
             if (err) {
                 res.jsonp(401, {
                     error: 'Not authorized'
                 });
-            } else if (!result.length) {
+            } else if (!key.length) {
                 res.jsonp(401, {
                     error: 'Not authorized'
                 });
             } else {
-                // Are we VP? then next()
-                // Else, check if userid is in result.directReports array, if yes next() if not 401 not authorized
-                next();
+                // If we are VP, we are always authorized
+                if (key[0].level === 4) {
+                    next();
+
+                    // If we are Director/Manager
+                } else if ((key[0].level === 2) || (key[0].level === 3)) {
+
+                    // If no userid is passed, we are doing a POST (allow)
+                    if (req.params.userid === undefined) {
+                        next();
+
+                    } else {
+                        // Allow trying to edit/delete a direct report only
+                        if (key[0].edit.indexOf(req.params.userid) !== -1) {
+                            next();
+                        } else {
+                            res.jsonp(401, {
+                                error: 'Not authorized. User is not a direct report.'
+                            });
+                        }
+                    }
+
+                    // Else regular users are not allowed to edit anything, maybe their own data
+                } else {
+                    res.jsonp(401, {
+                        error: 'Not authorized'
+                    });
+                }
             }
         });
     } else {
@@ -47,37 +72,43 @@ function checkAuth(req, res, next) {
 }
 
 // Makes a key
-function makeKey (level, user, directs, res){
-  var myKey = new Key({
-      'level': level,
-      'self': user,
-      'edit': directs
-  });
-  myKey.save(function(err) {
-      if (err) {
-          myConsole('Error: Unable to save key');
-          res.jsonp(500, {
-              error: err.name + ' - ' + err.message
-          });
-      } else {
-          myConsole('Successful: Valid key sent');
-          res.jsonp({
-              'key': myKey._id
-          });
-      }
-  });
+function makeKey(level, user, directs, res) {
+    "use strict";
+    var myKey = new Key({
+        'level': level,
+        'self': user,
+        'edit': directs
+    });
+    myKey.save(function(err) {
+        if (err) {
+            myConsole('Error: Unable to save key');
+            res.jsonp(500, {
+                error: err.name + ' - ' + err.message
+            });
+        } else {
+            myConsole('Successful: Valid key sent');
+            res.jsonp({
+                'key': myKey._id
+            });
+        }
+    });
 }
 
 // For Director level - Finds 2 levels of direct reports
-function getSubDirects (level, user, myUsers, res) {
-  User.find({ _id: { $in: myUsers } }, 'directs', function(err, users) {
-      for(var i = 0; i < users.length; i++) {
-          for(var j = 0; j < users[i].directs.length; j++) {
-            myUsers.push(users[i].directs[j]);
+function getSubDirects(level, user, myUsers, res) {
+    "use strict";
+    User.find({
+        _id: {
+            $in: myUsers
         }
-      }
-      makeKey(level, user, myUsers, res);
-  });
+    }, 'directs', function(err, users) {
+        for (var i = 0; i < users.length; i++) {
+            for (var j = 0; j < users[i].directs.length; j++) {
+                myUsers.push(users[i].directs[j]);
+            }
+        }
+        makeKey(level, user, myUsers, res);
+    });
 }
 
 /* ********************************* */
@@ -207,10 +238,10 @@ module.exports = function(app) {
                                 // VP - return everything
                                 if (result[0].level === 3) {
                                     res.jsonp(user);
-                                    // Director - return direct report and their direct reports
+                                    // Director - return direct report and their direct reports skills
                                 } else if (result[0].level === 2) {
 
-                                    // Manager - return direct reports
+                                    // Manager - return direct reports skills
                                 } else if (result[0].level === 1) {
 
                                     // Return without skills
