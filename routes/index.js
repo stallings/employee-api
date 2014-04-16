@@ -38,10 +38,10 @@ function checkAuth(req, res, next) {
                 if (key[0].level === 4) {
                     next();
 
-                    // If we are Director/Manager
+                // If we are Director/Manager
                 } else if ((key[0].level === 2) || (key[0].level === 3)) {
 
-                    // If no userid is passed, we are doing a POST (allow)
+                    // If no userid is passed, we are creating project/user (allow)
                     if (req.params.userid === undefined) {
                         next();
 
@@ -56,10 +56,10 @@ function checkAuth(req, res, next) {
                         }
                     }
 
-                    // Else regular users are not allowed to edit anything, maybe their own data
+                // Regular users are not allowed to edit anything
                 } else {
                     res.jsonp(401, {
-                        error: 'Not authorized'
+                        error: 'Not authorized. Regular users not allowed to edit.'
                     });
                 }
             }
@@ -110,6 +110,7 @@ function getSubDirects(level, user, myUsers, res) {
         makeKey(level, user, myUsers, res);
     });
 }
+
 
 /* ********************************* */
 // Export Routes
@@ -224,28 +225,35 @@ module.exports = function(app) {
                     if (req.query.key !== undefined) {
                         Key.find({
                             '_id': req.query.key
-                        }).lean().exec(function(err, result) {
+                        }).lean().exec(function(err, key) {
                             if (err) {
                                 delete user[0].skills;
                                 res.jsonp(user);
-                            } else if (!result.length) {
+                            } else if (!key.length) {
                                 delete user[0].skills;
                                 res.jsonp(user);
                             } else {
-                                // Valid key, now check if it's VP status: 3 OR Manager Status: 2 and a direct report
-                                // If result is level 3, return everything
-
                                 // VP - return everything
-                                if (result[0].level === 3) {
+                                if (key[0].level === 4) {
                                     res.jsonp(user);
-                                    // Director - return direct report and their direct reports skills
-                                } else if (result[0].level === 2) {
 
-                                    // Manager - return direct reports skills
-                                } else if (result[0].level === 1) {
+                                // Director - return direct report and their direct reports skills
+                                } else if (key[0].level === 3) {
+                                    // If they are requesting themselves, return all info
+                                    // Else If the are requesting direct report (2 levels), return all info
+                                    // Else, delete the skills
 
-                                    // Return without skills
+                                // Manager - return direct reports skills
+                                } else if (key[0].level === 2) {
+                                    // If they are requesting themselves, return all info
+                                    // If the are requesting direct report, return all info
+                                    // Else, delete the skills
+
+                                // Regular User - Return without skills
                                 } else {
+                                    // If they are requesting just themselves, return all info
+
+                                    // Else delete the user skills
                                     delete user[0].skills;
                                     res.jsonp(user);
                                 }
