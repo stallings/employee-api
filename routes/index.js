@@ -11,14 +11,6 @@ var bcrypt = require('bcrypt');
 /* ********************************* */
 // Helper Functions
 /* ********************************* */
-function myConsole(data) {
-    "use strict";
-    var logging = true;
-    if (logging) {
-        console.log(data);
-    }
-}
-
 function checkAuth(req, res, next) {
     "use strict";
     if (req.query.key !== undefined) {
@@ -81,12 +73,10 @@ function makeKey(level, user, directs, res) {
     });
     myKey.save(function(err) {
         if (err) {
-            myConsole('Error: Unable to save key');
             res.jsonp(500, {
                 error: err.name + ' - ' + err.message
             });
         } else {
-            myConsole('Successful: Valid key sent');
             res.jsonp({
                 'key': myKey._id
             });
@@ -157,7 +147,6 @@ module.exports = function(app) {
             _id: regex
         }, '_id', function(err, users) {
             if (err) {
-                myConsole('Error: GET /users/search/' + req.params.string);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
@@ -180,13 +169,10 @@ module.exports = function(app) {
             '_id': req.params.userid
         }, function(err, user) {
             if (err) {
-                myConsole("Error: GET /users/orgchart/" + req.params.userid);
-                myConsole(err);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (!user) {
-                myConsole("Warning: GET /users/orgchart/ User does not exist");
                 res.jsonp(404, {
                     error: 'User does not exist'
                 });
@@ -236,18 +222,14 @@ module.exports = function(app) {
                 }
             }, '-skills').lean().exec(function(err, user) {
                 if (err) {
-                    myConsole("Error: GET /users/" + req.params.userid);
-                    myConsole(err);
                     res.jsonp(500, {
                         error: err.name + ' - ' + err.message
                     });
                 } else if (!user.length) {
-                    myConsole("Warning: GET /users/" + req.params.userid + " No results");
                     res.jsonp(404, {
                         error: 'No users found'
                     });
                 } else {
-                    myConsole("Successful: GET /users/" + req.params.userid);
                     res.jsonp(user);
                 }
             });
@@ -258,19 +240,14 @@ module.exports = function(app) {
                 '_id': req.params.userid
             }).lean().exec(function(err, user) {
                 if (err) {
-                    myConsole("Error: GET /users/" + req.params.userid);
-                    myConsole(err);
                     res.jsonp(500, {
                         error: err.name + ' - ' + err.message
                     });
                 } else if (!user.length) {
-                    myConsole("Warning: GET /users/" + req.params.userid + " No results");
                     res.jsonp(404, {
                         error: 'No users found'
                     });
                 } else {
-
-                    myConsole("Successful: GET /users/" + req.params.userid);
 
                     // If valid key, send skills
                     if (req.query.key !== undefined) {
@@ -339,13 +316,11 @@ module.exports = function(app) {
         var myUser = new User(req.body);
         myUser.save(function(err) {
             if (err) {
-                myConsole('Error: POST /users/ Unable to create user');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message,
                     more_info: '_id and jobTitle fields are required when creating a user'
                 });
             } else {
-                myConsole("Successful: POST /users/" + myUser._id);
                 res.jsonp(myUser);
             }
         });
@@ -367,12 +342,10 @@ module.exports = function(app) {
             $set: req.body
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: PUT /users/' + req.params.userid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else {
-                myConsole("Successful: PUT /users/" + req.params.userid);
                 res.jsonp({
                     'id': req.params.userid
                 });
@@ -399,7 +372,6 @@ module.exports = function(app) {
             }
         }, function(err) {
             if (err) {
-                myConsole('Error: Unable to delete user skills!');
                 res.jsonp(500, {
                     error: 'Unable to delete user skills'
                 });
@@ -415,17 +387,14 @@ module.exports = function(app) {
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: PUT /users/' + req.params.userid + '/skills');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (numberAffected) {
-                myConsole('Success: PUT /users/' + req.params.userid + '/skills');
                 res.jsonp({
                     'id': req.params.userid
                 });
             } else {
-                myConsole('Warning: PUT /users/' + req.params.userid + '/skills no rows affected!');
                 res.jsonp(500, {
                     error: 'No rows affected'
                 });
@@ -443,17 +412,14 @@ module.exports = function(app) {
     app.delete('/users/:userid', checkAuth, function(req, res) {
         User.findByIdAndRemove(req.params.userid, function(err, resource) {
             if (err) {
-                myConsole('Error: DELETE /users/' + req.params.userid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (resource) {
-                myConsole('Success: DELETE /users/' + req.params.userid);
                 res.jsonp({
                     message: 'User deleted'
                 });
             } else {
-                myConsole('Warning: DELETE /users/' + req.params.userid + ' User not found');
                 res.jsonp(404, {
                     error: 'User not found'
                 });
@@ -492,18 +458,14 @@ module.exports = function(app) {
             }
         }, function(err, project) {
             if (err) {
-                myConsole("Error: GET /projects/" + req.params.projectid);
-                myConsole(err);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (!project.length) {
-                myConsole("Warning: GET /projects/" + req.params.projectid + " No results");
                 res.jsonp(404, {
                     error: 'No projects found'
                 });
             } else {
-                myConsole("Successful: GET /projects/" + req.params.projectid);
                 res.jsonp(project);
             }
         });
@@ -520,12 +482,10 @@ module.exports = function(app) {
         var myProject = new Project(req.body);
         myProject.save(function(err) {
             if (err) {
-                myConsole('Error: POST /projects/ Unable to create project');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else {
-                myConsole("Successful: POST /projects/" + myProject._id);
                 res.jsonp(myProject);
             }
         });
@@ -546,7 +506,6 @@ module.exports = function(app) {
             $set: req.body
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: PUT /projects/' + req.params.projectid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
@@ -576,17 +535,14 @@ module.exports = function(app) {
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: PUT /projects/' + req.params.projectid + '/members');
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (numberAffected) {
-                myConsole('Success: PUT /projects/' + req.params.projectid + '/members');
                 res.jsonp({
                     'id': req.params.userid
                 });
             } else {
-                myConsole('Warning: PUT /projects/' + req.params.projectid + '/members Project not found!');
                 res.jsonp(404, {
                     error: 'Project not found'
                 });
@@ -612,17 +568,14 @@ module.exports = function(app) {
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                myConsole('Error: DELETE /projects/' + req.params.projectid + '/members/' + req.params.userid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (numberAffected) {
-                myConsole('Success: DELETE /projects/' + req.params.projectid + '/members/' + req.params.userid);
                 res.jsonp({
                     message: req.params.userid + ' removed from project'
                 });
             } else {
-                myConsole('Warning: DELETE /projects/' + req.params.projectid + '/members/' + req.params.userid + ' Project not found!');
                 res.jsonp(404, {
                     error: 'Project not found'
                 });
@@ -640,17 +593,14 @@ module.exports = function(app) {
     app.delete('/projects/:projectid', checkAuth, function(req, res) {
         Project.findByIdAndRemove(req.params.projectid, function(err, resource) {
             if (err) {
-                myConsole('Error: DELETE /projects/' + req.params.projectid);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (resource) {
-                myConsole('Success: DELETE /projects/' + req.params.projectid);
                 res.jsonp({
                     message: 'Project deleted'
                 });
             } else {
-                myConsole('Warning: DELETE /projects/' + req.params.projectid + ' Project not found');
                 res.jsonp(404, {
                     error: 'Project not found'
                 });
@@ -673,13 +623,10 @@ module.exports = function(app) {
             'username': req.body.username
         }, function(err, user) {
             if (err) {
-                myConsole("Error: POST /login");
-                myConsole(err);
                 res.jsonp(500, {
                     error: err.name + ' - ' + err.message
                 });
             } else if (!user) {
-                myConsole("Warning: POST /login User does not exist");
                 res.jsonp(404, {
                     error: 'User does not exist'
                 });
@@ -696,7 +643,6 @@ module.exports = function(app) {
                         }
 
                     } else {
-                        myConsole("Error: POST /login Incorrect password");
                         res.jsonp(500, {
                             error: 'Incorrect password'
                         });

@@ -5,6 +5,7 @@
     "dependencies": {
         "express": "~4.0.0",
         "body-parser": "~1.0.0",
+        "morgan": "~1.0.0",
         "mongoose": "3.8.8",
         "bcrypt": "0.7.7",
         "cors": "2.2.0"
