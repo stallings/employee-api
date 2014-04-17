@@ -168,6 +168,58 @@ module.exports = function(app) {
     });
 
     /* ********************************* */
+    // Route: GET /users/orgchart/string
+    // Description: Get Org Chart
+    //
+    // Sample curl:
+    // curl -i -X GET http://localhost:5000/users/orgchart/userid
+    /* ********************************* */
+    app.post('/users/orgchart/:userid', function(req, res) {
+
+        User.findOne({
+            '_id': req.params.userid
+        }, function(err, user) {
+            if (err) {
+                myConsole("Error: GET /users/orgchart/" + req.params.userid);
+                myConsole(err);
+                res.jsonp(500, {
+                    error: err.name + ' - ' + err.message
+                });
+            } else if (!user) {
+                myConsole("Warning: GET /users/orgchart/ User does not exist");
+                res.jsonp(404, {
+                    error: 'User does not exist'
+                });
+            } else {
+                // Make array based on the data we have Manager -> Me -> Directs
+                if (user.level === 2) {
+                    /*
+[{v:'Mike', f:'Mike<br/>President'}, ''],
+[{v:'Jim', f:'Jim<br/>Vice President'}, 'Mike'],
+['Alice', 'Mike'],
+['Bob', 'Jim'],
+['Carol', 'Bob']
+*/
+                    // Get additional information Manager -> Me -> Directs
+                } else if (user.level === 3) {
+                    getSubDirects(user.level, user._id, user.directs, res);
+                    // Get additional information Manager -> Me (with other directs)
+                } else {
+                    makeKey(user.level, user._id, [], res);
+                }
+
+                /* Target:
+                [{v:'Mike', f:'Mike<br/>President'}, ''],
+                [{v:'Jim', f:'Jim<br/>Vice President'}, 'Mike'],
+                ['Alice', 'Mike'],
+                ['Bob', 'Jim'],
+                ['Carol', 'Bob']
+          */
+            }
+        });
+    });
+
+    /* ********************************* */
     // Route: GET /users/id,id
     // Description: Get one or more users
     //
@@ -635,7 +687,6 @@ module.exports = function(app) {
                 bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
 
-                        var myDirects = [];
                         if (user.level === 2) {
                             makeKey(user.level, user._id, user.directs, res);
                         } else if (user.level === 3) {

@@ -1,5 +1,6 @@
 // Requires
 var express = require('express'),
+    bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     cors = require('cors'),
@@ -7,16 +8,11 @@ var express = require('express'),
 
 // Create Express App and use JSON/urlencoded parsing middleware
 var app = express();
-
-// Set up CORS (Cross-Origin Resource Sharing)
-var corsOptions = {
+app.use(bodyParser());
+app.use(cors({
     origin: '*'
-};
+}));
 
-
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded());
 
 // Set routes
 require('./routes')(app);

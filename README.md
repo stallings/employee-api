@@ -23,10 +23,12 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
+* Upgrade to Express 4.0.0
 * Change checkAuth for checkUserAuth checkProjectAuth?
 * Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc
 * Add utility script to Employee Name _id
 * Add utility script to Project Name _id
+* Make API /users/orgchart/StartName, it will return 2 levels by default
 * Org chart generator https://developers.google.com/chart/interactive/docs/gallery/orgchart https://code.google.com/apis/ajax/playground/?type=visualization#org_chart
 
 
