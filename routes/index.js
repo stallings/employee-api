@@ -317,8 +317,7 @@ module.exports = function(app) {
         myUser.save(function(err) {
             if (err) {
                 res.jsonp(500, {
-                    error: err.name + ' - ' + err.message,
-                    more_info: '_id and jobTitle fields are required when creating a user'
+                    error: err.name + ' - ' + err.message
                 });
             } else {
                 res.jsonp(myUser);

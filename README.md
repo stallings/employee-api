@@ -23,7 +23,10 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
-* Upgrade to Express 4.0.0
+* Make API return pretty()
+* Read through: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+* Change POST reply to 201
+* Clean up error message and success message
 * Change checkAuth for checkUserAuth checkProjectAuth?
 * Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc
 * Add utility script to Employee Name _id
