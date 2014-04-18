@@ -19,13 +19,11 @@ function checkAuth(req, res, next) {
             '_id': req.query.key
         }, function(err, key) {
             if (err) {
-                res.jsonp(401, {
-                    error: 'Not authorized'
-                });
+                return next(new Error(err.message));
             } else if (!key.length) {
-                res.jsonp(401, {
-                    error: 'Not authorized'
-                });
+                var err = new Error('Not authorized');
+                err.status = 401;
+                return next(err);
             } else {
                 // If we are VP, we are always authorized
                 if (key[0].level === 4) {
@@ -43,29 +41,29 @@ function checkAuth(req, res, next) {
                         if (key[0].edit.indexOf(req.params.userid) !== -1) {
                             return next();
                         } else {
-                            res.jsonp(401, {
-                                error: 'Not authorized. User is not a direct report.'
-                            });
+                            var err = new Error('Not authorized. User not found or is not a direct report.');
+                            err.status = 401;
+                            return next(err);
                         }
                     }
 
                     // Regular users are not allowed to edit anything
                 } else {
-                    res.jsonp(401, {
-                        error: 'Not authorized. Regular users not allowed to edit.'
-                    });
+                    var err = new Error('Not authorized');
+                    err.status = 401;
+                    return next(err);
                 }
             }
         });
     } else {
-        res.jsonp(401, {
-            error: 'Not authorized'
-        });
+        var err = new Error('Not authorized');
+        err.status = 401;
+        return next(err);
     }
 }
 
 // Makes a key
-function makeKey(level, user, directs, res) {
+function makeKey(level, user, directs, req, res, next) {
     "use strict";
     var myKey = new Key({
         'level': level,
@@ -86,7 +84,7 @@ function makeKey(level, user, directs, res) {
 }
 
 // For Director level - Finds 2 levels of direct reports
-function getSubDirects(level, user, myUsers, res) {
+function getSubDirects(level, user, myUsers, req, res, next) {
     "use strict";
     User.find({
         _id: {
@@ -98,7 +96,7 @@ function getSubDirects(level, user, myUsers, res) {
                 myUsers.push(users[i].directs[j]);
             }
         }
-        makeKey(level, user, myUsers, res);
+        makeKey(level, user, myUsers, req, res, next);
     });
 }
 
@@ -171,9 +169,9 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!user) {
-                res.jsonp(404, {
-                    error: 'User does not exist'
-                });
+                var err = new Error('User does not exist');
+                err.status = 404;
+                return next(err);
             } else {
                 // Make array based on the data we have Manager -> Me -> Directs
                 if (user.level === 2) {
@@ -222,9 +220,9 @@ module.exports = function(app) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!user.length) {
-                    res.jsonp(404, {
-                        error: 'No users found'
-                    });
+                    var err = new Error('No users found');
+                    err.status = 404;
+                    return next(err);
                 } else {
                     res.jsonp(user);
                 }
@@ -238,7 +236,7 @@ module.exports = function(app) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!user.length) {
-                    var err = new Error('No users found.');
+                    var err = new Error('No users found');
                     err.status = 404;
                     return next(err);
                 } else {
@@ -400,9 +398,9 @@ module.exports = function(app) {
             } else if (resource) {
                 res.send(204);
             } else {
-                res.jsonp(404, {
-                    error: 'User not found'
-                });
+                var err = new Error('User not found');
+                err.status = 404;
+                return next(err);
             }
         });
     });
@@ -436,9 +434,9 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!project.length) {
-                res.jsonp(404, {
-                    error: 'No projects found'
-                });
+                var err = new Error('Project not found');
+                err.status = 404;
+                return next(err);
             } else {
                 res.jsonp(project);
             }
@@ -511,9 +509,9 @@ module.exports = function(app) {
                     'id': req.params.userid
                 });
             } else {
-                res.jsonp(404, {
-                    error: 'Project not found'
-                });
+                var err = new Error('Project not found');
+                err.status = 404;
+                return next(err);
             }
         });
     });
@@ -540,9 +538,9 @@ module.exports = function(app) {
             } else if (numberAffected) {
                 res.send(204);
             } else {
-                res.jsonp(404, {
-                    error: 'Project not found'
-                });
+                var err = new Error('Project not found');
+                err.status = 404;
+                return next(err);
             }
         });
     });
@@ -561,9 +559,9 @@ module.exports = function(app) {
             } else if (resource) {
                 res.send(204);
             } else {
-                res.jsonp(404, {
-                    error: 'Project not found'
-                });
+                var err = new Error('Project not found');
+                err.status = 404;
+                return next(err);
             }
         });
     });
@@ -585,23 +583,24 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!user) {
-                res.jsonp(404, {
-                    error: 'User does not exist'
-                });
+                var err = new Error('User not found');
+                err.status = 404;
+                return next(err);
             } else {
                 bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
-
                         if (user.level === 2) {
-                            makeKey(user.level, user._id, user.directs, res);
+                            makeKey(user.level, user._id, user.directs, req, res, next);
                         } else if (user.level === 3) {
-                            getSubDirects(user.level, user._id, user.directs, res);
+                            getSubDirects(user.level, user._id, user.directs, req, res, next);
                         } else {
-                            makeKey(user.level, user._id, [], res);
+                            makeKey(user.level, user._id, [], req, res, next);
                         }
 
                     } else {
-                        return next(new Error('Incorrect password'));
+                        var err = new Error('Incorrect password');
+                        err.status = 401;
+                        return next(err);
                     }
                 });
             }
@@ -612,6 +611,8 @@ module.exports = function(app) {
     app.use(function(err, req, res, next) {
         if (err.status === 404) {
             res.jsonp(404, { error: err.message });
+        } else if (err.status === 401) {
+            res.jsonp(401, { error: err.message });
         } else {
             res.jsonp(500, { error: err.message });
         }
