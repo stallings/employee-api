@@ -7,17 +7,20 @@ var express = require('express'),
     cors = require('cors'),
     database = require('./config/database');
 
+
 // Create Express App and use JSON/urlencoded parsing middleware
 var app = express();
 
+// app.set('json spaces', 2);  // set spaces to make API readable
 app.use(bodyParser());
 app.use(cors({
     origin: '*'
 }));
 
+
 var env = process.env.NODE_ENV || 'development';
 if (env === 'development') {
-   app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 
 // Set routes

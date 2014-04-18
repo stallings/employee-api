@@ -23,9 +23,10 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
-* Make API return pretty()
+* Error handling: https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x
+* Error handling: http://blog.safaribooksonline.com/2014/03/12/error-handling-express-js-applications/
 * Read through: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
-* Change POST reply to 201
+* Change DELETE to 204 No Content
 * Clean up error message and success message
 * Change checkAuth for checkUserAuth checkProjectAuth?
 * Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc

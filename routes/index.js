@@ -11,6 +11,7 @@ var bcrypt = require('bcrypt');
 /* ********************************* */
 // Helper Functions
 /* ********************************* */
+
 function checkAuth(req, res, next) {
     "use strict";
     if (req.query.key !== undefined) {
@@ -28,19 +29,19 @@ function checkAuth(req, res, next) {
             } else {
                 // If we are VP, we are always authorized
                 if (key[0].level === 4) {
-                    next();
+                    return next();
 
                     // If we are Director/Manager
                 } else if ((key[0].level === 2) || (key[0].level === 3)) {
 
                     // If no userid is passed, we are creating project/user (allow)
                     if (req.params.userid === undefined) {
-                        next();
+                        return next();
 
                     } else {
                         // Allow trying to edit/delete a direct report only
                         if (key[0].edit.indexOf(req.params.userid) !== -1) {
-                            next();
+                            return next();
                         } else {
                             res.jsonp(401, {
                                 error: 'Not authorized. User is not a direct report.'
@@ -74,7 +75,7 @@ function makeKey(level, user, directs, res) {
     myKey.save(function(err) {
         if (err) {
             res.jsonp(500, {
-                error: err.name + ' - ' + err.message
+                error: err.message
             });
         } else {
             res.jsonp({
@@ -107,6 +108,7 @@ function getSubDirects(level, user, myUsers, res) {
 /* ********************************* */
 module.exports = function(app) {
     "use strict";
+
     /* ********************************* */
     // Route: GET /
     // Description: Returns the UX API version
@@ -114,7 +116,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/
     /* ********************************* */
-    app.get('/', function(req, res) {
+    app.get('/', function(req, res, next) {
         res.jsonp({
             'version': '0.0.1'
         });
@@ -128,7 +130,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
-    app.get('/users', function(req, res) {
+    app.get('/users', function(req, res, next) {
         User.find({}, 'department jobTitle employeeType', function(err, users) {
             res.jsonp(users);
         });
@@ -141,15 +143,13 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/search/string
     /* ********************************* */
-    app.get('/users/search/:string', function(req, res) {
+    app.get('/users/search/:string', function(req, res, next) {
         var regex = new RegExp(req.params.string, 'i');
         User.find({
             _id: regex
         }, '_id', function(err, users) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else {
                 res.jsonp(users);
             }
@@ -163,15 +163,13 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/orgchart/userid
     /* ********************************* */
-    app.post('/users/orgchart/:userid', function(req, res) {
+    app.get('/users/orgchart/:userid', function(req, res, next) {
 
         User.findOne({
             '_id': req.params.userid
         }, function(err, user) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (!user) {
                 res.jsonp(404, {
                     error: 'User does not exist'
@@ -212,7 +210,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/id,id
     /* ********************************* */
-    app.get('/users/:userid', function(req, res) {
+    app.get('/users/:userid', function(req, res, next) {
 
         // If multiple users requested, return info for each (less than individual)
         if (req.params.userid.indexOf(',') != -1) {
@@ -222,9 +220,7 @@ module.exports = function(app) {
                 }
             }, '-skills').lean().exec(function(err, user) {
                 if (err) {
-                    res.jsonp(500, {
-                        error: err.name + ' - ' + err.message
-                    });
+                    return next(new Error(err.message));
                 } else if (!user.length) {
                     res.jsonp(404, {
                         error: 'No users found'
@@ -240,13 +236,11 @@ module.exports = function(app) {
                 '_id': req.params.userid
             }).lean().exec(function(err, user) {
                 if (err) {
-                    res.jsonp(500, {
-                        error: err.name + ' - ' + err.message
-                    });
+                    return next(new Error(err.message));
                 } else if (!user.length) {
-                    res.jsonp(404, {
-                        error: 'No users found'
-                    });
+                    var err = new Error('No users found.');
+                    err.status = 404;
+                    return next(err);
                 } else {
 
                     // If valid key, send skills
@@ -310,17 +304,16 @@ module.exports = function(app) {
     // Description: Add a user. Validation happens at schema level
     //
     // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald", "jobTitle": "President"}' http://localhost:5000/users?key=532b0ded565784050ab40b02
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald7", "username": "billy", "level": 3}' http://localhost:5000/users?key=5351402ea096c331093a8e0f
     /* ********************************* */
-    app.post('/users', checkAuth, function(req, res) {
+    app.post('/users', checkAuth, function(req, res, next) {
         var myUser = new User(req.body);
         myUser.save(function(err) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else {
-                res.jsonp(myUser);
+                res.set('Location', req.protocol + '://' + req.get('host') + req.path + '/' + encodeURIComponent(myUser._id));
+                res.send(201);
             }
         });
     });
@@ -341,9 +334,7 @@ module.exports = function(app) {
             $set: req.body
         }, function(err, numberAffected, raw) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else {
                 res.jsonp({
                     'id': req.params.userid
@@ -359,7 +350,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"_id": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/John%20Smith/skills?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.put('/users/:userid/skills', checkAuth, function(req, res) {
+    app.put('/users/:userid/skills', checkAuth, function(req, res, next) {
         var query = {
             _id: req.params.userid
         };
@@ -371,9 +362,7 @@ module.exports = function(app) {
             }
         }, function(err) {
             if (err) {
-                res.jsonp(500, {
-                    error: 'Unable to delete user skills'
-                });
+                return next(new Error('Unable to delete user skills'));
             }
         });
 
@@ -386,17 +375,13 @@ module.exports = function(app) {
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (numberAffected) {
                 res.jsonp({
                     'id': req.params.userid
                 });
             } else {
-                res.jsonp(500, {
-                    error: 'No rows affected'
-                });
+                return next(new Error('No rows affected'));
             }
         });
     });
@@ -408,16 +393,12 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/users/John%20Smith
     /* ********************************* */
-    app.delete('/users/:userid', checkAuth, function(req, res) {
+    app.delete('/users/:userid', checkAuth, function(req, res, next) {
         User.findByIdAndRemove(req.params.userid, function(err, resource) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (resource) {
-                res.jsonp({
-                    message: 'User deleted'
-                });
+                res.send(204);
             } else {
                 res.jsonp(404, {
                     error: 'User not found'
@@ -426,10 +407,6 @@ module.exports = function(app) {
         });
     });
 
-
-
-    /* --------------------------------------------------------------------------------------------------- */
-
     /* ********************************* */
     // Route: GET /projects
     // Description: Get all project names and IDs
@@ -437,7 +414,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/projects
     /* ********************************* */
-    app.get('/projects', function(req, res) {
+    app.get('/projects', function(req, res, next) {
         Project.find({}, '_id', function(err, projects) {
             res.jsonp(projects);
         });
@@ -450,16 +427,14 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/projects/id,id
     /* ********************************* */
-    app.get('/projects/:projectid', function(req, res) {
+    app.get('/projects/:projectid', function(req, res, next) {
         Project.find({
             '_id': {
                 $in: req.params.projectid.split(",")
             }
         }, function(err, project) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (!project.length) {
                 res.jsonp(404, {
                     error: 'No projects found'
@@ -477,13 +452,11 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Baseball Cards", "status": "in progress"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
     /* ********************************* */
-    app.post('/projects', checkAuth, function(req, res) {
+    app.post('/projects', checkAuth, function(req, res, next) {
         var myProject = new Project(req.body);
         myProject.save(function(err) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else {
                 res.jsonp(myProject);
             }
@@ -497,7 +470,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '{"description": "Another fashion project"}' http://localhost:5000/projects/Kmart%20Fashion/?key=53442478daec93cb0a30dd1a
     /* ********************************* */
-    app.put('/projects/:projectid', checkAuth, function(req, res) {
+    app.put('/projects/:projectid', checkAuth, function(req, res, next) {
         var query = {
             _id: req.params.projectid
         };
@@ -505,9 +478,7 @@ module.exports = function(app) {
             $set: req.body
         }, function(err, numberAffected, raw) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else {
                 res.jsonp({
                     'id': req.params.projectid
@@ -523,7 +494,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X PUT http://localhost:5000/projects/Kmart%20Fashion/members/Nina%20Pulgar?key=53442478daec93cb0a30dd1a
     /* ********************************* */
-    app.put('/projects/:projectid/members/:userid', checkAuth, function(req, res) {
+    app.put('/projects/:projectid/members/:userid', checkAuth, function(req, res, next) {
         var query = {
             _id: req.params.projectid
         };
@@ -534,9 +505,7 @@ module.exports = function(app) {
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (numberAffected) {
                 res.jsonp({
                     'id': req.params.userid
@@ -556,7 +525,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/projects/Kmart%20Fashion/members/Nina%20Pulgar?key=53442478daec93cb0a30dd1a
     /* ********************************* */
-    app.delete('/projects/:projectid/members/:userid', checkAuth, function(req, res) {
+    app.delete('/projects/:projectid/members/:userid', checkAuth, function(req, res, next) {
         var query = {
             _id: req.params.projectid
         };
@@ -567,13 +536,9 @@ module.exports = function(app) {
             }
         }, function(err, numberAffected, raw) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (numberAffected) {
-                res.jsonp({
-                    message: req.params.userid + ' removed from project'
-                });
+                res.send(204);
             } else {
                 res.jsonp(404, {
                     error: 'Project not found'
@@ -589,16 +554,12 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/projects/Kmart%20Fashion?key=53442478daec93cb0a30dd1a
     /* ********************************* */
-    app.delete('/projects/:projectid', checkAuth, function(req, res) {
+    app.delete('/projects/:projectid', checkAuth, function(req, res, next) {
         Project.findByIdAndRemove(req.params.projectid, function(err, resource) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (resource) {
-                res.jsonp({
-                    message: 'Project deleted'
-                });
+                res.send(204);
             } else {
                 res.jsonp(404, {
                     error: 'Project not found'
@@ -616,15 +577,13 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
     /* ********************************* */
-    app.post('/logins', function(req, res) {
+    app.post('/logins', function(req, res, next) {
 
         User.findOne({
             'username': req.body.username
         }, function(err, user) {
             if (err) {
-                res.jsonp(500, {
-                    error: err.name + ' - ' + err.message
-                });
+                return next(new Error(err.message));
             } else if (!user) {
                 res.jsonp(404, {
                     error: 'User does not exist'
@@ -642,14 +601,20 @@ module.exports = function(app) {
                         }
 
                     } else {
-                        res.jsonp(500, {
-                            error: 'Incorrect password'
-                        });
+                        return next(new Error('Incorrect password'));
                     }
                 });
             }
         });
     });
 
+    // Error handling
+    app.use(function(err, req, res, next) {
+        if (err.status === 404) {
+            res.jsonp(404, { error: err.message });
+        } else {
+            res.jsonp(500, { error: err.message });
+        }
 
+    });
 };
