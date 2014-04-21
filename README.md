@@ -23,11 +23,9 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
-* Change checkAuth for checkUserAuth checkProjectAuth?
-* Add an option to find by fullname http://localhost:5000/users/search/Nina Pulgar (don't forget to add %'s for spaces etc
+* Make API /users/orgchart/StartName, it will return 2 levels by default
 * Add utility script to Employee Name _id
 * Add utility script to Project Name _id
-* Make API /users/orgchart/StartName, it will return 2 levels by default
 * Org chart generator https://developers.google.com/chart/interactive/docs/gallery/orgchart https://code.google.com/apis/ajax/playground/?type=visualization#org_chart
 * Error handling: https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x
 * Error handling: http://blog.safaribooksonline.com/2014/03/12/error-handling-express-js-applications/

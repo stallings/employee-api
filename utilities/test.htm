@@ -1,122 +1,240 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>API Test</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	</head>
-	<body>
+  <head>
+    <meta charset="utf-8">
 
-    <script>
-    $( document ).ready(function() {
+    <title>Collapsible Tree Example</title>
 
+    <style>
 
-        // All users request
-        $.ajax({
-          type: "GET",
-          url: "http://localhost:5000/users",
-          statusCode: {
-            404: function() {
-              console.log("Status code 404: User not found");
-            },
-            500: function() {
-              console.log("Status code 500: Internal Server Error!");
-            },
-            200: function() {
-              console.log("Status code 200: Success!");
-            }
+ .node circle {
+   fill: #fff;
+   stroke: steelblue;
+   stroke-width: 3px;
+ }
+
+ .node text { font: 12px sans-serif; }
+
+ .link {
+   fill: none;
+   stroke: #ccc;
+   stroke-width: 2px;
+ }
+
+    </style>
+
+  </head>
+
+  <body>
+
+<!-- load the d3.js library -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>
+
+var treeData = [
+  {
+    "name": "Robert Dietz|VP User Experience",
+    "parent": "null",
+    "children": [
+      {
+        "name": "Bob Angone|Director Creative",
+        "parent": "Robert Dietz|VP User Experience",
+        "children": [
+          {
+            "name": "Mark Pelletier|Title",
+            "parent": "Bob Angone|Director Creative"
+          },
+          {
+            "name": "Michael Propp|Title",
+            "parent": "Bob Angone|Director Creative"
           }
-        }).done(function(msg) {
-            console.log(msg);
-        }).fail(function(msg) {
-            console.log(msg.responseText);
-        });        
-        
-        
-//        // Good request
-//        $.ajax({
-//          type: "GET",
-//          url: "http://localhost:5000/users/53306c5770a229ab13ab56d2",
-//          statusCode: {
-//            404: function() {
-//              console.log("Status code 404: User not found");
-//            },
-//            500: function() {
-//              console.log("Status code 500: Internal Server Error!");
-//            },
-//            200: function() {
-//              console.log("Status code 200: Success!");
-//            }
-//          }
-//        }).done(function(msg) {
-//            console.log(msg);
-//        }).fail(function(msg) {
-//            console.log(msg.responseText);
-//        });
-//      
-        
-        
-        
-        
-        
-//        // User doesn't exist
-//        $.ajax({
-//          type: "GET",
-//          url: "http://localhost:5000/users/53306c5770a229ab13ab56d3",
-//          statusCode: {
-//            404: function() {
-//              console.log("Status code 404: User not found");
-//            },
-//            500: function() {
-//              console.log("Status code 500: Internal Server Error!");
-//            },
-//            200: function() {
-//              console.log("Status code 200: Success!");
-//            }
-//          }
-//        }).done(function(msg) {
-//            console.log(msg);
-//        }).fail(function(msg) {
-//            console.log(msg.responseText);
-//        });
+        ]
+      },
+      {
+		"name": "Andrew Sutton|DVP UXA",
+		"parent": "Robert Dietz|VP User Experience",
+		"children": [
+		{
+			"name": "Rob Philibert|Title",
+			"parent": "Andrew Sutton|DVP UXA"
+		},
+		{
+			"name": "Yanti Arifin|Title",
+			"parent": "Andrew Sutton|DVP UXA"
+		},
+		{
+			"name": "Robbin Farrell|Title",
+			"parent": "Andrew Sutton|DVP UXA"
+		},
+		{
+			"name": "Ryan Lutterbach|Title",
+			"parent": "Andrew Sutton|DVP UXA"
+		}
+		]
+	},
+{
+	"name": "Matt Danforth|Director Web Dev",
+	"parent": "Robert Dietz|VP User Experience",
+	"children": [
+	{
+		"name": "Crystal Wuebker|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Jose Pulgar|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Michael Dietz|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Steve Swartz|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Tad Santos|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Steven Morgan|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Troy Taylor|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Scott Sullivan|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	},
+	{
+		"name": "Rim Ryan|Title",
+		"parent": "Matt Danforth|Director Web Dev"
+	}
+	]
+},
+{
+	"name": "Karol Czyrka|Director Experience Frameworks",
+	"parent": "Robert Dietz|VP User Experience",
+	"children": [
+	{
+		"name": "Kerry McAleer-Forte|Title",
+		"parent": "Karol Czyrka|Director Experience Frameworks"
+	},
+	{
+		"name": "Jim McNally|Title",
+		"parent": "Karol Czyrka|Director Experience Frameworks"
+	},
+	{
+		"name": "Tracy Hayes|Title",
+		"parent": "Karol Czyrka|Director Experience Frameworks"
+	}
+	]
+},
+    ]
+  }
+];
 
-        
-        
-        
-        
-//        // Bad ID
-//        $.ajax({
-//          type: "GET",
-//          url: "http://localhost:5000/users/53306c5770a229ab1",
-//          statusCode: {
-//            404: function() {
-//              console.log("Status code 404: User not found");
-//            },
-//            500: function() {
-//              console.log("Status code 500: Internal Server Error!");
-//            },
-//            200: function() {
-//              console.log("Status code 200: Success!");
-//            }
-//          }
-//        }).done(function(msg) {
-//            console.log(msg);
-//        }).fail(function(msg) {
-//            console.log(msg.responseText);
-//        });
-        
-        
-        
-        
-        
-        
-        
-    });
-    </script>
+// ************** Generate the tree diagram  *****************
+var margin = {top: 20, right: 120, bottom: 20, left: 160},
+ width = 660 - margin.right - margin.left,
+ height = 700 - margin.top - margin.bottom;
 
-        
-<!--                   data: { name: "John", location: "Boston" },-->
-        
-        
-    </body>
+var i = 0;
+
+var tree = d3.layout.tree()
+ .size([height, width]);
+
+var diagonal = d3.svg.diagonal()
+ .projection(function(d) { return [d.y, d.x]; });
+
+var svg = d3.select("body").append("svg")
+ .attr("width", width + margin.right + margin.left)
+ .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+root = treeData[0];
+
+update(root);
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+   links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+  // Declare the nodesâ€¦
+  var node = svg.selectAll("g.node")
+   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter the nodes.
+  var nodeEnter = node.enter().append("g")
+   .attr("class", "node")
+   .attr("transform", function(d) {
+    return "translate(" + d.y + "," + d.x + ")"; });
+
+	// Add the circle
+  nodeEnter.append("circle")
+   .attr("r", 10)
+   .style("fill", "#ff0");
+
+	// Employee Name
+  nodeEnter.append("text")
+   .attr("x", function(d) {
+    return d.children || d._children ? -13 : 13; })
+   .attr("y", -6)
+   .attr("dy", ".35em")
+   .attr("text-anchor", function(d) {
+    return d.children || d._children ? "end" : "start"; })
+   .text(function(d) {
+	  // Do a check here, if children are undefined show both
+	    var nameTitle = d.name.split('|');
+		if (d.children === undefined) {
+			return nameTitle[0];
+		} else {
+			return nameTitle[0];
+		}
+	})
+   .style("font-weight", "bold")
+   .style("fill-opacity", 1);
+
+	// Employee Title
+	nodeEnter.append("text")
+	.attr("x", function(d) {
+	return d.children || d._children ? -13 : 13; })
+	.attr("y", -6)
+	.attr("dy", "1.5em")
+	.attr("text-anchor", function(d) {
+	return d.children || d._children ? "end" : "start"; })
+	.text(function(d) {
+		// Do a check here, if children are undefined show both
+		var nameTitle = d.name.split('|');
+		if (d.children === undefined) {
+			return nameTitle[1];
+		} else {
+			return nameTitle[1];
+		}
+	})
+	.style("fill-opacity", 1);
+
+  // Declare the links
+  var link = svg.selectAll("path.link")
+   .data(links, function(d) { return d.target.id; });
+
+  // Enter the links.
+  link.enter().insert("path", "g")
+   .attr("class", "link")
+   .attr("d", diagonal);
+
+}
+
+</script>
+
+  </body>
 </html>

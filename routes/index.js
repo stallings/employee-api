@@ -41,16 +41,16 @@ function checkAuth(req, res, next) {
                         if (key[0].edit.indexOf(req.params.userid) !== -1) {
                             return next();
                         } else {
-                            var err = new Error('Not authorized. User not found or is not a direct report.');
-                            err.status = 401;
+                            var err = new Error('Forbidden. User is not a direct report.');
+                            err.status = 403;
                             return next(err);
                         }
                     }
 
                     // Regular users are not allowed to edit anything
                 } else {
-                    var err = new Error('Not authorized');
-                    err.status = 401;
+                    var err = new Error('Forbidden. User is not a direct report.');
+                    err.status = 403;
                     return next(err);
                 }
             }
@@ -613,6 +613,8 @@ module.exports = function(app) {
             res.jsonp(404, { error: err.message });
         } else if (err.status === 401) {
             res.jsonp(401, { error: err.message });
+        } else if (err.status === 403) {
+            res.jsonp(403, { error: err.message });
         } else {
             res.jsonp(500, { error: err.message });
         }
