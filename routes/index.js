@@ -163,8 +163,6 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/orgchart/:userid', function(req, res, next) {
 
-
-    // VP = 4, Director = 3, Manager = 2, General User = 1
         User.findOne({
             '_id': req.params.userid
         }, function(err, user) {
@@ -176,7 +174,7 @@ module.exports = function(app) {
                 return next(err);
             } else {
 
-                if (user.level < 4) {
+                if (user._id !== "Robert Dietz") {
 
                     // Get the titles of manager and direct reports
                     var idsToSearch = Array.prototype.concat(user.manager, user.directs);
@@ -199,7 +197,6 @@ module.exports = function(app) {
                                 nameAndTitles[userTitles[i]._id] = userTitles[i].title;
                             }
 
-
                         var orgChartData = [
                         {
                             name: user.manager + "|" + nameAndTitles[user.manager],
@@ -219,124 +216,14 @@ module.exports = function(app) {
                         }
                     });
 
+                // If it's VP, make a pre-defined structure
+                } else {
+
 
                 }
             }
         });
     });
-                /*
-
-                    User.find({
-                        '_id': {
-                            $in: req.params.userid.split(",")
-                        }
-                    }, '-skills').lean().exec(function(err, user) {
-                        if (err) {
-                            return next(new Error(err.message));
-                        } else if (!user.length) {
-                            var err = new Error('No users found');
-                            err.status = 404;
-                            return next(err);
-                        } else {
-                            res.jsonp(user);
-                        }
-                    });
-
-
-                // Get titles and populate in array
-                // myArray["Matt Danforth"] = "Director";
-
-                // Fill in the data
-
-                // function sendOrgChart(arrayOfPeople, object)
-
-                var treeData = [
-                {
-                    name: "Matt Danforth",
-                    parent: "null",
-                    children: [
-                        {
-                        name: "Jose Pulgar|Manager",
-                        parent: "Matt Danforth",
-                        children: [
-                        {
-                            name: "Rob Philibert",
-                            parent: "Jose Pulgar|Manager"
-                        },
-                        {
-                            name: "Yanti Arifin",
-                            parent: "Jose Pulgar|Manager"
-                        },
-                        {
-                            name: "Robbin Farrell",
-                            parent: "Jose Pulgar|Manager"
-                        },
-                        {
-                            name: "Ryan Lutterbach",
-                            parent: "Jose Pulgar|Manager"
-                        }
-                        ]
-                    }]
-                }];
-
-/*
-
-
-managerdirectorObj =
-[
-{
-    name: "Jose Pulgar|Manager",
-    parent: "Matt Danforth",
-    children: [
-    {
-        name: "Felix Jung",
-        parent: "Jose Pulgar|Manager"
-    },
-    {
-        name: "Lindsey Snyder",
-        parent: "Jose Pulgar|Manager"
-    },
-    {
-        name: "Maureen Vana",
-        parent: "Jose Pulgar|Manager"
-    }
-
-    ]
-}]
-
-generalObj =
-[
-{
-    name: "Jose Pulgar|Manager",
-    parent: "Matt Danforth"
-}]
-*/
-
-
-
-                    /*
-[{v:'Mike', f:'Mike<br/>President'}, ''],
-[{v:'Jim', f:'Jim<br/>Vice President'}, 'Mike'],
-['Alice', 'Mike'],
-['Bob', 'Jim'],
-['Carol', 'Bob']
-
-                    // Get additional information Manager -> Me -> Directs
-                } else if (user.level === 3) {
-                    getSubDirects(user.level, user._id, user.directs, res);
-                    // Get additional information Manager -> Me (with other directs)
-                } else {
-                    makeKey(user.level, user._id, [], res);
-                }
-
-                /* Target:
-                [{v:'Mike', f:'Mike<br/>President'}, ''],
-                [{v:'Jim', f:'Jim<br/>Vice President'}, 'Mike'],
-                ['Alice', 'Mike'],
-                ['Bob', 'Jim'],
-                ['Carol', 'Bob']
-          */
-
 
 
     /* ********************************* */
