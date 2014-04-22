@@ -163,6 +163,8 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/orgchart/:userid', function(req, res, next) {
 
+
+    // VP = 4, Director = 3, Manager = 2, General User = 1
         User.findOne({
             '_id': req.params.userid
         }, function(err, user) {
@@ -173,15 +175,152 @@ module.exports = function(app) {
                 err.status = 404;
                 return next(err);
             } else {
-                // Make array based on the data we have Manager -> Me -> Directs
-                if (user.level === 2) {
+
+                if (user.level < 4) {
+
+                    // Get the titles of manager and direct reports
+                    var idsToSearch = Array.prototype.concat(user.manager, user.directs);
+
+                    User.find({
+                        '_id': {
+                            $in: idsToSearch
+                        }
+                    }, 'title').lean().exec(function(err, userTitles) {
+                        if (err) {
+                            return next(new Error(err.message));
+                        } else if (!userTitles.length) {
+                            var err = new Error('No users titles found');
+                            err.status = 404;
+                            return next(err);
+                        } else {
+                            // Create array with name -> title
+                            var nameAndTitles = [];
+                            for (var i = 0; i < userTitles.length; i++) {
+                                nameAndTitles[userTitles[i]._id] = userTitles[i].title;
+                            }
+
+
+                        var orgChartData = [
+                        {
+                            name: user.manager + "|" + nameAndTitles[user.manager],
+                            parent: "null",
+                            children: [
+                                {
+                                name: user._id + "|" + user.title,
+                                parent: user.manager + "|" + nameAndTitles[user.manager],
+                                children: []
+                            }]
+                        }];
+
+                        for (var i = 0; i < user.directs.length; i++) {
+                            orgChartData[0].children[0].children.push( {name: user.directs[i] + "|" + nameAndTitles[user.directs[i]], parent: user._id + "|" + user.title } );
+                        }
+                        res.jsonp(orgChartData);
+                        }
+                    });
+
+
+                }
+            }
+        });
+    });
+                /*
+
+                    User.find({
+                        '_id': {
+                            $in: req.params.userid.split(",")
+                        }
+                    }, '-skills').lean().exec(function(err, user) {
+                        if (err) {
+                            return next(new Error(err.message));
+                        } else if (!user.length) {
+                            var err = new Error('No users found');
+                            err.status = 404;
+                            return next(err);
+                        } else {
+                            res.jsonp(user);
+                        }
+                    });
+
+
+                // Get titles and populate in array
+                // myArray["Matt Danforth"] = "Director";
+
+                // Fill in the data
+
+                // function sendOrgChart(arrayOfPeople, object)
+
+                var treeData = [
+                {
+                    name: "Matt Danforth",
+                    parent: "null",
+                    children: [
+                        {
+                        name: "Jose Pulgar|Manager",
+                        parent: "Matt Danforth",
+                        children: [
+                        {
+                            name: "Rob Philibert",
+                            parent: "Jose Pulgar|Manager"
+                        },
+                        {
+                            name: "Yanti Arifin",
+                            parent: "Jose Pulgar|Manager"
+                        },
+                        {
+                            name: "Robbin Farrell",
+                            parent: "Jose Pulgar|Manager"
+                        },
+                        {
+                            name: "Ryan Lutterbach",
+                            parent: "Jose Pulgar|Manager"
+                        }
+                        ]
+                    }]
+                }];
+
+/*
+
+
+managerdirectorObj =
+[
+{
+    name: "Jose Pulgar|Manager",
+    parent: "Matt Danforth",
+    children: [
+    {
+        name: "Felix Jung",
+        parent: "Jose Pulgar|Manager"
+    },
+    {
+        name: "Lindsey Snyder",
+        parent: "Jose Pulgar|Manager"
+    },
+    {
+        name: "Maureen Vana",
+        parent: "Jose Pulgar|Manager"
+    }
+
+    ]
+}]
+
+generalObj =
+[
+{
+    name: "Jose Pulgar|Manager",
+    parent: "Matt Danforth"
+}]
+*/
+
+
+
                     /*
 [{v:'Mike', f:'Mike<br/>President'}, ''],
 [{v:'Jim', f:'Jim<br/>Vice President'}, 'Mike'],
 ['Alice', 'Mike'],
 ['Bob', 'Jim'],
 ['Carol', 'Bob']
-*/
+
                     // Get additional information Manager -> Me -> Directs
                 } else if (user.level === 3) {
                     getSubDirects(user.level, user._id, user.directs, res);
@@ -197,9 +336,8 @@ module.exports = function(app) {
                 ['Bob', 'Jim'],
                 ['Carol', 'Bob']
           */
-            }
-        });
-    });
+
+
 
     /* ********************************* */
     // Route: GET /users/id,id
@@ -334,6 +472,12 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else {
+
+                // If title changed, change the title in all manager cards
+                // var query = { Zip: new RegExp('^' + zipCode) };
+                // db.users.find( { directs: { $in: [ /^req.params.userid/] } } )
+                // db.users.find( { directs: { /^Man/ } } )
+
                 res.jsonp({
                     'id': req.params.userid
                 });

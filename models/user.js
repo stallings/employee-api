@@ -36,7 +36,7 @@ var userSchema = new Schema({
     startDate: {
         type: Date
     },
-    jobTitle: {
+    title: {
         type: String,
     },
     email: {

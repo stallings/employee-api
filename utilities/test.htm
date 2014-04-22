@@ -32,6 +32,69 @@
 
 <script>
 
+// Default structure (applies to everyone)
+
+// Get titles and populate in array
+// myArray["Matt Danforth"] = "Director";
+
+// Fill in the data
+
+// function sendOrgChart(arrayOfPeople, object)
+
+var treeData = [
+{
+    "name": "Matt Danforth",
+    "parent": "null",
+    "children": [
+        {
+        name: "Jose Pulgar|Manager",
+        parent: "Matt Danforth",
+        children: [
+        {
+            "name": "Rob Philibert",
+            "parent": "Jose Pulgar|Manager"
+        },
+        {
+            "name": "Yanti Arifin",
+            "parent": "Jose Pulgar|Manager"
+        },
+        {
+            "name": "Robbin Farrell",
+            "parent": "Jose Pulgar|Manager"
+        },
+        {
+            "name": "Ryan Lutterbach",
+            "parent": "Jose Pulgar|Manager"
+        }
+        ]
+    }]
+}];
+
+/*
+var treeData = [
+{
+	"name": "Robert Dietz|VP User Experience",
+	"parent": "null",
+	"children": [
+	{
+		"name": "Bob Angone|Director Creative",
+		"parent": "Robert Dietz|VP User Experience",
+		"children": [
+		{
+			"name": "Mark Pelletier|Title",
+			"parent": "Bob Angone|Director Creative"
+		},
+		{
+			"name": "Michael Propp|Title",
+			"parent": "Bob Angone|Director Creative"
+		}
+		]
+	}
+	]
+}];
+*/
+
+/*
 var treeData = [
   {
     "name": "Robert Dietz|VP User Experience",
@@ -136,10 +199,11 @@ var treeData = [
     ]
   }
 ];
+*/
 
 // ************** Generate the tree diagram  *****************
 var margin = {top: 20, right: 120, bottom: 20, left: 160},
- width = 660 - margin.right - margin.left,
+ width = 860 - margin.right - margin.left,
  height = 700 - margin.top - margin.bottom;
 
 var i = 0;
