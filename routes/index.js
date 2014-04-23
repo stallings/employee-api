@@ -193,7 +193,7 @@ module.exports = function(app) {
                 return next(err);
             } else {
 
-                if (user._id !== "Robert Dietz") {
+                if (user._id !== "VP Name") {
 
                     // Get the titles of manager and direct reports
                     var idsToSearch = Array.prototype.concat(user.manager, user.directs);

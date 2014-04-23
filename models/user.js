@@ -36,7 +36,7 @@ var userSchema = new Schema({
     employeeType: {
         type: String,
         enum: ['FTE', 'Contractor'],
-        required: true;
+        required: true
     },
     manager: {
         type: String,
