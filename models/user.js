@@ -8,12 +8,14 @@ var skillSchema = new Schema({
     },
     rating: {
         type: Number,
+        min: 1,
         max: 5,
         required: true
     }
 });
 
 var userSchema = new Schema({
+    // Required
     _id: {
         type: String,
         required: true
@@ -22,13 +24,33 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
-    password: {
+    title: {
         type: String,
         required: true
     },
+    department: {
+        type: String,
+        enum: ['PjM', 'Copy', 'FED', 'UXA', 'Visual Design', 'User Research'],
+        required: true
+    },
+    employeeType: {
+        type: String,
+        enum: ['FTE', 'Contractor'],
+        required: true;
+    },
+    manager: {
+        type: String,
+        required: true
+    },
+    directs: [String],
     level: {
         type: Number,
         required: true
+    },
+
+    // Optional
+    password: {
+        type: String
     },
     headshot: {
         type: String
@@ -36,26 +58,13 @@ var userSchema = new Schema({
     startDate: {
         type: Date
     },
-    title: {
-        type: String,
-    },
-    email: {
-        type: String
-    },
-    employeeType: {
-        type: String,
-        enum: ['FTE', 'Contractor']
-    },
-    department: {
-        type: String,
-        enum: ['PjM', 'Copy', 'FED', 'UXA', 'Visual Design', 'User Research']
-    },
     skype: {
         type: String
     },
-    skills: [skillSchema],
-    manager: String,
-    directs: [String]
+    strenghts: [String],
+    skills: [skillSchema]
+
+
 });
 
 module.exports = mongoose.model('User', userSchema);

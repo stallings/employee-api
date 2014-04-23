@@ -1,11 +1,10 @@
 /* ********************************* */
 // Load Models
 /* ********************************* */
-var User = require('../models/user');
-var Project = require('../models/project');
-var Login = require('../models/login');
-var Key = require('../models/key');
-var bcrypt = require('bcrypt');
+var User = require('../models/user'),
+    Project = require('../models/project'),
+    Key = require('../models/key'),
+    bcrypt = require('bcrypt');
 
 
 /* ********************************* */
@@ -155,6 +154,26 @@ module.exports = function(app) {
     });
 
     /* ********************************* */
+    // Route: GET /users/advancedsearch
+    // Description: Does complex search based on parameters passed in header
+    //
+    // Sample curl:
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"department": "FED", "employeeType": "Contractor"}' http://localhost:5000/users/advancedsearch
+    /* ********************************* */
+    app.get('/users/advancedsearch', function(req, res, next) {
+        var regex = new RegExp(req.params.string, 'i');
+        User.find({
+            _id: regex
+        }, '_id', function(err, users) {
+            if (err) {
+                return next(new Error(err.message));
+            } else {
+                res.jsonp(users);
+            }
+        });
+    });
+
+    /* ********************************* */
     // Route: GET /users/orgchart/string
     // Description: Get Org Chart
     //
@@ -219,6 +238,41 @@ module.exports = function(app) {
                 // If it's VP, make a pre-defined structure
                 } else {
 
+                    /*
+
+                    // Step 1: Find all direct reports
+                    User.find({
+                        '_id': {
+                            $in: ["Name", "Name", "Name", "Name"]
+                        }
+                    }, 'directs').lean().exec(function(err, userDirects) {
+
+                    // Step 2: Put them in an array
+                    // Step 3: Use that array to get all their titles, put in array
+                    // Step 4: Add to our structure
+
+                    var orgChartData = [
+                    {
+                        name: user._id + "|" + user.title,
+                        parent: "null",
+                        children: [
+                            {
+                            name: "Name" + "|" + "Director Web Dev",
+                            parent: user._id + "|" + user.title,
+                            children: [],
+                            name: "Name" + "|" + "Director Creative",
+                            parent: user._id + "|" + user.title,
+                            children: [],
+                            name: "Name" + "|" + "Director UXA",
+                            parent: user._id + "|" + user.title,
+                            children: [],
+                            name: "Name" + "|" + "Director Content Strategy",
+                            parent: user._id + "|" + user.title,
+                            children: []
+                        }]
+                    }];
+
+                    */
 
                 }
             }

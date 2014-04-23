@@ -23,13 +23,13 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
-* Make API /users/orgchart/StartName, it will return 2 levels by default
+* Add batch process for adding everyone
+* Finish org chart for top level
 * Add utility script to Employee Name _id
 * Add utility script to Project Name _id
-* Org chart generator https://developers.google.com/chart/interactive/docs/gallery/orgchart https://code.google.com/apis/ajax/playground/?type=visualization#org_chart
 * Error handling: https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x
 * Error handling: http://blog.safaribooksonline.com/2014/03/12/error-handling-express-js-applications/
-* Read through: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+
 
 
 # Users #
