@@ -23,6 +23,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
+* Remove projects... maybe keep API?
 * Add batch process for adding everyone
 * Finish org chart for top level
 * Add utility script to Employee Name _id

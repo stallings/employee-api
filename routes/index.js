@@ -216,26 +216,27 @@ module.exports = function(app) {
                                 nameAndTitles[userTitles[i]._id] = userTitles[i].title;
                             }
 
-                        var orgChartData = [
-                        {
-                            name: user.manager + "|" + nameAndTitles[user.manager],
-                            parent: "null",
-                            children: [
-                                {
-                                name: user._id + "|" + user.title,
-                                parent: user.manager + "|" + nameAndTitles[user.manager],
-                                children: []
-                            }]
-                        }];
+                            var orgChartData = [{
+                                name: user.manager + "|" + nameAndTitles[user.manager],
+                                parent: "null",
+                                children: [{
+                                    name: user._id + "|" + user.title,
+                                    parent: user.manager + "|" + nameAndTitles[user.manager],
+                                    children: []
+                                }]
+                            }];
 
-                        for (var i = 0; i < user.directs.length; i++) {
-                            orgChartData[0].children[0].children.push( {name: user.directs[i] + "|" + nameAndTitles[user.directs[i]], parent: user._id + "|" + user.title } );
-                        }
-                        res.jsonp(orgChartData);
+                            for (var i = 0; i < user.directs.length; i++) {
+                                orgChartData[0].children[0].children.push({
+                                    name: user.directs[i] + "|" + nameAndTitles[user.directs[i]],
+                                    parent: user._id + "|" + user.title
+                                });
+                            }
+                            res.jsonp(orgChartData);
                         }
                     });
 
-                // If it's VP, make a pre-defined structure
+                    // If it's VP, make a pre-defined structure
                 } else {
 
                     /*
@@ -695,13 +696,21 @@ module.exports = function(app) {
     // Error handling
     app.use(function(err, req, res, next) {
         if (err.status === 404) {
-            res.jsonp(404, { error: err.message });
+            res.jsonp(404, {
+                error: err.message
+            });
         } else if (err.status === 401) {
-            res.jsonp(401, { error: err.message });
+            res.jsonp(401, {
+                error: err.message
+            });
         } else if (err.status === 403) {
-            res.jsonp(403, { error: err.message });
+            res.jsonp(403, {
+                error: err.message
+            });
         } else {
-            res.jsonp(500, { error: err.message });
+            res.jsonp(500, {
+                error: err.message
+            });
         }
 
     });

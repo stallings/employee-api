@@ -3,7 +3,6 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
-    bcrypt = require('bcrypt'),
     cors = require('cors'),
     database = require('./config/database');
 
