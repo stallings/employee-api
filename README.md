@@ -23,13 +23,22 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
-* Remove projects... maybe keep API?
-* Add batch process for adding everyone
+* Clean up Projects API
+
 * Finish org chart for top level
-* Add utility script to Employee Name _id
-* Add utility script to Project Name _id
-* Error handling: https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x
-* Error handling: http://blog.safaribooksonline.com/2014/03/12/error-handling-express-js-applications/
+
+** User Import Utility **
+* mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError
+
+
+** User Rename Utility **
+doc = db.users.findOne({_id: "Jen Smith"})
+doc._id = "Jennifer Smith"
+db.users.insert(doc)
+db.users.remove({_id: "Jen Smith"})
+// Update all direct/managers now
+
+
 
 
 
@@ -184,7 +193,7 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
     "_id" : "Baseball Cards",
     "description" : "An awesome project using NodeJS and RESTful API",
     "tags" : [ "NodeJS", "MongoDB" ]
-    "members" : [  ObjectId("5329f663c43b5a461b507c5a") ]
+    "members" : [ "Jose Pulgar" ]
 }
 ````
 
@@ -240,3 +249,5 @@ db.users.find()
 * Example RESTful API: <http://developers.flattr.net/api/resources/things/>
 * IP White Listing: <https://www.npmjs.org/package/express-ipfilter> <https://www.npmjs.org/package/ipfilter>
 * Mongoose Schema validation: <http://mongoosejs.com/docs/validation.html>
+* Express 3.x to 4.x: <https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x>
+* Error handling: <http://blog.safaribooksonline.com/2014/03/12/error-handling-express-js-applications/>
