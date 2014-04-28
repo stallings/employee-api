@@ -9,21 +9,43 @@ var mongoose = require('mongoose'),
     database = require('../config/database'),
     User = require('../models/user');
 
+var userName = process.argv[2],
+    userManager = "";
+
 // Connect to MongoDB
 mongoose.connect(database.url, function(err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
     } else {
-        var query = {
-            _id: process.argv[2]
-        };
-        User.findOneAndRemove(query, function(err, user) {
+        User.findOneAndRemove({ _id: userName }, function(err, user) {
             if (err) {
                 console.log('Error: Unable to delete user');
             } else {
+                userManager = user.manager;
                 console.log('User removed: ' + process.argv[2]);
-                process.exit(0);
+                // Change manager names
+                User.update({ manager: userName },
+                    { $set: { manager: userManager } },
+                    { multi: true }, function(err, numberAffected, raw) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("Manager fields updated (" + numberAffected + ")");
+
+                            // Change direct report names
+                            User.update({ directs: userName },
+                                { $pull: { directs : userName } },
+                                { multi: true }, function(err, numberAffected, raw) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log("Direct report fields updated (" + numberAffected + ")");
+                                        process.exit(0);
+                                    }
+                                });
+                        }
+                    });
             }
         });
     }

@@ -24,13 +24,10 @@ The Employee API is a RESTful API to get information from each employee.  The in
 ## To Do ##
 
 * Clean up Projects API
-
 * Finish org chart for top level
 
-** User Import Utility **
-* mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError
-
-
+## User Import Utility ##
+mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError
 
 # Users #
 
