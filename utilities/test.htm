@@ -1,304 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
 
     <title>Collapsible Tree Example</title>
 
     <style>
 
- .node circle {
-   fill: #fff;
-   stroke: steelblue;
-   stroke-width: 3px;
- }
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 3px;
+        }
 
- .node text { font: 12px sans-serif; }
+        .node text {
+            font: 12px sans-serif;
+        }
 
- .link {
-   fill: none;
-   stroke: #ccc;
-   stroke-width: 2px;
- }
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 2px;
+        }
 
     </style>
 
-  </head>
+</head>
 
-  <body>
+<body>
 
 <!-- load the d3.js library -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
 
-// Default structure (applies to everyone)
+    // Default structure (applies to everyone)
 
-// Get titles and populate in array
-// myArray["Matt Danforth"] = "Director";
+    // Get titles and populate in array
+    // myArray["Matt Danforth"] = "Director";
 
-// Fill in the data
+    // Fill in the data
 
-// function sendOrgChart(arrayOfPeople, object)
+    // function sendOrgChart(arrayOfPeople, object)
 
-var treeData = [
-{
-    "name": "Matt Danforth",
-    "parent": "null",
-    "children": [
-        {
-        name: "Jose Pulgar|Manager",
-        parent: "Matt Danforth",
-        children: [
-        {
-            "name": "Rob Philibert",
-            "parent": "Jose Pulgar|Manager"
-        },
-        {
-            "name": "Yanti Arifin",
-            "parent": "Jose Pulgar|Manager"
-        },
-        {
-            "name": "Robbin Farrell",
-            "parent": "Jose Pulgar|Manager"
-        },
-        {
-            "name": "Ryan Lutterbach",
-            "parent": "Jose Pulgar|Manager"
-        }
-        ]
-    }]
-}];
+    // Click Example
+    // http://bl.ocks.org/d3noob/8375092
+    var treeData = [
+        {"name": "Matt Danforth|Sr Dir, Web Development", "parent": "null", "children": [
+            {"name": "Jose Pulgar|Mgr, Front End Development", "parent": "Matt Danforth|Sr Dir, Web Development", "children": [
+                {"name": "Alex Miramontes|Web Developer I", "parent": "Jose Pulgar|Mgr, Front End Development"},
+                {"name": "Felix Jung|Sr Web Developer", "parent": "Jose Pulgar|Mgr, Front End Development"},
+                {"name": "Maureen Vana|Web Developer II", "parent": "Jose Pulgar|Mgr, Front End Development"},
+                {"name": "Jennifer Stander|Web Developer", "parent": "Jose Pulgar|Mgr, Front End Development"}
+            ]}
+        ]}
+    ];
 
-/*
-var treeData = [
-{
-	"name": "Robert Dietz|VP User Experience",
-	"parent": "null",
-	"children": [
-	{
-		"name": "Bob Angone|Director Creative",
-		"parent": "Robert Dietz|VP User Experience",
-		"children": [
-		{
-			"name": "Mark Pelletier|Title",
-			"parent": "Bob Angone|Director Creative"
-		},
-		{
-			"name": "Michael Propp|Title",
-			"parent": "Bob Angone|Director Creative"
-		}
-		]
-	}
-	]
-}];
-*/
 
-/*
-var treeData = [
-  {
-    "name": "Robert Dietz|VP User Experience",
-    "parent": "null",
-    "children": [
-      {
-        "name": "Bob Angone|Director Creative",
-        "parent": "Robert Dietz|VP User Experience",
-        "children": [
-          {
-            "name": "Mark Pelletier|Title",
-            "parent": "Bob Angone|Director Creative"
-          },
-          {
-            "name": "Michael Propp|Title",
-            "parent": "Bob Angone|Director Creative"
-          }
-        ]
-      },
-      {
-		"name": "Andrew Sutton|DVP UXA",
-		"parent": "Robert Dietz|VP User Experience",
-		"children": [
-		{
-			"name": "Rob Philibert|Title",
-			"parent": "Andrew Sutton|DVP UXA"
-		},
-		{
-			"name": "Yanti Arifin|Title",
-			"parent": "Andrew Sutton|DVP UXA"
-		},
-		{
-			"name": "Robbin Farrell|Title",
-			"parent": "Andrew Sutton|DVP UXA"
-		},
-		{
-			"name": "Ryan Lutterbach|Title",
-			"parent": "Andrew Sutton|DVP UXA"
-		}
-		]
-	},
-{
-	"name": "Matt Danforth|Director Web Dev",
-	"parent": "Robert Dietz|VP User Experience",
-	"children": [
-	{
-		"name": "Crystal Wuebker|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Jose Pulgar|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Michael Dietz|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Steve Swartz|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Tad Santos|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Steven Morgan|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Troy Taylor|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Scott Sullivan|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	},
-	{
-		"name": "Rim Ryan|Title",
-		"parent": "Matt Danforth|Director Web Dev"
-	}
-	]
-},
-{
-	"name": "Karol Czyrka|Director Experience Frameworks",
-	"parent": "Robert Dietz|VP User Experience",
-	"children": [
-	{
-		"name": "Kerry McAleer-Forte|Title",
-		"parent": "Karol Czyrka|Director Experience Frameworks"
-	},
-	{
-		"name": "Jim McNally|Title",
-		"parent": "Karol Czyrka|Director Experience Frameworks"
-	},
-	{
-		"name": "Tracy Hayes|Title",
-		"parent": "Karol Czyrka|Director Experience Frameworks"
-	}
-	]
-},
-    ]
-  }
-];
-*/
+    // ************** Generate the tree diagram  *****************
+    var margin = {top: 20, right: 120, bottom: 20, left: 160},
+            width = 860 - margin.right - margin.left,
+            height = 700 - margin.top - margin.bottom;
 
-// ************** Generate the tree diagram  *****************
-var margin = {top: 20, right: 120, bottom: 20, left: 160},
- width = 860 - margin.right - margin.left,
- height = 700 - margin.top - margin.bottom;
+    var i = 0;
 
-var i = 0;
+    var tree = d3.layout.tree()
+            .size([height, width]);
 
-var tree = d3.layout.tree()
- .size([height, width]);
+    var diagonal = d3.svg.diagonal()
+            .projection(function (d) {
+                return [d.y, d.x];
+            });
 
-var diagonal = d3.svg.diagonal()
- .projection(function(d) { return [d.y, d.x]; });
+    var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.right + margin.left)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var svg = d3.select("body").append("svg")
- .attr("width", width + margin.right + margin.left)
- .attr("height", height + margin.top + margin.bottom)
-  .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    root = treeData[0];
 
-root = treeData[0];
+    update(root);
 
-update(root);
+    function update(source) {
 
-function update(source) {
+        // Compute the new tree layout.
+        var nodes = tree.nodes(root).reverse(),
+                links = tree.links(nodes);
 
-  // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse(),
-   links = tree.links(nodes);
+        // Normalize for fixed-depth.
+        nodes.forEach(function (d) {
+            d.y = d.depth * 180;
+        });
 
-  // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
+        // Declare the nodesâ€¦
+        var node = svg.selectAll("g.node")
+                .data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                });
 
-  // Declare the nodesâ€¦
-  var node = svg.selectAll("g.node")
-   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+        // Enter the nodes.
+        var nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", function (d) {
+                    return "translate(" + d.y + "," + d.x + ")";
+                });
 
-  // Enter the nodes.
-  var nodeEnter = node.enter().append("g")
-   .attr("class", "node")
-   .attr("transform", function(d) {
-    return "translate(" + d.y + "," + d.x + ")"; });
+        // Add the circle
+        nodeEnter.append("circle")
+                .attr("r", 10)
+                .style("fill", "#ff0");
 
-	// Add the circle
-  nodeEnter.append("circle")
-   .attr("r", 10)
-   .style("fill", "#ff0");
+        // Employee Name
+        nodeEnter.append("text")
+                .attr("x", function (d) {
+                    return d.children || d._children ? -13 : 13;
+                })
+                .attr("y", -6)
+                .attr("dy", ".35em")
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "end" : "start";
+                })
+                .text(function (d) {
+                    // Do a check here, if children are undefined show both
+                    var nameTitle = d.name.split('|');
+                    if (d.children === undefined) {
+                        return nameTitle[0];
+                    } else {
+                        return nameTitle[0];
+                    }
+                })
+                .style("font-weight", "bold")
+                .style("fill-opacity", 1);
 
-	// Employee Name
-  nodeEnter.append("text")
-   .attr("x", function(d) {
-    return d.children || d._children ? -13 : 13; })
-   .attr("y", -6)
-   .attr("dy", ".35em")
-   .attr("text-anchor", function(d) {
-    return d.children || d._children ? "end" : "start"; })
-   .text(function(d) {
-	  // Do a check here, if children are undefined show both
-	    var nameTitle = d.name.split('|');
-		if (d.children === undefined) {
-			return nameTitle[0];
-		} else {
-			return nameTitle[0];
-		}
-	})
-   .style("font-weight", "bold")
-   .style("fill-opacity", 1);
+        // Employee Title
+        nodeEnter.append("text")
+                .attr("x", function (d) {
+                    return d.children || d._children ? -13 : 13;
+                })
+                .attr("y", -6)
+                .attr("dy", "1.5em")
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "end" : "start";
+                })
+                .text(function (d) {
+                    // Do a check here, if children are undefined show both
+                    var nameTitle = d.name.split('|');
+                    if (d.children === undefined) {
+                        return nameTitle[1];
+                    } else {
+                        return nameTitle[1];
+                    }
+                })
+                .style("fill-opacity", 1);
 
-	// Employee Title
-	nodeEnter.append("text")
-	.attr("x", function(d) {
-	return d.children || d._children ? -13 : 13; })
-	.attr("y", -6)
-	.attr("dy", "1.5em")
-	.attr("text-anchor", function(d) {
-	return d.children || d._children ? "end" : "start"; })
-	.text(function(d) {
-		// Do a check here, if children are undefined show both
-		var nameTitle = d.name.split('|');
-		if (d.children === undefined) {
-			return nameTitle[1];
-		} else {
-			return nameTitle[1];
-		}
-	})
-	.style("fill-opacity", 1);
+        // Declare the links
+        var link = svg.selectAll("path.link")
+                .data(links, function (d) {
+                    return d.target.id;
+                });
 
-  // Declare the links
-  var link = svg.selectAll("path.link")
-   .data(links, function(d) { return d.target.id; });
+        // Enter the links.
+        link.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", diagonal);
 
-  // Enter the links.
-  link.enter().insert("path", "g")
-   .attr("class", "link")
-   .attr("d", diagonal);
-
-}
+    }
 
 </script>
 
-  </body>
+</body>
 </html>

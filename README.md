@@ -31,16 +31,6 @@ The Employee API is a RESTful API to get information from each employee.  The in
 * mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError
 
 
-** User Rename Utility **
-doc = db.users.findOne({_id: "Jen Smith"})
-doc._id = "Jennifer Smith"
-db.users.insert(doc)
-db.users.remove({_id: "Jen Smith"})
-// Update all direct/managers now
-
-
-
-
 
 # Users #
 

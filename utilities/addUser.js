@@ -1,6 +1,6 @@
 if (process.argv.length != 6) {
-    console.log('Usage: node addUser.js ["Full Name"] [username] [password] [level]');
-    console.log('Usage: node addUser.js "Jose Pulgar" jpulgar secretpassword 3');
+    console.log('Usage: node addUser.js ["Full Name"] [password] [level]');
+    console.log('Usage: node addUser.js "Jose Pulgar" secretpassword 3');
     process.exit(0);
 }
 
@@ -30,7 +30,6 @@ mongoose.connect(database.url, function(err) {
                 };
                 User.update(query, {
                     $set: {
-                        username: process.argv[3].toLowerCase(),
                         password: bcryptedPassword,
                         level: process.argv[5]
                     }
