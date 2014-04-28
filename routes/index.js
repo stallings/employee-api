@@ -13,6 +13,7 @@ var User = require('../models/user'),
 
 function checkAuth(req, res, next) {
     "use strict";
+    var newErr;
     if (req.query.key !== undefined) {
         Key.find({
             '_id': req.query.key
@@ -20,7 +21,7 @@ function checkAuth(req, res, next) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!key.length) {
-                var newErr = new Error('Not authorized');
+                newErr = new Error('Not authorized');
                 newErr.status = 401;
                 return next(newErr);
             } else {
@@ -40,7 +41,7 @@ function checkAuth(req, res, next) {
                         if (key[0].edit.indexOf(req.params.userid) !== -1) {
                             return next();
                         } else {
-                            var newErr = new Error('Forbidden. User is not a direct report.');
+                            newErr = new Error('Forbidden. User is not a direct report.');
                             newErr.status = 403;
                             return next(newErr);
                         }
@@ -48,21 +49,21 @@ function checkAuth(req, res, next) {
 
                     // Regular users are not allowed to edit anything
                 } else {
-                    var newErr = new Error('Forbidden. User is not a direct report.');
+                    newErr = new Error('Forbidden. User is not a direct report.');
                     newErr.status = 403;
                     return next(newErr);
                 }
             }
         });
     } else {
-        var newErr = new Error('Not authorized');
+        newErr = new Error('Not authorized');
         newErr.status = 401;
         return next(newErr);
     }
 }
 
 // Makes a key
-function makeKey(level, user, directs, req, res, next) {
+function makeKey(level, user, directs, res) {
     "use strict";
     var myKey = new Key({
         'level': level,
@@ -83,7 +84,7 @@ function makeKey(level, user, directs, req, res, next) {
 }
 
 // For Director level - Finds 2 levels of direct reports
-function getSubDirects(level, user, myUsers, req, res, next) {
+function getSubDirects(level, user, myUsers, res) {
     "use strict";
     User.find({
         _id: {
@@ -95,7 +96,7 @@ function getSubDirects(level, user, myUsers, req, res, next) {
                 myUsers.push(users[i].directs[j]);
             }
         }
-        makeKey(level, user, myUsers, req, res, next);
+        makeKey(level, user, myUsers, res);
     });
 }
 
@@ -113,7 +114,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/
     /* ********************************* */
-    app.get('/', function(req, res, next) {
+    app.get('/', function(req, res) {
         res.jsonp({
             'version': '0.0.1'
         });
@@ -127,7 +128,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
-    app.get('/users', function(req, res, next) {
+    app.get('/users', function(req, res) {
         User.find({}, 'department jobTitle employeeType', function(err, users) {
             res.jsonp(users);
         });
@@ -410,7 +411,7 @@ module.exports = function(app) {
 
         User.update(query, {
             $set: req.body
-        }, function(err, numberAffected) {
+        }, function(err) {
             if (err) {
                 return next(new Error(err.message));
             } else {
@@ -492,7 +493,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/projects
     /* ********************************* */
-    app.get('/projects', function(req, res, next) {
+    app.get('/projects', function(req, res) {
         Project.find({}, '_id', function(err, projects) {
             res.jsonp(projects);
         });
@@ -554,7 +555,7 @@ module.exports = function(app) {
         };
         Project.update(query, {
             $set: req.body
-        }, function(err, numberAffected) {
+        }, function(err) {
             if (err) {
                 return next(new Error(err.message));
             } else {
@@ -670,11 +671,11 @@ module.exports = function(app) {
                 bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
                         if (user.level === 2) {
-                            makeKey(user.level, user._id, user.directs, req, res, next);
+                            makeKey(user.level, user._id, user.directs, res);
                         } else if (user.level === 3) {
-                            getSubDirects(user.level, user._id, user.directs, req, res, next);
+                            getSubDirects(user.level, user._id, user.directs, res);
                         } else {
-                            makeKey(user.level, user._id, [], req, res, next);
+                            makeKey(user.level, user._id, [], res);
                         }
 
                     } else {
