@@ -22,7 +22,7 @@ mongoose.connect(database.url, function(err) {
             $set: {
                 level: process.argv[3]
             }
-        }, function(err, numberAffected, raw) {
+        }, function(err) {
             if (err) {
                 console.log('Error: Unable to update user level');
             } else {

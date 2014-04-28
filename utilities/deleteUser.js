@@ -27,7 +27,7 @@ mongoose.connect(database.url, function(err) {
                 // Change manager names
                 User.update({ manager: userName },
                     { $set: { manager: userManager } },
-                    { multi: true }, function(err, numberAffected, raw) {
+                    { multi: true }, function(err, numberAffected) {
                         if (err) {
                             console.log(err);
                         } else {
@@ -36,7 +36,7 @@ mongoose.connect(database.url, function(err) {
                             // Change direct report names
                             User.update({ directs: userName },
                                 { $pull: { directs : userName } },
-                                { multi: true }, function(err, numberAffected, raw) {
+                                { multi: true }, function(err, numberAffected) {
                                     if (err) {
                                         console.log(err);
                                     } else {

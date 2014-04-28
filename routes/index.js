@@ -20,9 +20,9 @@ function checkAuth(req, res, next) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!key.length) {
-                var err = new Error('Not authorized');
-                err.status = 401;
-                return next(err);
+                var newErr = new Error('Not authorized');
+                newErr.status = 401;
+                return next(newErr);
             } else {
                 // If we are VP, we are always authorized
                 if (key[0].level === 4) {
@@ -40,24 +40,24 @@ function checkAuth(req, res, next) {
                         if (key[0].edit.indexOf(req.params.userid) !== -1) {
                             return next();
                         } else {
-                            var err = new Error('Forbidden. User is not a direct report.');
-                            err.status = 403;
-                            return next(err);
+                            var newErr = new Error('Forbidden. User is not a direct report.');
+                            newErr.status = 403;
+                            return next(newErr);
                         }
                     }
 
                     // Regular users are not allowed to edit anything
                 } else {
-                    var err = new Error('Forbidden. User is not a direct report.');
-                    err.status = 403;
-                    return next(err);
+                    var newErr = new Error('Forbidden. User is not a direct report.');
+                    newErr.status = 403;
+                    return next(newErr);
                 }
             }
         });
     } else {
-        var err = new Error('Not authorized');
-        err.status = 401;
-        return next(err);
+        var newErr = new Error('Not authorized');
+        newErr.status = 401;
+        return next(newErr);
     }
 }
 
@@ -188,9 +188,9 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!user) {
-                var err = new Error('User does not exist');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('User does not exist');
+                newErr.status = 404;
+                return next(newErr);
             } else {
 
                 if (user._id !== "VP Name") {
@@ -206,9 +206,9 @@ module.exports = function(app) {
                         if (err) {
                             return next(new Error(err.message));
                         } else if (!userTitles.length) {
-                            var err = new Error('No users titles found');
-                            err.status = 404;
-                            return next(err);
+                            var newErr = new Error('No users titles found');
+                            newErr.status = 404;
+                            return next(newErr);
                         } else {
                             // Create array with name -> title
                             var nameAndTitles = [];
@@ -226,9 +226,9 @@ module.exports = function(app) {
                                 }]
                             }];
 
-                            for (var i = 0; i < user.directs.length; i++) {
+                            for (var j = 0; j < user.directs.length; j++) {
                                 orgChartData[0].children[0].children.push({
-                                    name: user.directs[i] + "|" + nameAndTitles[user.directs[i]],
+                                    name: user.directs[j] + "|" + nameAndTitles[user.directs[j]],
                                     parent: user._id + "|" + user.title
                                 });
                             }
@@ -300,9 +300,9 @@ module.exports = function(app) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!user.length) {
-                    var err = new Error('No users found');
-                    err.status = 404;
-                    return next(err);
+                    var newErr = new Error('No users found');
+                    newErr.status = 404;
+                    return next(newErr);
                 } else {
                     res.jsonp(user);
                 }
@@ -316,9 +316,9 @@ module.exports = function(app) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!user.length) {
-                    var err = new Error('No users found');
-                    err.status = 404;
-                    return next(err);
+                    var newErr = new Error('No users found');
+                    newErr.status = 404;
+                    return next(newErr);
                 } else {
 
                     // If valid key, send skills
@@ -410,16 +410,10 @@ module.exports = function(app) {
 
         User.update(query, {
             $set: req.body
-        }, function(err, numberAffected, raw) {
+        }, function(err, numberAffected) {
             if (err) {
                 return next(new Error(err.message));
             } else {
-
-                // If title changed, change the title in all manager cards
-                // var query = { Zip: new RegExp('^' + zipCode) };
-                // db.users.find( { directs: { $in: [ /^req.params.userid/] } } )
-                // db.users.find( { directs: { /^Man/ } } )
-
                 res.jsonp({
                     'id': req.params.userid
                 });
@@ -457,7 +451,7 @@ module.exports = function(app) {
                     $each: req.body
                 }
             }
-        }, function(err, numberAffected, raw) {
+        }, function(err, numberAffected) {
             if (err) {
                 return next(new Error(err.message));
             } else if (numberAffected) {
@@ -484,9 +478,9 @@ module.exports = function(app) {
             } else if (resource) {
                 res.send(204);
             } else {
-                var err = new Error('User not found');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('User not found');
+                newErr.status = 404;
+                return next(newErr);
             }
         });
     });
@@ -520,9 +514,9 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!project.length) {
-                var err = new Error('Project not found');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('Project not found');
+                newErr.status = 404;
+                return next(newErr);
             } else {
                 res.jsonp(project);
             }
@@ -560,7 +554,7 @@ module.exports = function(app) {
         };
         Project.update(query, {
             $set: req.body
-        }, function(err, numberAffected, raw) {
+        }, function(err, numberAffected) {
             if (err) {
                 return next(new Error(err.message));
             } else {
@@ -587,7 +581,7 @@ module.exports = function(app) {
             $addToSet: {
                 members: req.params.userid
             }
-        }, function(err, numberAffected, raw) {
+        }, function(err, numberAffected) {
             if (err) {
                 return next(new Error(err.message));
             } else if (numberAffected) {
@@ -595,9 +589,9 @@ module.exports = function(app) {
                     'id': req.params.userid
                 });
             } else {
-                var err = new Error('Project not found');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('Project not found');
+                newErr.status = 404;
+                return next(newErr);
             }
         });
     });
@@ -618,15 +612,15 @@ module.exports = function(app) {
             $pull: {
                 members: req.params.userid
             }
-        }, function(err, numberAffected, raw) {
+        }, function(err, numberAffected) {
             if (err) {
                 return next(new Error(err.message));
             } else if (numberAffected) {
                 res.send(204);
             } else {
-                var err = new Error('Project not found');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('Project not found');
+                newErr.status = 404;
+                return next(newErr);
             }
         });
     });
@@ -645,9 +639,9 @@ module.exports = function(app) {
             } else if (resource) {
                 res.send(204);
             } else {
-                var err = new Error('Project not found');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('Project not found');
+                newErr.status = 404;
+                return next(newErr);
             }
         });
     });
@@ -669,9 +663,9 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!user) {
-                var err = new Error('User not found');
-                err.status = 404;
-                return next(err);
+                var newErr = new Error('User not found');
+                newErr.status = 404;
+                return next(newErr);
             } else {
                 bcrypt.compare(req.body.password, user.password, function(err, doesMatch) {
                     if (doesMatch) {
@@ -684,9 +678,9 @@ module.exports = function(app) {
                         }
 
                     } else {
-                        var err = new Error('Incorrect password');
-                        err.status = 401;
-                        return next(err);
+                        var newErr = new Error('Incorrect password');
+                        newErr.status = 401;
+                        return next(newErr);
                     }
                 });
             }

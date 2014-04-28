@@ -35,7 +35,7 @@ mongoose.connect(database.url, function(err) {
                     }
                 }, {
                     upsert: true
-                }, function(err, numberAffected, raw) {
+                }, function(err) {
                     if (err) {
                         console.log('Error: Unable to add user');
                         console.log(err.message);
