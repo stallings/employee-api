@@ -1,111 +1,96 @@
-/* ********************************* */
-// Load Models
-/* ********************************* */
-var User = require('../models/user'),
-    Project = require('../models/project'),
-    Key = require('../models/key'),
-    bcrypt = require('bcrypt');
-
-
-/* ********************************* */
-// Helper Functions
-/* ********************************* */
-
-function checkAuth(req, res, next) {
-    "use strict";
-    var newErr;
-    if (req.query.key !== undefined) {
-        Key.find({
-            '_id': req.query.key
-        }, function(err, key) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (!key.length) {
-                newErr = new Error('Not authorized');
-                newErr.status = 401;
-                return next(newErr);
-            } else {
-                // If we are VP, we are always authorized
-                if (key[0].level === 4) {
-                    return next();
-
-                    // If we are Director/Manager
-                } else if ((key[0].level === 2) || (key[0].level === 3)) {
-
-                    // If no userid is passed, we are creating project/user (allow)
-                    if (req.params.userid === undefined) {
-                        return next();
-
-                    } else {
-                        // Allow trying to edit/delete a direct report only
-                        if (key[0].edit.indexOf(req.params.userid) !== -1) {
-                            return next();
-                        } else {
-                            newErr = new Error('Forbidden. User is not a direct report.');
-                            newErr.status = 403;
-                            return next(newErr);
-                        }
-                    }
-
-                    // Regular users are not allowed to edit anything
-                } else {
-                    newErr = new Error('Forbidden. User is not a direct report.');
-                    newErr.status = 403;
-                    return next(newErr);
-                }
-            }
-        });
-    } else {
-        newErr = new Error('Not authorized');
-        newErr.status = 401;
-        return next(newErr);
-    }
-}
-
-// Makes a key
-function makeKey(level, user, directs, res) {
-    "use strict";
-    var myKey = new Key({
-        'level': level,
-        'self': user,
-        'edit': directs
-    });
-    myKey.save(function(err) {
-        if (err) {
-            res.jsonp(500, {
-                error: err.message
-            });
-        } else {
-            res.jsonp({
-                'key': myKey._id
-            });
-        }
-    });
-}
-
-// For Director level - Finds 2 levels of direct reports
-function getSubDirects(level, user, myUsers, res) {
-    "use strict";
-    User.find({
-        _id: {
-            $in: myUsers
-        }
-    }, 'directs', function(err, users) {
-        for (var i = 0; i < users.length; i++) {
-            for (var j = 0; j < users[i].directs.length; j++) {
-                myUsers.push(users[i].directs[j]);
-            }
-        }
-        makeKey(level, user, myUsers, res);
-    });
-}
-
-
-/* ********************************* */
-// Export Routes
-/* ********************************* */
 module.exports = function(app) {
     "use strict";
+
+    var User = require('../models/user'),
+        Project = require('../models/project'),
+        Key = require('../models/key'),
+        bcrypt = require('bcrypt');
+
+    function makeDirectorKey(level, user, myUsers, res) {
+        User.find({
+            _id: {
+                $in: myUsers
+            }
+        }, 'directs', function(err, users) {
+            for (var i = 0; i < users.length; i++) {
+                for (var j = 0; j < users[i].directs.length; j++) {
+                    myUsers.push(users[i].directs[j]);
+                }
+            }
+            makeKey(level, user, myUsers, res);
+        });
+    }
+
+    function checkAuth(req, res, next) {
+        var newErr;
+        if (req.query.key !== undefined) {
+            Key.find({
+                '_id': req.query.key
+            }, function(err, key) {
+                if (err) {
+                    return next(new Error(err.message));
+                } else if (!key.length) {
+                    newErr = new Error('Not authorized');
+                    newErr.status = 401;
+                    return next(newErr);
+                } else {
+                    // If we are VP, we are always authorized
+                    if (key[0].level === 4) {
+                        return next();
+
+                        // If we are Director/Manager
+                    } else if ((key[0].level === 2) || (key[0].level === 3)) {
+
+                        // If no userid is passed, we are creating project/user (allow)
+                        if (req.params.userid === undefined) {
+                            return next();
+
+                        } else {
+                            // Allow trying to edit/delete a direct report only
+                            if (key[0].edit.indexOf(req.params.userid) !== -1) {
+                                return next();
+                            } else {
+                                newErr = new Error('Forbidden. User is not a direct report.');
+                                newErr.status = 403;
+                                return next(newErr);
+                            }
+                        }
+
+                        // Regular users are not allowed to edit anything
+                    } else {
+                        newErr = new Error('Forbidden. User is not a direct report.');
+                        newErr.status = 403;
+                        return next(newErr);
+                    }
+                }
+            });
+        } else {
+            newErr = new Error('Not authorized');
+            newErr.status = 401;
+            return next(newErr);
+        }
+    }
+
+    // Makes a key
+    function makeKey(level, user, directs, res) {
+        var myKey = new Key({
+            'level': level,
+            'self': user,
+            'edit': directs
+        });
+        myKey.save(function(err) {
+            if (err) {
+                res.jsonp(500, {
+                    error: err.message
+                });
+            } else {
+                res.jsonp({
+                    'key': myKey._id
+                });
+            }
+        });
+    }
+
 
     /* ********************************* */
     // Route: GET /
@@ -148,6 +133,10 @@ module.exports = function(app) {
         }, '_id', function(err, users) {
             if (err) {
                 return next(new Error(err.message));
+            } else if (!users.length) {
+                var newErr = new Error('No users found');
+                newErr.status = 404;
+                return next(newErr);
             } else {
                 res.jsonp(users);
             }
@@ -189,7 +178,7 @@ module.exports = function(app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!user) {
-                var newErr = new Error('User does not exist');
+                var newErr = new Error('User not found');
                 newErr.status = 404;
                 return next(newErr);
             } else {
@@ -242,39 +231,39 @@ module.exports = function(app) {
 
                     /*
 
-                    // Step 1: Find all direct reports
-                    User.find({
-                        '_id': {
-                            $in: ["Name", "Name", "Name", "Name"]
-                        }
-                    }, 'directs').lean().exec(function(err, userDirects) {
+                     // Step 1: Find all direct reports
+                     User.find({
+                     '_id': {
+                     $in: ["Name", "Name", "Name", "Name"]
+                     }
+                     }, 'directs').lean().exec(function(err, userDirects) {
 
-                    // Step 2: Put them in an array
-                    // Step 3: Use that array to get all their titles, put in array
-                    // Step 4: Add to our structure
+                     // Step 2: Put them in an array
+                     // Step 3: Use that array to get all their titles, put in array
+                     // Step 4: Add to our structure
 
-                    var orgChartData = [
-                    {
-                        name: user._id + "|" + user.title,
-                        parent: "null",
-                        children: [
-                            {
-                            name: "Name" + "|" + "Director Web Dev",
-                            parent: user._id + "|" + user.title,
-                            children: [],
-                            name: "Name" + "|" + "Director Creative",
-                            parent: user._id + "|" + user.title,
-                            children: [],
-                            name: "Name" + "|" + "Director UXA",
-                            parent: user._id + "|" + user.title,
-                            children: [],
-                            name: "Name" + "|" + "Director Content Strategy",
-                            parent: user._id + "|" + user.title,
-                            children: []
-                        }]
-                    }];
+                     var orgChartData = [
+                     {
+                     name: user._id + "|" + user.title,
+                     parent: "null",
+                     children: [
+                     {
+                     name: "Name" + "|" + "Director Web Dev",
+                     parent: user._id + "|" + user.title,
+                     children: [],
+                     name: "Name" + "|" + "Director Creative",
+                     parent: user._id + "|" + user.title,
+                     children: [],
+                     name: "Name" + "|" + "Director UXA",
+                     parent: user._id + "|" + user.title,
+                     children: [],
+                     name: "Name" + "|" + "Director Content Strategy",
+                     parent: user._id + "|" + user.title,
+                     children: []
+                     }]
+                     }];
 
-                    */
+                     */
 
                 }
             }
@@ -375,7 +364,6 @@ module.exports = function(app) {
             });
         }
     });
-
 
 
     /* ********************************* */
@@ -648,7 +636,6 @@ module.exports = function(app) {
     });
 
 
-
     /* ********************************* */
     // Route: POST /logins
     // Description: Get key
@@ -673,7 +660,7 @@ module.exports = function(app) {
                         if (user.level === 2) {
                             makeKey(user.level, user._id, user.directs, res);
                         } else if (user.level === 3) {
-                            getSubDirects(user.level, user._id, user.directs, res);
+                            makeDirectorKey(user.level, user._id, user.directs, res);
                         } else {
                             makeKey(user.level, user._id, [], res);
                         }

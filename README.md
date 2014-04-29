@@ -23,6 +23,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## To Do ##
 
+* Finish advanced search
 * Clean up Projects API
 * Finish org chart for top level
 

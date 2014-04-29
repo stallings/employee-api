@@ -1,6 +1,6 @@
 {
     "name": "employee-api",
-    "description": "RESTful API to get employee information",
+    "description": "RESTful API for Employee Information",
     "version": "0.0.1",
     "dependencies": {
         "express": "~4.0.0",
