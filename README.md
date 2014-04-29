@@ -11,14 +11,20 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 ## Framework ##
 
-* NodeJS + Express + Mongoose + MongoDB <http://localhost:28017/>
-* JSONP compatible
+API:
+* NodeJS 0.10.26
+    * express 4.1.1
+    * body-parser 1.0.2
+    * morgan 1.0.0
+    * mongoose 3.8.8
+    * bcrypt 0.7.8
+    * cors 2.2.0
+* Mongo DB 2.6.0
 
 ## Security ##
 
 * Authentication required for skills: login and auto-expiring keys
 * Passwords are Bcrypted (Hash + Salt) before storing
-* IP Whitelisting (if necessary) [List of IPs](https://wiki.intra.sears.com/confluence/display/ECOMMIT/Do+Not+Shun+for+InfoProt)
 * Password Protection for skill ratings
 
 ## To Do ##
@@ -220,18 +226,11 @@ sudo mkdir -p /data/db
 sudo chown `id -u` /data/db
 ````
 
-## How to Create a Database ##
-These instructions launch the mongo console, set a particular database, create a users collection and add a user to a collection.
+## How to Upgrade MongoDB ##
 
 ````
-mongo
-use baseball
-show databases
-db.createCollection("users")
-show collections
-db.users.find()
+brew upgrade mongodb
 ````
-
 
 ## Other Notes ##
 * Example RESTful API: <http://developers.flattr.net/api/resources/things/>
