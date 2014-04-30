@@ -12,14 +12,14 @@ The Employee API is a RESTful API to get information from each employee.  The in
 ## Framework ##
 
 API:
-* NodeJS 0.10.26
-    * express 4.1.1
-    * body-parser 1.0.2
-    * morgan 1.0.0
-    * mongoose 3.8.8
-    * bcrypt 0.7.8
-    * cors 2.2.0
-* Mongo DB 2.6.0
+* [NodeJS](http://nodejs.org/) 0.10.26
+    * [express](http://expressjs.com/) 4.1.1
+    * [body-parser](https://github.com/expressjs/body-parser) 1.0.2
+    * [morgan](https://github.com/expressjs/morgan) 1.0.0
+    * [mongoose](https://github.com/learnboost/mongoose) 3.8.8
+    * [bcrypt](https://github.com/ncb000gt/node.bcrypt.js) 0.7.8
+    * [cors](https://github.com/troygoode/node-cors/) 2.2.0
+* [Mongo DB](https://www.mongodb.org/) 2.6.0
 
 ## Security ##
 
@@ -57,7 +57,8 @@ curl -i -X GET http://localhost:5000/users/{id},{id}?key={validKey}
 Adds a new user to the collection
 
 ```
-curl -i -X POST -H 'Content-Type: application/json' -d '{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost:5000/users?key={validKey}
+curl -i -X POST -H 'Content-Type: application/json' -d
+'{"name": "Jose Pulgar", "headshot": "http://goo.gl/dofijdf", "startDate": "2014-01-01", "jobTitle": "Manager"}' http://localhost:5000/users?key={validKey}
 ```
 
 ## PUT /users/{id} (protected)
@@ -215,13 +216,25 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
 
 
 ## How to Install MongoDB ##
-These instructions are for Mac.  It assumes you already have Homebrew installed. Lines 3-4 set Mongo to autostart with Mac.  Lines 5-6 sets a location for the databases.
+These instructions are for Mac.  It assumes you already have Homebrew (<http://brew.sh/>) installed.
+
+**Install MongoDB using Homebrew**
 
 ````
 brew update
 brew install mongodb
+````
+
+**Create symbolic link and run background MongoDB service**
+
+````
 ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+````
+
+**Create MongoDB's default data directory**
+
+````
 sudo mkdir -p /data/db
 sudo chown `id -u` /data/db
 ````
