@@ -15,7 +15,7 @@ API:
 * [NodeJS](http://nodejs.org/) 0.10.26
     * [express](http://expressjs.com/) 4.1.1
     * [body-parser](https://github.com/expressjs/body-parser) 1.0.2
-    * [morgan](https://github.com/expressjs/morgan) 1.0.0
+    * [morgan](https://github.com/expressjs/morgan) 1.0.1
     * [mongoose](https://github.com/learnboost/mongoose) 3.8.8
     * [bcrypt](https://github.com/ncb000gt/node.bcrypt.js) 0.7.8
     * [cors](https://github.com/troygoode/node-cors/) 2.2.0
@@ -29,12 +29,23 @@ API:
 
 ## To Do ##
 
+* Regular Search
+    * Input #1: Name
+    * Input #2: Skill
+    * Input #3: Strength
+    * Returns: Name and Title
+
+* Filter Screen
+    * Same type of search like above (same API)
+
 * Finish advanced search
-* Clean up Projects API
 * Finish org chart for top level
 
 ## User Import Utility ##
 mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError
+
+## Find Outdated NPM Packages ##
+npm outdated --depth 0
 
 # Users #
 

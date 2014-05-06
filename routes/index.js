@@ -114,8 +114,11 @@ module.exports = function(app) {
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
     app.get('/users', function(req, res) {
-        User.find({}, 'department jobTitle employeeType', function(err, users) {
-            res.jsonp(users);
+        var data = {};
+        User.find({}, '_id title', function(err, users) {
+            data.count = users.length;
+            data.results = users;
+            res.jsonp(data);
         });
     });
 
@@ -127,10 +130,11 @@ module.exports = function(app) {
     // curl -i -X GET http://localhost:5000/users/search/string
     /* ********************************* */
     app.get('/users/search/:string', function(req, res, next) {
-        var regex = new RegExp(req.params.string, 'i');
+        var regex = new RegExp(req.params.string, 'i'),
+            data = {};
         User.find({
             _id: regex
-        }, '_id', function(err, users) {
+        }, '_id title', function(err, users) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!users.length) {
@@ -138,27 +142,44 @@ module.exports = function(app) {
                 newErr.status = 404;
                 return next(newErr);
             } else {
-                res.jsonp(users);
+                data.count = users.length;
+                data.results = users;
+                res.jsonp(data);
             }
         });
     });
 
     /* ********************************* */
-    // Route: GET /users/advancedsearch
+    // Route: GET /users/directory
     // Description: Does complex search based on parameters passed in header
     //
-    // Sample curl:
-    // curl -i -X GET -H 'Content-Type: application/json' -d '{"department": "FED", "employeeType": "Contractor"}' http://localhost:5000/users/advancedsearch
+    // Sample curls:
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"], "title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"]}' http://localhost:5000/users/directory
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
     /* ********************************* */
-    app.get('/users/advancedsearch', function(req, res, next) {
-        var regex = new RegExp(req.params.string, 'i');
-        User.find({
-            _id: regex
-        }, '_id', function(err, users) {
+    app.get('/users/directory', function(req, res, next) {
+
+        var searchObject = {},
+            data = {};
+        if (req.body.employeeType !== undefined) {
+            searchObject.employeeType = { '$in': req.body.employeeType };
+        }
+        if (req.body.title !== undefined) {
+            searchObject.title = { '$in': req.body.title };
+        }
+
+        User.find(searchObject, '_id title', function(err, users) {
             if (err) {
                 return next(new Error(err.message));
+            } else if (!users.length) {
+                var newErr = new Error('No users found');
+                newErr.status = 404;
+                return next(newErr);
             } else {
-                res.jsonp(users);
+                data.count = users.length;
+                data.results = users;
+                res.jsonp(data);
             }
         });
     });
