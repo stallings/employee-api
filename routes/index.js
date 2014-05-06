@@ -150,6 +150,53 @@ module.exports = function(app) {
     });
 
     /* ********************************* */
+    // Route: GET /users/advancedsearch
+    // Description: Does complex search based on parameters passed in header
+    //
+    // Sample curls:
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"name": "Jose"}' http://localhost:5000/users/advancedsearch
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"strengths": ["Presentation","Karate"]}' http://localhost:5000/users/advancedsearch
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"skills": { "title": "User Research", "rating": 3.5 }}' http://localhost:5000/users/advancedsearch
+    // curl -i -X GET -H 'Content-Type: application/json' -d '{"name": "Jose", "strengths": ["Presentation"], "skills": { "title": "User Research", "rating": 3.5 }}' http://localhost:5000/users/advancedsearch
+    /* ********************************* */
+    app.get('/users/advancedsearch', function(req, res, next) {
+
+        var searchObject = {},
+            data = {};
+
+        // Do a regular expression for name
+        if (req.body.name !== undefined) {
+            searchObject._id = new RegExp(req.body.name, 'i');
+        }
+
+        // TODO make sure a valid key is submitted before adding this to the searchObject
+        // Make sure we find people that have ALL strenghts specified
+        if (req.body.strengths !== undefined) {
+            searchObject.strengths = { '$all': req.body.strengths };
+        }
+
+        // TODO make sure a valid key is submitted before adding this to the searchObject
+        // Make sure it matches the one skill submitted
+        if (req.body.skills !== undefined) {
+            searchObject.skills = { '$elemMatch': { title: req.body.skills.title, rating: { $gte: req.body.skills.rating } }  };
+        }
+
+        User.find(searchObject, '_id title', function(err, users) {
+            if (err) {
+                return next(new Error(err.message));
+            } else if (!users.length) {
+                var newErr = new Error('No users found');
+                newErr.status = 404;
+                return next(newErr);
+            } else {
+                data.count = users.length;
+                data.results = users;
+                res.jsonp(data);
+            }
+        });
+    });
+
+    /* ********************************* */
     // Route: GET /users/directory
     // Description: Does complex search based on parameters passed in header
     //

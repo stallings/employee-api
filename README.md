@@ -29,16 +29,7 @@ API:
 
 ## To Do ##
 
-* Regular Search
-    * Input #1: Name
-    * Input #2: Skill
-    * Input #3: Strength
-    * Returns: Name and Title
-
-* Filter Screen
-    * Same type of search like above (same API)
-
-* Finish advanced search
+* Key restrictions on advanced search
 * Finish org chart for top level
 
 ## User Import Utility ##
@@ -178,8 +169,6 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
     "manager": "First Last",
     "directs": ["First Last", "First Last"],
     "strengths": ["Leadership", "Prototyping"],
-    "currentProjects": ["Project Name", "Project Name"],
-    "pastProjects": ["Baseball Cards"],
     "skills": [
                 {
                   "title": "User Research",
