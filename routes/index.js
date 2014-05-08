@@ -1,6 +1,8 @@
 module.exports = function(app) {
     "use strict";
 
+
+
     var User = require('../models/user'),
         Project = require('../models/project'),
         Key = require('../models/key'),
@@ -240,6 +242,7 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/orgchart/:userid', function(req, res, next) {
 
+        /** @namespace req.params.userid */
         User.findOne({
             '_id': req.params.userid
         }, function(err, user) {
@@ -563,6 +566,8 @@ module.exports = function(app) {
     // curl -i -X GET http://localhost:5000/projects/id,id
     /* ********************************* */
     app.get('/projects/:projectid', function(req, res, next) {
+
+        /** @namespace req.params.projectid */
         Project.find({
             '_id': {
                 $in: req.params.projectid.split(",")

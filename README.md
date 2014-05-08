@@ -12,7 +12,7 @@ The Employee API is a RESTful API to get information from each employee.  The in
 ## Framework ##
 
 API:
-* [NodeJS](http://nodejs.org/) 0.10.26
+* [NodeJS](http://nodejs.org/) 0.10.28
     * [express](http://expressjs.com/) 4.1.1
     * [body-parser](https://github.com/expressjs/body-parser) 1.0.2
     * [morgan](https://github.com/expressjs/morgan) 1.0.1
@@ -29,6 +29,10 @@ API:
 
 ## To Do ##
 
+* Install Gulp with
+    * https://www.npmjs.org/package/gulp-beautify
+    * https://www.npmjs.org/package/gulp-jshint
+    * https://www.npmjs.org/package/gulp-nodemon
 * Key restrictions on advanced search
 * Finish org chart for top level
 
