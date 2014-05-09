@@ -15,19 +15,19 @@ var oldName = process.argv[2],
 
 
 // Connect to MongoDB
-mongoose.connect(database.url, function(err) {
+mongoose.connect(database.url, function (err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
     } else {
         User.findOne({
             '_id': oldName
-        }, function(err, user) {
+        }, function (err, user) {
 
             // Add new name user
             var newUser = user;
             newUser._id = newName;
-            User.create(newUser, function(err) {
+            User.create(newUser, function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -36,7 +36,7 @@ mongoose.connect(database.url, function(err) {
                     // Remove old user
                     User.remove({
                         _id: oldName
-                    }, function(err) {
+                    }, function (err) {
                         if (err) {
                             console.log(err);
                         } else {
@@ -51,7 +51,7 @@ mongoose.connect(database.url, function(err) {
                                 }
                             }, {
                                 multi: true
-                            }, function(err, numberAffected) {
+                            }, function (err, numberAffected) {
                                 if (err) {
                                     console.log(err);
                                 } else {
@@ -66,7 +66,7 @@ mongoose.connect(database.url, function(err) {
                                         }
                                     }, {
                                         multi: true
-                                    }, function(err, numberAffected) {
+                                    }, function (err, numberAffected) {
                                         if (err) {
                                             console.log(err);
                                         } else {

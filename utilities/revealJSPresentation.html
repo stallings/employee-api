@@ -1,593 +1,670 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
 
-		<title>Employee RESTful API</title>
+    <title>Employee RESTful API</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
 
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
-
-
-		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-		<script>
-			if( window.location.search.match( /print-pdf/gi ) ) {
-				var link = document.createElement( 'link' );
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = 'css/print/pdf.css';
-				document.getElementsByTagName( 'head' )[0].appendChild( link );
-			}
-		</script>
-
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
-
-	<body>
-
-		<div class="reveal">
-
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h2>Let's Make An API</h2>
-					<p><br/><br/><br/><small>This presentation is sponsored by Pebble<br/>
-					<i>Pebble: Keeping secrets from contractors since 2011</i></small></p>
-				</section>
-
-				<section>
-					<h2>Problem</h2>
-					<p><br/>Create employee data repository website with:</p>
-						<ul>
-							<li>General information</li>
-							<li>Current/past projects</li>
-							<li>Skill ratings</li>
-						</ul>
-				</section>
-
-				<!-- Example of nested vertical slides -->
-				<section>
-						<h2>Possible Solutions</h2>
-				</section>
-
-				<section>
-						<h2>Let's make an ASAP page!</h2>
-						<h2 class="fragment" style="color: #FF0000;">Hahaha! No.</h2>
-				</section>
-
-				<section>
-						<h2>Let's make a site with<br/>PHP + mySQL!</h2>
-						<h3 class="fragment" style="color: orange;">Maybe but . . .</h3>
-						<ul>
-							<li class="fragment">Only FEDs with PHP knowledge can assist</li>
-							<li class="fragment">mySQL tables might constantly change</li>
-							<li class="fragment">Information not easily shared</li>
-						</ul>
-				</section>
-
-				<section>
-						<h2>Let's make an API instead!</h2>
-						<h2 class="fragment" style="color: #00FF00;">OK! But why?</h2>
-						<p class="fragment"><br/><br/>An API will keep information:</p>
-						<ul>
-							<li class="fragment">Reusable in multiple languages</li>
-							<li class="fragment">Expandable</li>
-							<li class="fragment">Restricted (when necessary)</li>
-						</ul>
-				</section>
-
-				<section>
-						<h2>Building an API</h2>
-						<h3 class="fragment"><br/>That sounds complicated. . .</h3>
-						<h3 class="fragment">This is backend work. . .</h3>
-						<h3 class="fragment">I just want to go home. . .</h3>
-				</section>
-
-				<section>
-						<h2><span style="color:#ff0000;">N</span><span style="color:#ff2a00;">o</span><span style="color:#ff5500;">d</span><span style="color:#ff7f00;">e</span><span style="color:#ffaa00;">J</span><span style="color:#ffd400;">S</span><span style="color:#ffff00;"> </span><span style="color:#aaff00;">a</span><span style="color:#55ff00;">n</span><span style="color:#00ff00;">d</span><span style="color:#00ff55;"> </span><span style="color:#00ffaa;">M</span><span style="color:#00ffff;">o</span><span style="color:#00aaff;">n</span><span style="color:#0055ff;">g</span><span style="color:#0000ff;">o</span><span style="color:#2e00ff;"> </span><span style="color:#5d00ff;">D</span><span style="color:#8b00ff;">B</span><br/>to the rescue!!!!</h2>
-						<h2 class="fragment">!!!!!</h2>
-						<h2 class="fragment">!!!!!!!!!!!!</h2>
-						<h2 class="fragment">!!!!!!!!!!!!!!!!!!!!!!!!!</h2>
-				</section>
-
-				<section>
-						<h2>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</h2>
-				</section>
-
-				<section>
-					<h2>Benefits of using<br/><span style="color:#ff0000;">N</span><span style="color:#ff2a00;">o</span><span style="color:#ff5500;">d</span><span style="color:#ff7f00;">e</span><span style="color:#ffaa00;">J</span><span style="color:#ffd400;">S</span><span style="color:#ffff00;"> </span><span style="color:#aaff00;">a</span><span style="color:#55ff00;">n</span><span style="color:#00ff00;">d</span><span style="color:#00ff55;"> </span><span style="color:#00ffaa;">M</span><span style="color:#00ffff;">o</span><span style="color:#00aaff;">n</span><span style="color:#0055ff;">g</span><span style="color:#0000ff;">o</span><span style="color:#2e00ff;"> </span><span style="color:#5d00ff;">D</span><span style="color:#8b00ff;">B</span></h2>
-						<ul>
-							<li class="fragment">It's Javascript!</li>
-							<li class="fragment">It's JSON!</li>
-							<li class="fragment">Makes API development EASY!</li>
-							<li class="fragment">They are current buzzwords!!</li>
-						</ul>
-				</section>
-
-				<section>
-					<h2>Technology Stack</h2>
-						<p>Here's what we'll be using:</p>
-						<ul>
-							<li class="fragment">NodeJS
-								<ul>
-									<li class="fragment">Express</li>
-									<li class="fragment">Mongoose</li>
-									<li class="fragment">Bcrypt</li>
-									<li class="fragment">Cors</li>
-								</ul>
-							</li>
-							<li class="fragment">Mongo DB</li>
-						</ul>
-				</section>
-
-				<section>
-					<h2>NodeJS</h2>
-					<p>
-						Platform for building fast, scalable network applications
-					</p>
-
-					<ul>
-						<li class="fragment">Built on Chrome's super-fast V8 JavaScript engine</li>
-						<li class="fragment">Non-blocking I/O and asynchronous events</li>
-						<li class="fragment">Thousands of libraries available at npm.org</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Synchronous<br/>vs<br/>Asynchronous?</h2>
-				</section>
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
 
-				<style type="text/css" media="screen, print">
-			    @font-face {
-			      font-family: "Symbol Signs";
-			      src: url("http://josepulgar.com/symbol-signs-webfont.woff");
-			    }
-			    .mySymbols { font-size: 2.0em !important;
-			    	font-family: "Symbol Signs", serif !important;
-			    }
-				</style>
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        if (window.location.search.match(/print-pdf/gi)) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/print/pdf.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+    </script>
 
-				<section>
-					<h2>Synchronous</h2>
-					<p class="fragment" style="line-height: 0.9em;">Calling utility company:<br/><br/><span class="mySymbols">TF MFMMFMMFMFMMFMMF</span></p>
-					<p class="fragment" style="line-height: 0.9em;"><br/><span class="mySymbols">TM MMMFFMMFMMFFFMMM</span></p>
-					<p class="fragment" style="line-height: 0.9em;"><br/><span class="mySymbols">TF MMFMMFMMFMFMMFMM</span></p>
-					<p class="fragment" style="line-height: 0.9em;"><br/><span class="mySymbols">TF MMFMMFMMFMF<span style="color: red;">M</span>MFMM</span></p>
-				</section>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
 
-				<section>
-					<h2>Asynchronous</h2>
-					<p class="fragment">Visit website. Use "call me" feature.<br/>
-					<small><i>We will call you in around 45 minutes.</i></small></p>
-					<p><span class="fragment mySymbols">sM </span><span class="fragment mySymbols">R bM </span><span class="fragment mySymbols">R J<span style="color: red;">M</span></span></p>​
-				</section>
+<body>
 
-				<section>
-					<h2>Express Library</h2>
-					<p>Minimal and flexible NodeJS web application framework</p>
-					<p class="fragment"><br/><br/>Great for:</p>
-					<ul>
-						<li class="fragment">Building single-page applications</li>
-						<li class="fragment">Creating a RESTful APIs</li>
-					</ul>
-				</section>
+<div class="reveal">
 
-				<section>
-					<h2>Mongo DB</h2>
-					<ul>
-						<li class="fragment">JSON-like documents</li>
-						<li class="fragment">Dynamic schemas</li>
-						<li class="fragment">Auto expiring documents</li>
-					</ul>
-				</section>
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+<section>
+    <h2>Let's Make An API</h2>
 
-				<section>
-					<h2>Mongoose Library</h2>
-					<ul>
-						<li class="fragment">Simplifies Mongo DB usage</li>
-						<li class="fragment">Provides data schema</li>
-						<li class="fragment">Automatic data validation</li>
-					</ul>
-				</section>
+    <p><br/><br/><br/>
+        <small>This presentation is sponsored by Pebble<br/>
+            <i>Pebble: Keeping secrets from contractors since 2011</i></small>
+    </p>
+</section>
+
+<section>
+    <h2>Problem</h2>
+
+    <p><br/>Create employee data repository website with:</p>
+    <ul>
+        <li>General information</li>
+        <li>Current/past projects</li>
+        <li>Skill ratings</li>
+    </ul>
+</section>
+
+<!-- Example of nested vertical slides -->
+<section>
+    <h2>Possible Solutions</h2>
+</section>
+
+<section>
+    <h2>Let's make an ASAP page!</h2>
+
+    <h2 class="fragment" style="color: #FF0000;">Hahaha! No.</h2>
+</section>
+
+<section>
+    <h2>Let's make a site with<br/>PHP + mySQL!</h2>
+
+    <h3 class="fragment" style="color: orange;">Maybe but . . .</h3>
+    <ul>
+        <li class="fragment">Only FEDs with PHP knowledge can assist</li>
+        <li class="fragment">mySQL tables might constantly change</li>
+        <li class="fragment">Information not easily shared</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Let's make an API instead!</h2>
+
+    <h2 class="fragment" style="color: #00FF00;">OK! But why?</h2>
+
+    <p class="fragment"><br/><br/>An API will keep information:</p>
+    <ul>
+        <li class="fragment">Reusable in multiple languages</li>
+        <li class="fragment">Expandable</li>
+        <li class="fragment">Restricted (when necessary)</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Building an API</h2>
+
+    <h3 class="fragment"><br/>That sounds complicated. . .</h3>
+
+    <h3 class="fragment">This is backend work. . .</h3>
+
+    <h3 class="fragment">I just want to go home. . .</h3>
+</section>
+
+<section>
+    <h2><span style="color:#ff0000;">N</span><span style="color:#ff2a00;">o</span><span
+            style="color:#ff5500;">d</span><span style="color:#ff7f00;">e</span><span
+            style="color:#ffaa00;">J</span><span style="color:#ffd400;">S</span><span
+            style="color:#ffff00;"> </span><span style="color:#aaff00;">a</span><span
+            style="color:#55ff00;">n</span><span style="color:#00ff00;">d</span><span
+            style="color:#00ff55;"> </span><span style="color:#00ffaa;">M</span><span
+            style="color:#00ffff;">o</span><span style="color:#00aaff;">n</span><span
+            style="color:#0055ff;">g</span><span style="color:#0000ff;">o</span><span
+            style="color:#2e00ff;"> </span><span style="color:#5d00ff;">D</span><span
+            style="color:#8b00ff;">B</span><br/>to the rescue!!!!</h2>
+
+    <h2 class="fragment">!!!!!</h2>
+
+    <h2 class="fragment">!!!!!!!!!!!!</h2>
+
+    <h2 class="fragment">!!!!!!!!!!!!!!!!!!!!!!!!!</h2>
+</section>
+
+<section>
+    <h2>
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</h2>
+</section>
+
+<section>
+    <h2>Benefits of using<br/><span style="color:#ff0000;">N</span><span style="color:#ff2a00;">o</span><span
+            style="color:#ff5500;">d</span><span style="color:#ff7f00;">e</span><span
+            style="color:#ffaa00;">J</span><span style="color:#ffd400;">S</span><span
+            style="color:#ffff00;"> </span><span style="color:#aaff00;">a</span><span
+            style="color:#55ff00;">n</span><span style="color:#00ff00;">d</span><span
+            style="color:#00ff55;"> </span><span style="color:#00ffaa;">M</span><span
+            style="color:#00ffff;">o</span><span style="color:#00aaff;">n</span><span
+            style="color:#0055ff;">g</span><span style="color:#0000ff;">o</span><span
+            style="color:#2e00ff;"> </span><span style="color:#5d00ff;">D</span><span style="color:#8b00ff;">B</span>
+    </h2>
+    <ul>
+        <li class="fragment">It's Javascript!</li>
+        <li class="fragment">It's JSON!</li>
+        <li class="fragment">Makes API development EASY!</li>
+        <li class="fragment">They are current buzzwords!!</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Technology Stack</h2>
+
+    <p>Here's what we'll be using:</p>
+    <ul>
+        <li class="fragment">NodeJS
+            <ul>
+                <li class="fragment">Express</li>
+                <li class="fragment">Mongoose</li>
+                <li class="fragment">Bcrypt</li>
+                <li class="fragment">Cors</li>
+            </ul>
+        </li>
+        <li class="fragment">Mongo DB</li>
+    </ul>
+</section>
+
+<section>
+    <h2>NodeJS</h2>
+
+    <p>
+        Platform for building fast, scalable network applications
+    </p>
+
+    <ul>
+        <li class="fragment">Built on Chrome's super-fast V8 JavaScript engine</li>
+        <li class="fragment">Non-blocking I/O and asynchronous events</li>
+        <li class="fragment">Thousands of libraries available at npm.org</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Synchronous<br/>vs<br/>Asynchronous?</h2>
+</section>
 
 
+<style type="text/css" media="screen, print">
+    @font-face {
+        font-family: "Symbol Signs";
+        src: url("http://josepulgar.com/symbol-signs-webfont.woff");
+    }
 
-				<section>
-					<h2>This sounds great<br/>but complicated...</h2>
-					<h2 class="fragment" style="color: #00FF00;">It's not!</h2>
-				</section>
+    .mySymbols {
+        font-size: 2.0em !important;
+        font-family: "Symbol Signs", serif !important;
+    }
+</style>
 
-                <section>
-                    <h2>Folder Structure</h2>
+<section>
+    <h2>Synchronous</h2>
+
+    <p class="fragment" style="line-height: 0.9em;">Calling utility company:<br/><br/><span class="mySymbols">TF MFMMFMMFMFMMFMMF</span>
+    </p>
+
+    <p class="fragment" style="line-height: 0.9em;"><br/><span class="mySymbols">TM MMMFFMMFMMFFFMMM</span></p>
+
+    <p class="fragment" style="line-height: 0.9em;"><br/><span class="mySymbols">TF MMFMMFMMFMFMMFMM</span></p>
+
+    <p class="fragment" style="line-height: 0.9em;"><br/><span class="mySymbols">TF MMFMMFMMFMF<span
+            style="color: red;">M</span>MFMM</span></p>
+</section>
+
+<section>
+    <h2>Asynchronous</h2>
+
+    <p class="fragment">Visit website. Use "call me" feature.<br/>
+        <small><i>We will call you in around 45 minutes.</i></small>
+    </p>
+    <p><span class="fragment mySymbols">sM </span><span class="fragment mySymbols">R bM </span><span
+            class="fragment mySymbols">R J<span style="color: red;">M</span></span></p>​
+</section>
+
+<section>
+    <h2>Express Library</h2>
+
+    <p>Minimal and flexible NodeJS web application framework</p>
+
+    <p class="fragment"><br/><br/>Great for:</p>
+    <ul>
+        <li class="fragment">Building single-page applications</li>
+        <li class="fragment">Creating a RESTful APIs</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Mongo DB</h2>
+    <ul>
+        <li class="fragment">JSON-like documents</li>
+        <li class="fragment">Dynamic schemas</li>
+        <li class="fragment">Auto expiring documents</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Mongoose Library</h2>
+    <ul>
+        <li class="fragment">Simplifies Mongo DB usage</li>
+        <li class="fragment">Provides data schema</li>
+        <li class="fragment">Automatic data validation</li>
+    </ul>
+</section>
+
+
+<section>
+    <h2>This sounds great<br/>but complicated...</h2>
+
+    <h2 class="fragment" style="color: #00FF00;">It's not!</h2>
+</section>
+
+<section>
+    <h2>Folder Structure</h2>
                     <pre><code data-trim contenteditable>
-package.json
-app.js
-+-- models
-     |-- user.js
-     |-- department.js
-     |-- key.js
-     |-- login.js
-+-- routes
-     |-- index.js
-+-- config
-     |-- database.js
-+-- node_modules
+                        package.json
+                        app.js
+                        +-- models
+                        |-- user.js
+                        |-- department.js
+                        |-- key.js
+                        |-- login.js
+                        +-- routes
+                        |-- index.js
+                        +-- config
+                        |-- database.js
+                        +-- node_modules
                     </code></pre>
 
-<p><small>Assumptions: NodeJS and Mongo DB are installed locally</small></p>
-                </section>
+    <p>
+        <small>Assumptions: NodeJS and Mongo DB are installed locally</small>
+    </p>
+</section>
 
-				<section>
-					<h2>Step 1</h2>
-					<p>Create a <b>package.json</b> file.<br/>
-						This defines our application and all dependencies.</p>
+<section>
+    <h2>Step 1</h2>
 
-						<pre><code data-trim contenteditable>
-{
-    "name": "employee-api",
-    "description": "RESTful API to get employee information",
-    "version": "0.0.1",
-    "dependencies": {
-        "express": "3.x",
-        "mongoose": "3.8.8",
-        "bcrypt": "0.7.7"
-    }
-}
-						</code></pre>
-				</section>
-
-
-				<section>
-					<h2>Step 2</h2>
-					<p>Create a <b>app.js</b> file.</p>
+    <p>Create a <b>package.json</b> file.<br/>
+        This defines our application and all dependencies.</p>
 
 						<pre><code data-trim contenteditable>
-var express = require('express'),
-    mongoose = require('mongoose'),
-    bcrypt = require('bcrypt'),
-    database = require('./config/database');
+                            {
+                            "name": "employee-api",
+                            "description": "RESTful API to get employee information",
+                            "version": "0.0.1",
+                            "dependencies": {
+                            "express": "3.x",
+                            "mongoose": "3.8.8",
+                            "bcrypt": "0.7.7"
+                            }
+                            }
+                        </code></pre>
+</section>
 
-// Create app and use JSON/urlencoded parsing middleware
-var app = express();
-app.use(express.json());
-app.use(express.urlencoded());
 
-require('./routes')(app);
+<section>
+    <h2>Step 2</h2>
 
-mongoose.connect(database.url);
-
-var server = app.listen(5000, function() {
-  console.log('Listening on: http://localhost:%d', server.address().port);
-});
-						</code></pre>
-				</section>
-
-				<section>
-					<h2>Step 3</h2>
-					<p>Install Dependencies</p>
-						<pre><code data-trim contenteditable>
-npm install
-						</code></pre>
-					<p>Run Application</p>
-						<pre><code data-trim contenteditable>
-node app.js
-						</code></pre>
-
-					<p class="fragment"><br/>You are now running a web service on port 5000!</hp>
-				</section>
-
-				<section>
-					<h2>Step 4</h2>
-					<p><b>Create Models</b> to define our data schema and validation.</p>
+    <p>Create a <b>app.js</b> file.</p>
 
 						<pre><code data-trim contenteditable>
-var mongoose = require('mongoose'), Schema = mongoose.Schema;
+                            var express = require('express'),
+                            mongoose = require('mongoose'),
+                            bcrypt = require('bcrypt'),
+                            database = require('./config/database');
 
-var skillSchema = new Schema({
-    title: { type: String, required: true },
-    rating: { type: Number, max: 5, required: true }
-});
+                            // Create app and use JSON/urlencoded parsing middleware
+                            var app = express();
+                            app.use(express.json());
+                            app.use(express.urlencoded());
 
-var userSchema = new Schema({
-    name: { type: String, required: true },
-    headshot: { type: String },
-    startDate: { type: Date },
-    jobTitle: { type: String, required: true },
-    email: { type: String },
-    skills: [skillSchema]
-});
+                            require('./routes')(app);
 
-module.exports = mongoose.model('User', userSchema);
-						</code></pre>
-				</section>
+                            mongoose.connect(database.url);
 
+                            var server = app.listen(5000, function() {
+                            console.log('Listening on: http://localhost:%d', server.address().port);
+                            });
+                        </code></pre>
+</section>
 
-				<section>
-					<h2>Step 5: Define Routes</h2>
-					<p>Routes are URL schema, that describe<br/>the interfaces for making requests to your web app.</p>
+<section>
+    <h2>Step 3</h2>
 
+    <p>Install Dependencies</p>
+						<pre><code data-trim contenteditable>
+                            npm install
+                        </code></pre>
+    <p>Run Application</p>
+						<pre><code data-trim contenteditable>
+                            node app.js
+                        </code></pre>
 
-<p class="fragment"><br/><br/>Route Examples:</p>
-<p class="fragment"><b>GET /users</b> &rarr; returns all users</p>
-<p class="fragment"><b>POST /login {JSON Data}</b> &rarr; returns key if valid</p>
-<p class="fragment"><b>GET /users/{userID}</b> &rarr; returns one user</p>
+    <p class="fragment"><br/>You are now running a web service on port 5000!</hp>
+</section>
 
+<section>
+    <h2>Step 4</h2>
 
-					<p class="fragment"><br/><br/>Let's look at the code...</p>
-				</section>
-
-
-
-
-
-				<section>
-					<h2>GET /users</h2>
-					<p>Get all user names and IDs</p>
+    <p><b>Create Models</b> to define our data schema and validation.</p>
 
 						<pre><code data-trim contenteditable>
-// Curl request:
-curl -i -X GET http://localhost:5000/users
-						</code></pre>
-						<pre><code data-trim contenteditable>
-// Define user model
-var User = require('../models/user');
+                            var mongoose = require('mongoose'), Schema = mongoose.Schema;
 
-app.get('/users', function(req, res) {
-  User.find({}, '_id jobTitle', function(err, users) {
-     res.jsonp(users);
-  });
-});
-						</code></pre>
-						<pre><code data-trim contenteditable>
-// Output:
-[ { "_id": "John Smith", "jobTitle": "FED" },
-  { "_id": "Nina Pulgar", "jobTitle": "Cat" } ]
-						</code></pre>
-				</section>
+                            var skillSchema = new Schema({
+                            title: { type: String, required: true },
+                            rating: { type: Number, max: 5, required: true }
+                            });
 
+                            var userSchema = new Schema({
+                            name: { type: String, required: true },
+                            headshot: { type: String },
+                            startDate: { type: Date },
+                            jobTitle: { type: String, required: true },
+                            email: { type: String },
+                            skills: [skillSchema]
+                            });
 
-
-				<section>
-					<h2>POST /users</h2>
-					<p>Creates a new user</p>
-
-						<pre><code data-trim contenteditable>
-curl -i -X POST -H 'Content-Type: application/json'
-     -d '{"_id": "Billy Mitchell", "jobTitle": "Hot Sauce Maker"}'
-     http://localhost:5000/users?key=532b0ded565784050ab40b02
-						</code></pre>
-						<pre><code data-trim contenteditable>
-app.post('/users', checkAuth, function(req, res) {
-  var myUser = new User(req.body);
-  myUser.save(function (err) {
-    if (err) {
-      res.jsonp(500, { error: err.name + ' - ' + err.message });
-    } else {
-      res.jsonp(myUser);
-    }
-  });
-});
-						</code></pre>
-						<pre><code data-trim contenteditable>
-{ "__v": 0, "_id": "Billy Mitchell", "jobTitle": "Hot Sauce Maker", "skills": [] }
-						</code></pre>
-				</section>
+                            module.exports = mongoose.model('User', userSchema);
+                        </code></pre>
+</section>
 
 
+<section>
+    <h2>Step 5: Define Routes</h2>
 
-				<section>
-					<h2>DELETE /users/{userid}</h2>
-					<p>Deletes a user</p>
+    <p>Routes are URL schema, that describe<br/>the interfaces for making requests to your web app.</p>
+
+
+    <p class="fragment"><br/><br/>Route Examples:</p>
+
+    <p class="fragment"><b>GET /users</b> &rarr; returns all users</p>
+
+    <p class="fragment"><b>POST /login {JSON Data}</b> &rarr; returns key if valid</p>
+
+    <p class="fragment"><b>GET /users/{userID}</b> &rarr; returns one user</p>
+
+
+    <p class="fragment"><br/><br/>Let's look at the code...</p>
+</section>
+
+
+<section>
+    <h2>GET /users</h2>
+
+    <p>Get all user names and IDs</p>
 
 						<pre><code data-trim contenteditable>
-curl -i -X DELETE http://localhost:5000/users/Billy%20Mitchell
-                                         ?key=532b0ded565784050ab40b02
-						</code></pre>
+                            // Curl request:
+                            curl -i -X GET http://localhost:5000/users
+                        </code></pre>
 						<pre><code data-trim contenteditable>
-app.delete('/users/:userid', checkAuth, function(req, res) {
+                            // Define user model
+                            var User = require('../models/user');
 
-  User.findByIdAndRemove(req.params.userid, function (err, resource) {
-
-    if (err) {
-      res.jsonp(500, { error: err.name + ' - ' + err.message });
-    } else if (resource) {
-      res.jsonp({ message: 'User deleted' });
-    } else {
-      res.jsonp(404, { error: 'User not found' });
-    }
-  });
-});
-						</code></pre>
+                            app.get('/users', function(req, res) {
+                            User.find({}, '_id jobTitle', function(err, users) {
+                            res.jsonp(users);
+                            });
+                            });
+                        </code></pre>
 						<pre><code data-trim contenteditable>
-{ "message": "User deleted" }
-						</code></pre>
-				</section>
+                            // Output:
+                            [ { "_id": "John Smith", "jobTitle": "FED" },
+                            { "_id": "Nina Pulgar", "jobTitle": "Cat" } ]
+                        </code></pre>
+</section>
 
 
-				<section>
-					<h2>User Routes</h2>
-					<p><b>Public</b><br/>
-GET /users<br/>
-GET /users/{id},{id}<br/><br/>
+<section>
+    <h2>POST /users</h2>
 
-<b>Public-ish</b><br/>
-GET /users/{id}<br/><br/>
+    <p>Creates a new user</p>
 
-<b>Protected (key required)</b><br/>
-POST /users<br/>
-PUT /users/{id}<br/>
-PUT /users/{id}/skills<br/>
-DELETE /users/{id}</p>
-				</section>
+						<pre><code data-trim contenteditable>
+                            curl -i -X POST -H 'Content-Type: application/json'
+                            -d '{"_id": "Billy Mitchell", "jobTitle": "Hot Sauce Maker"}'
+                            http://localhost:5000/users?key=532b0ded565784050ab40b02
+                        </code></pre>
+						<pre><code data-trim contenteditable>
+                            app.post('/users', checkAuth, function(req, res) {
+                            var myUser = new User(req.body);
+                            myUser.save(function (err) {
+                            if (err) {
+                            res.jsonp(500, { error: err.name + ' - ' + err.message });
+                            } else {
+                            res.jsonp(myUser);
+                            }
+                            });
+                            });
+                        </code></pre>
+						<pre><code data-trim contenteditable>
+                            { "__v": 0, "_id": "Billy Mitchell", "jobTitle": "Hot Sauce Maker", "skills": [] }
+                        </code></pre>
+</section>
 
 
-				<section>
-					<h2>Security</h2>
+<section>
+    <h2>DELETE /users/{userid}</h2>
 
-					<p><br/>We need to do the following:<br/></p>
-					<ul>
-						<li>Encrypt passwords</li>
-						<li>Set protected routes</li>
-					</ul>
-				</section>
+    <p>Deletes a user</p>
+
+						<pre><code data-trim contenteditable>
+                            curl -i -X DELETE http://localhost:5000/users/Billy%20Mitchell
+                            ?key=532b0ded565784050ab40b02
+                        </code></pre>
+						<pre><code data-trim contenteditable>
+                            app.delete('/users/:userid', checkAuth, function(req, res) {
+
+                            User.findByIdAndRemove(req.params.userid, function (err, resource) {
+
+                            if (err) {
+                            res.jsonp(500, { error: err.name + ' - ' + err.message });
+                            } else if (resource) {
+                            res.jsonp({ message: 'User deleted' });
+                            } else {
+                            res.jsonp(404, { error: 'User not found' });
+                            }
+                            });
+                            });
+                        </code></pre>
+						<pre><code data-trim contenteditable>
+                            { "message": "User deleted" }
+                        </code></pre>
+</section>
 
 
-				<section>
-					<h2>Encrypt Passwords</h2>
-					<p>Hash and salt passwords with <b>bcrypt</b></p>
+<section>
+    <h2>User Routes</h2>
+
+    <p><b>Public</b><br/>
+        GET /users<br/>
+        GET /users/{id},{id}<br/><br/>
+
+        <b>Public-ish</b><br/>
+        GET /users/{id}<br/><br/>
+
+        <b>Protected (key required)</b><br/>
+        POST /users<br/>
+        PUT /users/{id}<br/>
+        PUT /users/{id}/skills<br/>
+        DELETE /users/{id}</p>
+</section>
+
+
+<section>
+    <h2>Security</h2>
+
+    <p><br/>We need to do the following:<br/></p>
+    <ul>
+        <li>Encrypt passwords</li>
+        <li>Set protected routes</li>
+    </ul>
+</section>
+
+
+<section>
+    <h2>Encrypt Passwords</h2>
+
+    <p>Hash and salt passwords with <b>bcrypt</b></p>
 
 					<pre><code data-trim contenteditable>
-node addUser.js bmitchell secretpassword
-					</code></pre>
-					<p>Save it:</p>
+                        node addUser.js bmitchell secretpassword
+                    </code></pre>
+    <p>Save it:</p>
 					<pre><code data-trim contenteditable>
-bcrypt.hash('secretpassword', 10, function( err, bcryptedPassword) {
-    // Store bcryptedPassword in Mongo DB
-});
-					</code></pre>
-					<p>Compare it:</p>
+                        bcrypt.hash('secretpassword', 10, function( err, bcryptedPassword) {
+                        // Store bcryptedPassword in Mongo DB
+                        });
+                    </code></pre>
+    <p>Compare it:</p>
 					<pre><code data-trim contenteditable>
-bcrypt.compare('secretpassword', bcryptedPassword, function(err, match) {
-    // match returns true if valid
-});
-					</code></pre>
-				</section>
+                        bcrypt.compare('secretpassword', bcryptedPassword, function(err, match) {
+                        // match returns true if valid
+                        });
+                    </code></pre>
+</section>
 
-				<section>
-					<h2>Protected Routes<br/><br/></h2>
-					<ul>
-						<li>Need to protect routes that modify users</li>
-						<li>POST PUT DELETE commands</li>
-						<li>Administrators: read/write</li>
-						<li>Public: read-only</li>
-					</ul>
-					<p class="fragment" style="color: orange;"><br/><br/>How do we do this?</p>
-				</section>
+<section>
+    <h2>Protected Routes<br/><br/></h2>
+    <ul>
+        <li>Need to protect routes that modify users</li>
+        <li>POST PUT DELETE commands</li>
+        <li>Administrators: read/write</li>
+        <li>Public: read-only</li>
+    </ul>
+    <p class="fragment" style="color: orange;"><br/><br/>How do we do this?</p>
+</section>
 
-				<section>
-					<h2>API Keys</h2>
-					<p>Require keys when modifying users<br/><br/>
-					<b>POST</b> /login <span style="color:#08088A;">{username/password}</span><br/>
-					&darr;<br/>
-					Obtain Key<br/>
-					&darr;<br/>
-					<b>POST</b> /users?key={valid key} <span style="color:#08088A;">{new user data}</span>
+<section>
+    <h2>API Keys</h2>
 
-				</section>
+    <p>Require keys when modifying users<br/><br/>
+        <b>POST</b> /login <span style="color:#08088A;">{username/password}</span><br/>
+        &darr;<br/>
+        Obtain Key<br/>
+        &darr;<br/>
+        <b>POST</b> /users?key={valid key} <span style="color:#08088A;">{new user data}</span>
 
-				<section>
-					<h2>Temporary Keys</h2>
-					<p>Another layer of protection<br/><br/></p>
-					<ul>
-						<li>Expire keys after X amount of time</li>
-						<li>Mongo has TTL built in for documents</li>
-						<li>TTL stands for "Time To Live"</li>
-					</ul>
-					<p><br/>Defined at the schema level:</p>
+</section>
+
+<section>
+    <h2>Temporary Keys</h2>
+
+    <p>Another layer of protection<br/><br/></p>
+    <ul>
+        <li>Expire keys after X amount of time</li>
+        <li>Mongo has TTL built in for documents</li>
+        <li>TTL stands for "Time To Live"</li>
+    </ul>
+    <p><br/>Defined at the schema level:</p>
 					<pre><code data-trim contenteditable>
-var keySchema = new Schema({
-  createdAt: { type: Date, expires: 3600, default: Date.now, unique: true }
-});
-					</code></pre>
-				</section>
+                        var keySchema = new Schema({
+                        createdAt: { type: Date, expires: 3600, default: Date.now, unique: true }
+                        });
+                    </code></pre>
+</section>
 
 
+<section>
+    <h2>Ways to Access API</h2>
 
-				<section>
-					<h2>Ways to Access API</h2>
+    <p><b>JSON</b><br/>Not cross-domain.</p>
 
-					<p><b>JSON</b><br/>Not cross-domain.</p>
-					<p><br/><b>JSONP</b><br/>Cross-domain. No ideal error checking.</p>
-					<p><br/><b>CORS</b><br/>Cross-domain. Error checking. No IE7-9.</p>
+    <p><br/><b>JSONP</b><br/>Cross-domain. No ideal error checking.</p>
 
-				</section>
+    <p><br/><b>CORS</b><br/>Cross-domain. Error checking. No IE7-9.</p>
 
-				<section>
-					<h2>JSON/JSONP</h2>
-					<p><br/>ExpressJS: res.jsonp(users);<br/><br/></p>
-					<img width="713" height="138" src="http://josepulgar.com/jsonAndjsonp.gif" alt="json">
-				</section>
+</section>
 
-				<section>
-					<h2>CORS</h2>
-					<p>Cross-Origin Resource Sharing</p>
+<section>
+    <h2>JSON/JSONP</h2>
+
+    <p><br/>ExpressJS: res.jsonp(users);<br/><br/></p>
+    <img width="713" height="138" src="http://josepulgar.com/jsonAndjsonp.gif" alt="json">
+</section>
+
+<section>
+    <h2>CORS</h2>
+
+    <p>Cross-Origin Resource Sharing</p>
 					<pre><code data-trim contenteditable>
-// Requires
-var express = require('express'), cors = require('cors');
+                        // Requires
+                        var express = require('express'), cors = require('cors');
 
-// Create Express App
-var app = express();
+                        // Create Express App
+                        var app = express();
 
-// Set up CORS (Cross-Origin Resource Sharing)
-var corsOptions = {
-    origin: '*'
-};
+                        // Set up CORS (Cross-Origin Resource Sharing)
+                        var corsOptions = {
+                        origin: '*'
+                        };
 
-app.use(cors(corsOptions));
-					</code></pre>
+                        app.use(cors(corsOptions));
+                    </code></pre>
 
-<p><br/>Cross-domain with error checking.<br/>No IE7-9 without extension:<br/>
-MoonScript / jQuery-ajaxTransport-XDomainRequest</p>
+    <p><br/>Cross-domain with error checking.<br/>No IE7-9 without extension:<br/>
+        MoonScript / jQuery-ajaxTransport-XDomainRequest</p>
 
-				</section>
+</section>
 
-				<section>
-					<h2>Project Link</h2>
-					<p><a href="https://github.com/jpulgar/employee-api">https://github.com/jpulgar/employee-api</a><br/><br/><br/></p>
-					<h2>Questions?</h2>
-				</section>
+<section>
+    <h2>Project Link</h2>
 
-			</div>
+    <p><a href="https://github.com/jpulgar/employee-api">https://github.com/jpulgar/employee-api</a><br/><br/><br/></p>
 
-		</div>
+    <h2>Questions?</h2>
+</section>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.min.js"></script>
+</div>
 
-		<script>
+</div>
 
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
 
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+<script>
 
-				// Parallax scrolling
-				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-				// parallaxBackgroundSize: '2100px 900px',
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
 
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-				]
-			});
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
-		</script>
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
 
-	</body>
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            { src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            } },
+            { src: 'plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } }
+        ]
+    });
+
+</script>
+
+</body>
 </html>

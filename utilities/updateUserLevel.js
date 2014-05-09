@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
     User = require('../models/user');
 
 // Connect to MongoDB
-mongoose.connect(database.url, function(err) {
+mongoose.connect(database.url, function (err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
@@ -23,7 +23,7 @@ mongoose.connect(database.url, function(err) {
             $set: {
                 level: process.argv[3]
             }
-        }, function(err) {
+        }, function (err) {
             if (err) {
                 console.log('Error: Unable to update user level');
             } else {

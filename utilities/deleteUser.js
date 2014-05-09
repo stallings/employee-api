@@ -14,14 +14,14 @@ var userName = process.argv[2],
     userManager = "";
 
 // Connect to MongoDB
-mongoose.connect(database.url, function(err) {
+mongoose.connect(database.url, function (err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
     } else {
         User.findOneAndRemove({
             _id: userName
-        }, function(err, user) {
+        }, function (err, user) {
             if (err) {
                 console.log('Error: Unable to delete user');
             } else {
@@ -36,7 +36,7 @@ mongoose.connect(database.url, function(err) {
                     }
                 }, {
                     multi: true
-                }, function(err, numberAffected) {
+                }, function (err, numberAffected) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -51,7 +51,7 @@ mongoose.connect(database.url, function(err) {
                             }
                         }, {
                             multi: true
-                        }, function(err, numberAffected) {
+                        }, function (err, numberAffected) {
                             if (err) {
                                 console.log(err);
                             } else {

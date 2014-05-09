@@ -12,17 +12,14 @@ var mongoose = require('mongoose'),
     User = require('../models/user');
 
 
-
-
-
 // Connect to MongoDB
-mongoose.connect(database.url, function(err) {
+mongoose.connect(database.url, function (err) {
     "use strict";
     if (err) {
         console.log('Error: Unable to connect to MongoDB!');
     } else {
         // Create the user after salting + hashing the password
-        bcrypt.hash(process.argv[4], 10, function(err, bcryptedPassword) {
+        bcrypt.hash(process.argv[4], 10, function (err, bcryptedPassword) {
             if (err) {
                 console.log('Error: Unable to bcrypt password');
             } else {
@@ -36,7 +33,7 @@ mongoose.connect(database.url, function(err) {
                     }
                 }, {
                     upsert: true
-                }, function(err) {
+                }, function (err) {
                     if (err) {
                         console.log('Error: Unable to add user');
                         console.log(err.message);
