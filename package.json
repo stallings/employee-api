@@ -8,10 +8,10 @@
         "morgan": "~1.0.1",
         "mongoose": "~3.8.8",
         "bcrypt": "~0.7.8",
-        "cors": "2.2.0"
+        "cors": "2.3.0"
     },
     "devDependencies": {
-        "gulp": "~3.5.5",
+        "gulp": "~3.6.2",
         "grunt": "~0.4.4",
         "grunt-contrib-jshint": "~0.10.0",
         "grunt-jsbeautifier": "~0.2.7",

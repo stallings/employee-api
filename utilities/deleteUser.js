@@ -1,4 +1,5 @@
-if (process.argv.length != 3) {
+/* jshint node: true */
+if (process.argv.length !== 3) {
     console.log('Usage: node deleteUser.js ["Full Name"]');
     console.log('Usage: node deleteUser.js "Jose Pulgar"');
     process.exit(0);

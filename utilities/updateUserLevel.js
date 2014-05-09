@@ -1,4 +1,5 @@
-if (process.argv.length != 4) {
+/* jshint node: true */
+if (process.argv.length !== 4) {
     console.log('Usage: node updateUserLevel.js ["Full Name"] [level]');
     console.log('Usage: node updateUserLevel.js "Jose Pulgar" 5');
     process.exit(0);

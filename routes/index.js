@@ -1,12 +1,12 @@
+/* jshint node: true */
 module.exports = function(app) {
     "use strict";
-
-
 
     var User = require('../models/user'),
         Project = require('../models/project'),
         Key = require('../models/key'),
         bcrypt = require('bcrypt');
+
 
     function makeDirectorKey(level, user, myUsers, res) {
         User.find({
@@ -300,6 +300,7 @@ module.exports = function(app) {
                     // If it's VP, make a pre-defined structure
                 } else {
 
+                    console.log('finish this');
                     /*
 
                      // Step 1: Find all direct reports
@@ -352,7 +353,7 @@ module.exports = function(app) {
     app.get('/users/:userid', function(req, res, next) {
 
         // If multiple users requested, return info for each (less than individual)
-        if (req.params.userid.indexOf(',') != -1) {
+        if (req.params.userid.indexOf(',') !== -1) {
             User.find({
                 '_id': {
                     $in: req.params.userid.split(",")
@@ -463,7 +464,7 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '{"department": "FED"}' 'http://localhost:5000/users/Jose Pulgar?key=532b0ded565784050ab40b02'
     /* ********************************* */
-    app.put('/users/:userid', checkAuth, function(req, res) {
+    app.put('/users/:userid', checkAuth, function(req, res, next) {
         var query = {
             _id: req.params.userid
         };

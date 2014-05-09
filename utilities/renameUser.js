@@ -1,4 +1,5 @@
-if (process.argv.length != 4) {
+/* jshint node: true */
+if (process.argv.length !== 4) {
     console.log('Usage: node renameUser.js ["Old Full Name"] ["New Full Name"]');
     console.log('Usage: node renameUser.js "Jen Smith" "Jennifer Smith"');
     process.exit(0);

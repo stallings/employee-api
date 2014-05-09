@@ -1,4 +1,5 @@
-if (process.argv.length != 6) {
+/* jshint node: true */
+if (process.argv.length !== 6) {
     console.log('Usage: node addUser.js ["Full Name"] [password] [level]');
     console.log('Usage: node addUser.js "Jose Pulgar" secretpassword 3');
     process.exit(0);

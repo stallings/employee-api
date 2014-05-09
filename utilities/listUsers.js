@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 // Requires
 var mongoose = require('mongoose'),
     database = require('../config/database'),
