@@ -3,10 +3,10 @@
     "description": "RESTful API for Employee Information",
     "version": "0.0.1",
     "dependencies": {
-        "express": "~4.1.1",
+        "express": "~4.1.2",
         "body-parser": "~1.0.2",
         "morgan": "~1.0.1",
-        "mongoose": "~3.8.8",
+        "mongoose": "~3.8.9",
         "bcrypt": "~0.7.8",
         "cors": "2.3.0"
     },

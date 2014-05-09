@@ -23,6 +23,24 @@ module.exports = function(app) {
         });
     }
 
+    function findUsers(req, res, next, searchObject) {
+        var data = {};
+
+        User.find(searchObject, '_id title', function(err, users) {
+            if (err) {
+                return next(new Error(err.message));
+            } else if (!users.length) {
+                var newErr = new Error('No users found');
+                newErr.status = 404;
+                return next(newErr);
+            } else {
+                data.count = users.length;
+                data.results = users;
+                res.jsonp(data);
+            }
+        });
+    }
+
     function checkAuth(req, res, next) {
         var newErr;
         if (req.query.key !== undefined) {
@@ -115,13 +133,9 @@ module.exports = function(app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
-    app.get('/users', function(req, res) {
-        var data = {};
-        User.find({}, '_id title', function(err, users) {
-            data.count = users.length;
-            data.results = users;
-            res.jsonp(data);
-        });
+    app.get('/users', function(req, res, next) {
+        var searchObject = {};
+        findUsers(req, res, next, searchObject);
     });
 
     /* ********************************* */
@@ -132,23 +146,9 @@ module.exports = function(app) {
     // curl -i -X GET http://localhost:5000/users/search/string
     /* ********************************* */
     app.get('/users/search/:string', function(req, res, next) {
-        var regex = new RegExp(req.params.string, 'i'),
-            data = {};
-        User.find({
-            _id: regex
-        }, '_id title', function(err, users) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (!users.length) {
-                var newErr = new Error('No users found');
-                newErr.status = 404;
-                return next(newErr);
-            } else {
-                data.count = users.length;
-                data.results = users;
-                res.jsonp(data);
-            }
-        });
+        var searchObject = {};
+        searchObject._id = new RegExp(req.params.string, 'i');
+        findUsers(req, res, next, searchObject);
     });
 
     /* ********************************* */
@@ -163,39 +163,41 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/advancedsearch', function(req, res, next) {
 
-        var searchObject = {},
-            data = {};
+        var searchObject = {};
 
         // Do a regular expression for name
         if (req.body.name !== undefined) {
             searchObject._id = new RegExp(req.body.name, 'i');
         }
 
-        // TODO make sure a valid key is submitted before adding this to the searchObject
         // Make sure we find people that have ALL strenghts specified
         if (req.body.strengths !== undefined) {
             searchObject.strengths = { '$all': req.body.strengths };
         }
 
-        // TODO make sure a valid key is submitted before adding this to the searchObject
-        // Make sure it matches the one skill submitted
-        if (req.body.skills !== undefined) {
-            searchObject.skills = { '$elemMatch': { title: req.body.skills.title, rating: { $gte: req.body.skills.rating } }  };
+        if (req.query.key !== undefined) {
+            Key.find({
+                '_id': req.query.key
+            }, function(err, key) {
+                if (err) {
+                    findUsers(req, res, next, searchObject);
+                } else if (key.length) {
+                    if (key[0].level > 1) {
+                        if (req.body.skills !== undefined) {
+                            // Only add skills if it's a manager or above
+                            searchObject.skills = { '$elemMatch': { title: req.body.skills.title, rating: { $gte: req.body.skills.rating } }  };
+                            findUsers(req, res, next, searchObject);
+                        }
+                    } else {
+                        findUsers(req, res, next, searchObject);
+                    }
+                } else {
+                    findUsers(req, res, next, searchObject);
+                }
+            });
+        } else {
+            findUsers(req, res, next, searchObject);
         }
-
-        User.find(searchObject, '_id title', function(err, users) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (!users.length) {
-                var newErr = new Error('No users found');
-                newErr.status = 404;
-                return next(newErr);
-            } else {
-                data.count = users.length;
-                data.results = users;
-                res.jsonp(data);
-            }
-        });
     });
 
     /* ********************************* */
@@ -209,28 +211,14 @@ module.exports = function(app) {
     /* ********************************* */
     app.get('/users/directory', function(req, res, next) {
 
-        var searchObject = {},
-            data = {};
+        var searchObject = {};
         if (req.body.employeeType !== undefined) {
             searchObject.employeeType = { '$in': req.body.employeeType };
         }
         if (req.body.title !== undefined) {
             searchObject.title = { '$in': req.body.title };
         }
-
-        User.find(searchObject, '_id title', function(err, users) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (!users.length) {
-                var newErr = new Error('No users found');
-                newErr.status = 404;
-                return next(newErr);
-            } else {
-                data.count = users.length;
-                data.results = users;
-                res.jsonp(data);
-            }
-        });
+        findUsers(req, res, next, searchObject);
     });
 
     /* ********************************* */

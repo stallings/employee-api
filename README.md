@@ -13,10 +13,10 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 API:
 * [NodeJS](http://nodejs.org/) 0.10.28
-    * [express](http://expressjs.com/) 4.1.1
+    * [express](http://expressjs.com/) 4.1.2
     * [body-parser](https://github.com/expressjs/body-parser) 1.0.2
     * [morgan](https://github.com/expressjs/morgan) 1.0.1
-    * [mongoose](https://github.com/learnboost/mongoose) 3.8.8
+    * [mongoose](https://github.com/learnboost/mongoose) 3.8.9
     * [bcrypt](https://github.com/ncb000gt/node.bcrypt.js) 0.7.8
     * [cors](https://github.com/troygoode/node-cors/) 2.2.0
 * [Mongo DB](https://www.mongodb.org/) 2.6.0
@@ -33,7 +33,6 @@ API:
     * https://www.npmjs.org/package/gulp-beautify
     * https://www.npmjs.org/package/gulp-jshint
     * https://www.npmjs.org/package/gulp-nodemon
-* Key restrictions on advanced search
 * Finish org chart for top level
 
 ## User Import Utility ##
