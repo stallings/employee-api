@@ -13,7 +13,7 @@ module.exports = function (app) {
             _id: {
                 $in: myUsers
             }
-        }, 'directs', function (err, users) {
+        }, 'directs').lean().exec(function (err, users) {
             for (var i = 0; i < users.length; i++) {
                 for (var j = 0; j < users[i].directs.length; j++) {
                     myUsers.push(users[i].directs[j]);
@@ -26,7 +26,7 @@ module.exports = function (app) {
     function findUsers(req, res, next, searchObject) {
         var data = {};
 
-        User.find(searchObject, '_id title', function (err, users) {
+        User.find(searchObject, '_id title').lean().exec(function (err, users) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!users.length) {
@@ -46,7 +46,7 @@ module.exports = function (app) {
         if (req.query.key !== undefined) {
             Key.find({
                 '_id': req.query.key
-            }, function (err, key) {
+            }).lean().exec(function (err, key) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!key.length) {
@@ -181,17 +181,11 @@ module.exports = function (app) {
             }, function (err, key) {
                 if (err) {
                     findUsers(req, res, next, searchObject);
-                } else if (key.length) {
-                    if (key[0].level > 1) {
-                        if (req.body.skills !== undefined) {
+                } else if ((key.length) && (key[0].level > 1) && (req.body.skills !== undefined)) {
                             // Only add skills if it's a manager or above
                             searchObject.skills = { '$elemMatch': { title: req.body.skills.title, rating: { $gte: req.body.skills.rating } }  };
                             findUsers(req, res, next, searchObject);
-                        }
-                    } else {
-                        findUsers(req, res, next, searchObject);
-                    }
-                } else {
+                 } else {
                     findUsers(req, res, next, searchObject);
                 }
             });

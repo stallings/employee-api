@@ -13,8 +13,8 @@ The Employee API is a RESTful API to get information from each employee.  The in
 
 API:
 * [NodeJS](http://nodejs.org/) 0.10.28
-    * [express](http://expressjs.com/) 4.1.2
-    * [body-parser](https://github.com/expressjs/body-parser) 1.0.2
+    * [express](http://expressjs.com/) 4.2.0
+    * [body-parser](https://github.com/expressjs/body-parser) 1.2.0
     * [morgan](https://github.com/expressjs/morgan) 1.0.1
     * [mongoose](https://github.com/learnboost/mongoose) 3.8.9
     * [bcrypt](https://github.com/ncb000gt/node.bcrypt.js) 0.7.8

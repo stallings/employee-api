@@ -18,7 +18,6 @@ app.use(cors({
     origin: '*'
 }));
 
-
 var env = process.env.NODE_ENV || 'development';
 if (env === 'development') {
     app.use(morgan('dev'));

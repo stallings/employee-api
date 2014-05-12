@@ -1,39 +1,20 @@
-// Sample file
-
-var gulp = require('gulp');
-
-var coffee = require('gulp-coffee');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var imagemin = require('gulp-imagemin');
-
-var paths = {
-    scripts: ['client/js/**/*.coffee', '!client/external/**/*.coffee'],
-    images: 'client/img/**/*'
+var gulp = require('gulp'),
+    jshint = require('gulp-jshint'),
+    stylish = require('jshint-stylish'),
+    nodemon = require('gulp-nodemon'),
+    paths = {
+        scripts: ['gulpfile.js', 'app.js', 'config/*.js', 'models/*.js', 'routes/*.js', 'utilities/*.js']
 };
 
-gulp.task('scripts', function() {
-    // Minify and copy all JavaScript (except vendor scripts)
+gulp.task('lint', function() {
     return gulp.src(paths.scripts)
-        .pipe(coffee())
-        .pipe(uglify())
-        .pipe(concat('all.min.js'))
-        .pipe(gulp.dest('build/js'));
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish));
 });
 
-// Copy all static images
-gulp.task('images', function() {
-    return gulp.src(paths.images)
-        // Pass in options to the task
-        .pipe(imagemin({optimizationLevel: 5}))
-        .pipe(gulp.dest('build/img'));
+gulp.task('develop', function () {
+    nodemon({ script: 'app.js', ext: 'html js' })
+        .on('change', ['lint']);
 });
 
-// Rerun the task when a file changes
-gulp.task('watch', function() {
-    gulp.watch(paths.scripts, ['scripts']);
-    gulp.watch(paths.images, ['images']);
-});
-
-// The default task (called when you run `gulp` from cli)
-gulp.task('default', ['scripts', 'images', 'watch']);
+gulp.task('default', ['develop']);
