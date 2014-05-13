@@ -24,6 +24,7 @@ if (env === 'development') {
 }
 
 // Set routes
+app.use(express.static(__dirname + '/public'));
 require('./routes')(app);
 
 // Connect to Mongo Database and start server
@@ -37,3 +38,6 @@ mongoose.connect(database.url, function (err) {
         });
     }
 });
+
+
+

@@ -27,13 +27,23 @@ API:
 * Passwords are Bcrypted (Hash + Salt) before storing
 * Password Protection for skill ratings
 
-## To Do ##
+## API To Do ##
 
-* Install Gulp with
-    * https://www.npmjs.org/package/gulp-beautify
-    * https://www.npmjs.org/package/gulp-jshint
-    * https://www.npmjs.org/package/gulp-nodemon
+* Organize folder structure: http://code.tutsplus.com/tutorials/introduction-to-the-mean-stack--cms-19918
 * Finish org chart for top level
+
+## AngularJS To Do ##
+
+Directive: 
+UserService: handle the login
+
+Don't inject service into directive, do it on the controller.
+
+* vendor.js app.js
+* https://www.codefellows.org/blogs/quick-intro-to-gulp-js   /assets/js/vendor/**/*.js -> /assets/js/vendor.min.js
+* http://travismaynard.com/writing/no-need-to-grunt-take-a-gulp-of-fresh-air
+* How to do top nav. Look at second example: http://stackoverflow.com/questions/15686155/conditional-partials-in-angular-js
+
 
 ## User Import Utility ##
 mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError

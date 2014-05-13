@@ -17,4 +17,4 @@ gulp.task('develop', function () {
         .on('change', ['lint']);
 });
 
-gulp.task('default', ['develop']);
+//gulp.task('default', ['lint']);

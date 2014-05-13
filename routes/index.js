@@ -119,11 +119,11 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/
     /* ********************************* */
-    app.get('/', function (req, res) {
-        res.jsonp({
-            'version': '0.0.1'
-        });
-    });
+//    app.get('/', function (req, res) {
+//        res.jsonp({
+//            'version': '0.0.1'
+//        });
+//    });
 
 
     /* ********************************* */
@@ -133,7 +133,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users
     /* ********************************* */
-    app.get('/users', function (req, res, next) {
+    app.get('/api/v1/users', function (req, res, next) {
         var searchObject = {};
         findUsers(req, res, next, searchObject);
     });
@@ -145,7 +145,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/search/string
     /* ********************************* */
-    app.get('/users/search/:string', function (req, res, next) {
+    app.get('/api/v1/users/search/:string', function (req, res, next) {
         var searchObject = {};
         searchObject._id = new RegExp(req.params.string, 'i');
         findUsers(req, res, next, searchObject);
@@ -161,7 +161,7 @@ module.exports = function (app) {
     // curl -i -X GET -H 'Content-Type: application/json' -d '{"skills": { "title": "User Research", "rating": 3.5 }}' http://localhost:5000/users/advancedsearch
     // curl -i -X GET -H 'Content-Type: application/json' -d '{"name": "Jose", "strengths": ["Presentation"], "skills": { "title": "User Research", "rating": 3.5 }}' http://localhost:5000/users/advancedsearch
     /* ********************************* */
-    app.get('/users/advancedsearch', function (req, res, next) {
+    app.get('/api/v1/users/advancedsearch', function (req, res, next) {
 
         var searchObject = {};
 
@@ -203,7 +203,7 @@ module.exports = function (app) {
     // curl -i -X GET -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"]}' http://localhost:5000/users/directory
     // curl -i -X GET -H 'Content-Type: application/json' -d '{"title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
     /* ********************************* */
-    app.get('/users/directory', function (req, res, next) {
+    app.get('/api/v1/users/directory', function (req, res, next) {
 
         var searchObject = {};
         if (req.body.employeeType !== undefined) {
@@ -222,7 +222,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/orgchart/userid
     /* ********************************* */
-    app.get('/users/orgchart/:userid', function (req, res, next) {
+    app.get('/api/v1/users/orgchart/:userid', function (req, res, next) {
 
         /** @namespace req.params.userid */
         User.findOne({
@@ -336,7 +336,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X GET http://localhost:5000/users/id,id
     /* ********************************* */
-    app.get('/users/:userid', function (req, res, next) {
+    app.get('/api/v1/users/:userid', function (req, res, next) {
 
         // If multiple users requested, return info for each (less than individual)
         if (req.params.userid.indexOf(',') !== -1) {
@@ -431,7 +431,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"_id": "Billy Archibald7", "username": "billy", "level": 3}' http://localhost:5000/users?key=5351402ea096c331093a8e0f
     /* ********************************* */
-    app.post('/users', checkAuth, function (req, res, next) {
+    app.post('/api/v1/users', checkAuth, function (req, res, next) {
         var myUser = new User(req.body);
         myUser.save(function (err) {
             if (err) {
@@ -450,7 +450,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '{"department": "FED"}' 'http://localhost:5000/users/Jose Pulgar?key=532b0ded565784050ab40b02'
     /* ********************************* */
-    app.put('/users/:userid', checkAuth, function (req, res, next) {
+    app.put('/api/v1/users/:userid', checkAuth, function (req, res, next) {
         var query = {
             _id: req.params.userid
         };
@@ -475,7 +475,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X PUT -H 'Content-Type: application/json' -d '[{"_id": "HTML", "rating": "5.0"}, {"title": "CSS", "rating": "4.5"}]' http://localhost:5000/users/John%20Smith/skills?key=532b0ded565784050ab40b02
     /* ********************************* */
-    app.put('/users/:userid/skills', checkAuth, function (req, res, next) {
+    app.put('/api/v1/users/:userid/skills', checkAuth, function (req, res, next) {
         var query = {
             _id: req.params.userid
         };
@@ -518,7 +518,7 @@ module.exports = function (app) {
     // Sample curl:
     // curl -i -X DELETE http://localhost:5000/users/John%20Smith
     /* ********************************* */
-    app.delete('/users/:userid', checkAuth, function (req, res, next) {
+    app.delete('/api/v1/users/:userid', checkAuth, function (req, res, next) {
         User.findByIdAndRemove(req.params.userid, function (err, resource) {
             if (err) {
                 return next(new Error(err.message));
@@ -533,177 +533,13 @@ module.exports = function (app) {
     });
 
     /* ********************************* */
-    // Route: GET /projects
-    // Description: Get all project names and IDs
-    //
-    // Sample curl:
-    // curl -i -X GET http://localhost:5000/projects
-    /* ********************************* */
-    app.get('/projects', function (req, res) {
-        Project.find({}, '_id', function (err, projects) {
-            res.jsonp(projects);
-        });
-    });
-
-    /* ********************************* */
-    // Route: GET /projects/id,id
-    // Description: Get one or more projects
-    //
-    // Sample curl:
-    // curl -i -X GET http://localhost:5000/projects/id,id
-    /* ********************************* */
-    app.get('/projects/:projectid', function (req, res, next) {
-
-        /** @namespace req.params.projectid */
-        Project.find({
-            '_id': {
-                $in: req.params.projectid.split(",")
-            }
-        }, function (err, project) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (!project.length) {
-                var newErr = new Error('Project not found');
-                newErr.status = 404;
-                return next(newErr);
-            } else {
-                res.jsonp(project);
-            }
-        });
-    });
-
-    /* ********************************* */
-    // Route: POST /projects
-    // Description: Add a project. Validation done at schema level.
-    //
-    // Sample curl:
-    // curl -i -X POST -H 'Content-Type: application/json' -d'{"_id": "Baseball Cards", "status": "in progress"}' http://localhost:5000/projects?key=53442478daec93cb0a30dd1a
-    /* ********************************* */
-    app.post('/projects', checkAuth, function (req, res, next) {
-        var myProject = new Project(req.body);
-        myProject.save(function (err) {
-            if (err) {
-                return next(new Error(err.message));
-            } else {
-                res.jsonp(myProject);
-            }
-        });
-    });
-
-    /* ********************************* */
-    // Route: PUT /projects/id
-    // Description: Modify required project information
-    //
-    // Sample curl:
-    // curl -i -X PUT -H 'Content-Type: application/json' -d '{"description": "Another fashion project"}' http://localhost:5000/projects/Kmart%20Fashion/?key=53442478daec93cb0a30dd1a
-    /* ********************************* */
-    app.put('/projects/:projectid', checkAuth, function (req, res, next) {
-        var query = {
-            _id: req.params.projectid
-        };
-        Project.update(query, {
-            $set: req.body
-        }, function (err) {
-            if (err) {
-                return next(new Error(err.message));
-            } else {
-                res.jsonp({
-                    'id': req.params.projectid
-                });
-            }
-        });
-    });
-
-    /* ********************************* */
-    // Route: PUT /projects/id/members/id
-    // Description: Add a user to a project
-    //
-    // Sample curl:
-    // curl -i -X PUT http://localhost:5000/projects/Kmart%20Fashion/members/Nina%20Pulgar?key=53442478daec93cb0a30dd1a
-    /* ********************************* */
-    app.put('/projects/:projectid/members/:userid', checkAuth, function (req, res, next) {
-        var query = {
-            _id: req.params.projectid
-        };
-
-        Project.update(query, {
-            $addToSet: {
-                members: req.params.userid
-            }
-        }, function (err, numberAffected) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (numberAffected) {
-                res.jsonp({
-                    'id': req.params.userid
-                });
-            } else {
-                var newErr = new Error('Project not found');
-                newErr.status = 404;
-                return next(newErr);
-            }
-        });
-    });
-
-    /* ********************************* */
-    // Route: DELETE /projects/id/members/id
-    // Description: Remove a user from a project
-    //
-    // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/projects/Kmart%20Fashion/members/Nina%20Pulgar?key=53442478daec93cb0a30dd1a
-    /* ********************************* */
-    app.delete('/projects/:projectid/members/:userid', checkAuth, function (req, res, next) {
-        var query = {
-            _id: req.params.projectid
-        };
-
-        Project.update(query, {
-            $pull: {
-                members: req.params.userid
-            }
-        }, function (err, numberAffected) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (numberAffected) {
-                res.send(204);
-            } else {
-                var newErr = new Error('Project not found');
-                newErr.status = 404;
-                return next(newErr);
-            }
-        });
-    });
-
-    /* ********************************* */
-    // Route: DELETE /projects/id
-    // Description: Delete a Project
-    //
-    // Sample curl:
-    // curl -i -X DELETE http://localhost:5000/projects/Kmart%20Fashion?key=53442478daec93cb0a30dd1a
-    /* ********************************* */
-    app.delete('/projects/:projectid', checkAuth, function (req, res, next) {
-        Project.findByIdAndRemove(req.params.projectid, function (err, resource) {
-            if (err) {
-                return next(new Error(err.message));
-            } else if (resource) {
-                res.send(204);
-            } else {
-                var newErr = new Error('Project not found');
-                newErr.status = 404;
-                return next(newErr);
-            }
-        });
-    });
-
-
-    /* ********************************* */
     // Route: POST /logins
     // Description: Get key
     //
     // Sample curl:
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", "password": "password"}' http://localhost:5000/logins
     /* ********************************* */
-    app.post('/logins', function (req, res, next) {
+    app.post('/api/v1/logins', function (req, res, next) {
 
         User.findOne({
             'username': req.body.username
