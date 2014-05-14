@@ -8,11 +8,6 @@
     <script src="lib/angular.min.js"></script>
     <script src="lib/angular-route.min.js"></script>
 
-    <!--<script src="js/app-min.js"></script>-->
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/directives.js"></script>
-    <script src="js/services.js"></script>
 </head>
 <body ng-app="employeeApp">
 
@@ -22,8 +17,14 @@
 </div>
 
 <div ng-view></div>
-<!--Let's use ng-annotate to clean up the code-->
+
 <!--Let's separate the code: employeeApp, employeeApp.directives, employeeApp.controllers, employeeApp.services-->
 <!--Let's use Restangular for all the API communication-->
+
+<script src="js/app.all.min.js"></script>
+<!--<script src="js/app.js"></script>-->
+<!--<script src="js/controllers.js"></script>-->
+<!--<script src="js/directives.js"></script>-->
+<!--<script src="js/services.js"></script>-->
 </body>
 </html>
