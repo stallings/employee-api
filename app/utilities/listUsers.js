@@ -2,7 +2,7 @@
 
 // Requires
 var mongoose = require('mongoose'),
-    database = require('../config/database'),
+    database = require('../../config/database'),
     User = require('../models/user');
 
 // Connect to MongoDB

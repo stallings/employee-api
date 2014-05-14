@@ -8,7 +8,7 @@ if (process.argv.length !== 4) {
 // Requires
 var mongoose = require('mongoose'),
     database = require('../config/database'),
-    User = require('../models/user');
+    User = require('./user');
 
 // Connect to MongoDB
 mongoose.connect(database.url, function (err) {

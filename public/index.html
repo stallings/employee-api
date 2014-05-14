@@ -3,63 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Example</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.8/angular.min.js"></script>
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>-->
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>-->
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-route.min.js"></script>
+
+    <!--<script src="js/app-min.js"></script>-->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/services.js"></script>
 </head>
 <body ng-app="employeeApp">
 
 <!-- Define the scope with SpicyController, my-directive can read from this scope -->
-<div ng-controller="SpicyController">
+<div class="header" ng-controller="SpicyController">
     <div my-directive></div>
 </div>
 
-<!--Each view (homepage, directory, search, baseball card) will have it's own controller-->
-
-<!--When you change navigation, switch the view-->
-
+<div ng-view></div>
 <!--Let's use ng-annotate to clean up the code-->
 <!--Let's separate the code: employeeApp, employeeApp.directives, employeeApp.controllers, employeeApp.services-->
 <!--Let's use Restangular for all the API communication-->
-<script type="text/javascript">
-    var myApp = angular.module('employeeApp', []);
-
-    // This controller should use services to fill in the information
-    myApp.controller('SpicyController', ['$scope', function($scope) {
-        // Always make scope objects so they are referenced, not copied
-        $scope.customer = { name: "Scarlett" };
-    }]);
-
-    // Only worry about putting placeholders in directives, the controller will take care of filling them out
-    myApp.directive('myDirective', function() {
-        return {
-            restrict: 'A',
-            replace: true,
-            template: '<a href="http://google.com">Click me to go {{customer.name}} to Google</a>'
-        }
-    });
-//    // This should handle the current user.  currentUser will decide if we get Login/Logout
-//    angular.module('myApp.services', []).factory('UserService', function ($q, $http) {
-//        var service = {
-//            _user: null,
-//            setCurrentUser: function (u) {
-//                if (u && !u.error) {
-//                    service._user = u;
-//                    return service.currentUser();
-//                } else {
-//                    var d = $q.defer();
-//                    d.reject(u.error);
-//                    return d.promise;
-//                }
-//            },
-//            currentUser: function () {
-//                var d = $q.defer();
-//                d.resolve(service._user);
-//                return d.promise;
-//            } };
-//        return service;
-//    });
-
-
-</script>
-
 </body>
 </html>

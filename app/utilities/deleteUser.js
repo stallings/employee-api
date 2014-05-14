@@ -7,7 +7,7 @@ if (process.argv.length !== 3) {
 
 // Requires
 var mongoose = require('mongoose'),
-    database = require('../config/database'),
+    database = require('../../config/database'),
     User = require('../models/user');
 
 var userName = process.argv[2],

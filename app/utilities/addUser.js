@@ -8,7 +8,7 @@ if (process.argv.length !== 6) {
 // Requires
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
-    database = require('../config/database'),
+    database = require('../../config/database'),
     User = require('../models/user');
 
 

@@ -1,0 +1,627 @@
+[
+    {
+        "_id": "Matt Danforth",
+        "title": "Sr Dir, Web Development",
+        "department": "FED",
+        "manager": "Robert Dietz",
+        "directs": [
+            "Jose Pulgar",
+            "Luke Young"
+        ],
+        "level": 3,
+        "username": "mdanfo0",
+        "email": "mdanfo0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jose Pulgar",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Alex Miramontes",
+            "Felix Jung",
+            "Maureen Vana",
+            "Jennifer Stander"
+        ],
+        "strengths": [
+            "Karate",
+            "Presentation"
+        ],
+        "skills": [
+            {
+                "title": "User Research",
+                "rating": 3.5
+            },
+            {
+                "title": "Information Architecture",
+                "rating": 4.0
+            }
+        ],
+        "level": 2,
+        "username": "jpulgar",
+        "password": "$2a$10$os1prjvHL.rb3GkYxENNQeWo3M043.re0f9MQwyiHrV/bqM7CedHC",
+        "email": "jpulgar@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Alex Miramontes",
+        "title": "Web Developer I",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "rmiram0",
+        "email": "rmiram0@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Felix Jung",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "fjung",
+        "email": "fjung@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jennifer Stander",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "jstand0",
+        "email": "jstand0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Maureen Vana",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "mvana",
+        "email": "mvana@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Luke Young",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Gary Kupczak",
+            "Lindsey Snyder",
+            "Casey Rathunde"
+        ],
+        "level": 2,
+        "username": "lyoun14",
+        "email": "lyoun14@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Gary Kupczak",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "gkupcza",
+        "email": "gkupcza@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Lindsey Snyder",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "lsnyde7",
+        "email": "lsnyde7@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Casey Rathunde",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "crathun",
+        "email": "crathun@searshc.com",
+        "employeeType": "Contractor"
+    },
+
+
+    {
+        "_id": "Jose Pulgar2",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Alex Miramontes",
+            "Felix Jung",
+            "Maureen Vana",
+            "Jennifer Stander"
+        ],
+        "level": 2,
+        "username": "jpulgar",
+        "password": "$2a$10$os1prjvHL.rb3GkYxENNQeWo3M043.re0f9MQwyiHrV/bqM7CedHC",
+        "email": "jpulgar@searshc.com",
+        "employeeType": "FTE"
+    },
+
+    {
+        "_id": "Alex Miramontes2",
+        "title": "Web Developer I",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "rmiram0",
+        "email": "rmiram0@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Felix Jung2",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "fjung",
+        "email": "fjung@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jennifer Stander2",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "jstand0",
+        "email": "jstand0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Maureen Vana2",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "mvana",
+        "email": "mvana@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Luke Young2",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Gary Kupczak",
+            "Lindsey Snyder",
+            "Casey Rathunde"
+        ],
+        "level": 2,
+        "username": "lyoun14",
+        "email": "lyoun14@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Gary Kupczak2",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "gkupcza",
+        "email": "gkupcza@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Lindsey Snyder2",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "lsnyde7",
+        "email": "lsnyde7@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Casey Rathunde2",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "crathun",
+        "email": "crathun@searshc.com",
+        "employeeType": "Contractor"
+    },
+
+
+    {
+        "_id": "Alex Miramontes3",
+        "title": "Web Developer I",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "rmiram0",
+        "email": "rmiram0@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Felix Jung3",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "fjung",
+        "email": "fjung@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jennifer Stander3",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "jstand0",
+        "email": "jstand0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Maureen Vana3",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "mvana",
+        "email": "mvana@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Luke Young3",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Gary Kupczak",
+            "Lindsey Snyder",
+            "Casey Rathunde"
+        ],
+        "level": 2,
+        "username": "lyoun14",
+        "email": "lyoun14@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Gary Kupczak3",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "gkupcza",
+        "email": "gkupcza@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Lindsey Snyder3",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "lsnyde7",
+        "email": "lsnyde7@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Casey Rathunde3",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "crathun",
+        "email": "crathun@searshc.com",
+        "employeeType": "Contractor"
+    },
+
+
+    {
+        "_id": "Alex Miramontes4",
+        "title": "Web Developer I",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "rmiram0",
+        "email": "rmiram0@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Felix Jung4",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "fjung",
+        "email": "fjung@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jennifer Stander4",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "jstand0",
+        "email": "jstand0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Maureen Vana4",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "mvana",
+        "email": "mvana@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Luke Young4",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Gary Kupczak",
+            "Lindsey Snyder",
+            "Casey Rathunde"
+        ],
+        "level": 2,
+        "username": "lyoun14",
+        "email": "lyoun14@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Gary Kupczak4",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "gkupcza",
+        "email": "gkupcza@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Lindsey Snyder4",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "lsnyde7",
+        "email": "lsnyde7@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Casey Rathunde4",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "crathun",
+        "email": "crathun@searshc.com",
+        "employeeType": "Contractor"
+    },
+
+
+    {
+        "_id": "Alex Miramontes5",
+        "title": "Web Developer I",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "rmiram0",
+        "email": "rmiram0@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Felix Jung5",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "fjung",
+        "email": "fjung@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jennifer Stander5",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "jstand0",
+        "email": "jstand0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Maureen Vana5",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "mvana",
+        "email": "mvana@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Luke Young5",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Gary Kupczak",
+            "Lindsey Snyder",
+            "Casey Rathunde"
+        ],
+        "level": 2,
+        "username": "lyoun14",
+        "email": "lyoun14@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Gary Kupczak5",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "gkupcza",
+        "email": "gkupcza@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Lindsey Snyder5",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "lsnyde7",
+        "email": "lsnyde7@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Casey Rathunde5",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "crathun",
+        "email": "crathun@searshc.com",
+        "employeeType": "Contractor"
+    },
+
+
+    {
+        "_id": "Alex Miramontes6",
+        "title": "Web Developer I",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "rmiram0",
+        "email": "rmiram0@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Felix Jung6",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "fjung",
+        "email": "fjung@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Jennifer Stander6",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "jstand0",
+        "email": "jstand0@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Maureen Vana6",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Jose Pulgar",
+        "directs": [],
+        "level": 1,
+        "username": "mvana",
+        "email": "mvana@searshc.com",
+        "employeeType": "Contractor"
+    },
+    {
+        "_id": "Luke Young6",
+        "title": "Mgr, Front End Development",
+        "department": "FED",
+        "manager": "Matt Danforth",
+        "directs": [
+            "Gary Kupczak",
+            "Lindsey Snyder",
+            "Casey Rathunde"
+        ],
+        "level": 2,
+        "username": "lyoun14",
+        "email": "lyoun14@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Gary Kupczak6",
+        "title": "Sr Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "gkupcza",
+        "email": "gkupcza@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Lindsey Snyder6",
+        "title": "Web Developer",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "lsnyde7",
+        "email": "lsnyde7@searshc.com",
+        "employeeType": "FTE"
+    },
+    {
+        "_id": "Casey Rathunde6",
+        "title": "Web Developer II",
+        "department": "FED",
+        "manager": "Luke Young",
+        "directs": [],
+        "level": 1,
+        "username": "crathun",
+        "email": "crathun@searshc.com",
+        "employeeType": "Contractor"
+    }
+]
