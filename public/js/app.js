@@ -1,14 +1,30 @@
-var myApp = angular.module('employeeApp', ['ngRoute']);
+var myApp = angular.module('employeeApp', ['ngRoute','ngCookies','myApp.services']);
 
 myApp.config(function($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html',
-            controller: 'SpicyController'
+            controller: 'HomeController'
         })
-        .when('/login', {
-            templateUrl: 'partials/login.html',
-            controller: 'SpicyController'
+        .when('/search', {
+            templateUrl: 'partials/search.html',
+            controller: 'SearchController'
+        })
+        .when('/directory', {
+            templateUrl: 'partials/directory.html',
+            controller: 'DirectoryController'
+        })
+        .when('/orgchart', {
+            templateUrl: 'partials/orgchart.html',
+            controller: 'OrgChartController'
+        })
+        .when('/users/:name', {
+            templateUrl: 'partials/baseball-card.html',
+            controller: 'UserController'
+        })
+        .when('/add', {
+            templateUrl: 'partials/add-user.html',
+            controller: 'AddUserController'
         })
         .otherwise({
             redirectTo: '/'

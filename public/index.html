@@ -5,8 +5,10 @@
     <title>Example</title>
     <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>-->
     <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>-->
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.min.js"></script>-->
     <script src="lib/angular.min.js"></script>
     <script src="lib/angular-route.min.js"></script>
+    <script src="lib/angular-cookies.min.js"></script>
 
 </head>
 <body ng-app="employeeApp">
@@ -14,6 +16,19 @@
 <!-- Define the scope with SpicyController, my-directive can read from this scope -->
 <div class="header" ng-controller="SpicyController">
     <div my-directive></div>
+    <div>
+        <b>The UX Team</b>
+        <a href="#home">Home</a>
+        <a href="#search">Search</a>
+        <a href="#directory">Directory</a>
+        <a href="#orgchart">Org Chart</a>
+        <span ng-if="isLoggedIn">
+            <a href="#login">Log Out</a>
+        </span>
+        <span ng-if="!isLoggedIn">
+            <a href="#login">Log In</a>
+        </span>
+    </div>
 </div>
 
 <div ng-view></div>
@@ -21,10 +36,10 @@
 <!--Let's separate the code: employeeApp, employeeApp.directives, employeeApp.controllers, employeeApp.services-->
 <!--Let's use Restangular for all the API communication-->
 
-<script src="js/app.all.min.js"></script>
-<!--<script src="js/app.js"></script>-->
-<!--<script src="js/controllers.js"></script>-->
-<!--<script src="js/directives.js"></script>-->
-<!--<script src="js/services.js"></script>-->
+<!--<script src="js/app.all.min.js"></script>-->
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/services.js"></script>
 </body>
 </html>
