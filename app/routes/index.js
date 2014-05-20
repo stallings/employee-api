@@ -105,7 +105,9 @@ module.exports = function (app) {
                 });
             } else {
                 res.jsonp({
-                    'key': myKey._id
+                    'key': myKey._id,
+                    'level': level,
+                    'self': user
                 });
             }
         });
@@ -569,6 +571,28 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    app.get('/api/v1/logins/:key', function (req, res, next) {
+        var newErr;
+
+        if (req.params.key !== undefined) {
+            Key.find({
+                '_id': req.params.key
+            }, function (err, key) {
+                if (err) {
+                    newErr = new Error('Not authorized');
+                    newErr.status = 401;
+                    return next(newErr);
+                } else {
+                    res.send(200);
+                }
+            });
+        } else {
+            newErr = new Error('Not authorized');
+            newErr.status = 401;
+            return next(newErr);
+        }
     });
 
     // Error handling

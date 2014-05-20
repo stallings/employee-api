@@ -1,6 +1,6 @@
-var myApp = angular.module('employeeApp', ['ngRoute','ngCookies','myApp.services']);
+var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'myApp.services']);
 
-myApp.config(function($routeProvider) {
+myApp.config(function($routeProvider,RestangularProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html',
@@ -29,4 +29,5 @@ myApp.config(function($routeProvider) {
         .otherwise({
             redirectTo: '/'
         });
+    RestangularProvider.setBaseUrl('/api/v1');
 });

@@ -1,3 +1,22 @@
 <div>
+
+
+
     Directory Partial
+
+    Put search box
+
+    <label ng-repeat="role in roles">
+        <input type="checkbox" checklist-model="user.roles" checklist-value="role"> {{role}}
+    </label>
+
+    <label ng-repeat="FED in FEDS">
+        <input type="checkbox" checklist-model="user.roles" checklist-value="FED"> {{FED}}
+    </label>
+
+    <label ng-repeat="PJM in PJMS">
+        <input type="checkbox" checklist-model="user.roles" checklist-value="PJM"> {{PJM}}
+    </label>
+
+    <pre>{{user.roles|json}}</pre>
 </div>
