@@ -7,6 +7,7 @@ myApp.directive('myDirective', function() {
     }
 });
 
+// https://github.com/vitalets/checklist-model
 myApp.directive('checklistModel', function($parse, $compile) {
         // contains
         function contains(arr, item) {

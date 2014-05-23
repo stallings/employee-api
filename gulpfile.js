@@ -24,7 +24,10 @@ gulp.task('concat', function() {
 });
 
 gulp.task('develop', function () {
-    nodemon({ script: 'server.js', ext: 'html js' })
+    nodemon({ script: 'server.js',
+        ext: 'html js',
+        ignore: ['node_modules/**']
+    })
         .on('change', ['lint']);
 });
 

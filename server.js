@@ -6,7 +6,7 @@ var express = require('express'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
     cors = require('cors'),
-    database = require('./config/database');
+    database = require('./app/config/database');
 
 
 // Create Express App and use JSON/urlencoded parsing middleware
@@ -25,7 +25,7 @@ if (env === 'development') {
 
 // Set routes
 app.use(express.static(__dirname + '/public'));
-require('./app/routes')(app);
+require('./app/routes/index')(app);
 
 // Connect to Mongo Database and start server
 mongoose.connect(database.url, function (err) {

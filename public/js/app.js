@@ -1,4 +1,4 @@
-var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'myApp.services']);
+var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'authentication-service', 'employee-service']);
 
 myApp.config(function($routeProvider,RestangularProvider) {
     $routeProvider

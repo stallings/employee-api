@@ -1,9 +1,5 @@
-// This should handle the current user.  currentUser will decide if we get Login/Logout
-// Look at page 224 of ng-book
-
-angular.module('myApp.services', [])
-
-    .factory('Auth', function ($q, Restangular) {
+angular.module('authentication-service', [])
+    .factory('authentication', function ($q, Restangular) {
 
         // Make sure we are using promises
         // http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/

@@ -1,5 +1,5 @@
 // This controller should use services to fill in the information
-myApp.controller('LoginController', function($scope, Auth) {
+myApp.controller('LoginController', function($scope, authentication) {
     // Always make scope objects so they are referenced, not copied
     $scope.customer = { name: "Scarlett" };
 
@@ -10,12 +10,12 @@ myApp.controller('LoginController', function($scope, Auth) {
 //        console.log('login failed');
 //    });
 
-    Auth.isLoggedIn().then(function() {
+    authentication.isLoggedIn().then(function() {
         $scope.isLoggedIn = true;
     }, function() {
         $scope.isLoggedIn = false;
     }).then(function() {
-        console.log(Auth.getName());
+        console.log(authentication.getName());
     });
 
 });
@@ -26,31 +26,49 @@ myApp.controller('HomeController', function($scope) {
 myApp.controller('SearchController', function($scope) {
 });
 
-myApp.controller('DirectoryController', function($scope) {
+myApp.controller('DirectoryController', function($scope, employee) {
 
-    $scope.roles = [
-        'guest',
-        'user',
-        'customer',
-        'admin'
+    // JavaScript objects are either copy by value or copy by reference.
+    // String, Number, and Boolean are copy by value.
+    // Array, Object, and Function are copy by reference.
+
+    $scope.employeeTypes = [
+        'FTE',
+        'Contractor',
+        'Third-Party'
     ];
 
     $scope.FEDS = [
-        'manager',
-        'web dev 1',
-        'web dev 2',
-        'web dev 3'
+        'Principal',
+        'Manager',
+        'Sr. Developer',
+        'Developer'
     ]
 
     $scope.PJMS = [
-        'associate pjm',
-        'senior pjm'
+        'Program Manager',
+        'Project Manager',
+        'Sr. Project Manager'
     ]
 
-    $scope.user = {
-        roles: []
-    };
+    $scope.employeeTypeList = [];
+    $scope.employeeTitleList = [];
+    $scope.searchResults = {};
 
+    // put the watch collection here
+    $scope.$watchCollection('employeeTypeList', function(newNames, oldNames) {
+        if (newNames.length) {
+            console.log("Type Changed. Do API call");
+            // Put restangular call here
+        }
+    });
+
+    $scope.$watchCollection('employeeTitleList', function(newNames, oldNames) {
+        if (newNames.length) {
+            console.log("Title Changed. Do API call");
+            // Put restangular call here
+        }
+    });
 
 
 

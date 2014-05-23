@@ -3,21 +3,21 @@
     "description": "RESTful API for Employee Information",
     "version": "0.0.1",
     "dependencies": {
-        "express": "~4.2.0",
+        "express": "~4.3.0",
         "body-parser": "~1.2.0",
-        "morgan": "~1.0.1",
-        "mongoose": "~3.8.9",
+        "morgan": "~1.1.1",
+        "mongoose": "~3.8.11",
         "bcrypt": "~0.7.8",
-        "cors": "2.3.0"
+        "cors": "~2.3.1"
     },
     "devDependencies": {
         "gulp": "~3.6.2",
-        "gulp-jshint": "~1.5.5",
+        "gulp-jshint": "~1.6.1",
         "jshint-stylish": "~0.2.0",
         "gulp-concat": "~2.2.0",
         "gulp-uglify": "~0.3.0",
         "gulp-sourcemaps": "~0.3.1",
-        "gulp-nodemon": "~1.0.2",
-        "gulp-ng-annotate": "~0.1.0"
+        "gulp-nodemon": "~1.0.3",
+        "gulp-ng-annotate": "~0.1.1"
     }
 }
