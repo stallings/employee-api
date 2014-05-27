@@ -1,10 +1,6 @@
 <div>
 
-
-
     Directory Partial
-
-    <!-- Change this to have dot notation everywhere -->
 
     <label ng-repeat="employeeType in employeeTypes">
         <input type="checkbox" checklist-model="employeeTypeList" checklist-value="employeeType"> {{employeeType}}
@@ -18,6 +14,8 @@
         <input type="checkbox" checklist-model="employeeTitleList" checklist-value="PJM"> {{PJM}}
     </label>
 
-    <pre>{{employeeTypeList|json}}</pre>
-    <pre>{{employeeTitleList|json}}</pre>
+    <pre>Employee Type: {{employeeTypeList|json}}</pre>
+    <pre>Employee Title: {{employeeTitleList|json}}</pre>
+    <pre>Number of Results: {{directoryResults.count|json}}</pre>
+    <pre>Results: {{searchResults|json}}</pre>
 </div>

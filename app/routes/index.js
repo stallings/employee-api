@@ -30,9 +30,9 @@ module.exports = function (app) {
             if (err) {
                 return next(new Error(err.message));
             } else if (!users.length) {
-                var newErr = new Error('No users found');
-                newErr.status = 404;
-                return next(newErr);
+                data.count = 0;
+                data.results = users;
+                res.jsonp(data);
             } else {
                 data.count = users.length;
                 data.results = users;
@@ -197,15 +197,17 @@ module.exports = function (app) {
     });
 
     /* ********************************* */
-    // Route: GET /users/directory
+    // Route: POST /users/directory
     // Description: Does complex search based on parameters passed in header
     //
     // Sample curls:
-    // curl -i -X GET -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"], "title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
-    // curl -i -X GET -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"]}' http://localhost:5000/users/directory
-    // curl -i -X GET -H 'Content-Type: application/json' -d '{"title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"], "title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/api/v1/users/directory
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"employeeType": ["Contractor"]}' http://localhost:5000/users/directory
+    // curl -i -X POST -H 'Content-Type: application/json' -d '{"title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
     /* ********************************* */
-    app.get('/api/v1/users/directory', function (req, res, next) {
+    app.post('/api/v1/users/directory', function (req, res, next) {
+
+        console.log(req.body.employeeType);
 
         var searchObject = {};
         if (req.body.employeeType !== undefined) {
@@ -543,6 +545,7 @@ module.exports = function (app) {
     /* ********************************* */
     app.post('/api/v1/logins', function (req, res, next) {
 
+
         User.findOne({
             'username': req.body.username
         }, function (err, user) {
@@ -576,14 +579,22 @@ module.exports = function (app) {
     app.get('/api/v1/logins/:key', function (req, res, next) {
         var newErr;
 
+
+
         if (req.params.key !== undefined) {
             Key.find({
                 '_id': req.params.key
             }, function (err, key) {
+                console.log(key);
                 if (err) {
                     newErr = new Error('Not authorized');
                     newErr.status = 401;
                     return next(newErr);
+                } else if (!key.length) {
+                    newErr = new Error('Not authorized');
+                    newErr.status = 401;
+                    return next(newErr);
+
                 } else {
                     res.send(200);
                 }

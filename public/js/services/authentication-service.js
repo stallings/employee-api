@@ -24,6 +24,7 @@ angular.module('authentication-service', [])
 
         // Check if a token is still valid
         function checkToken() {
+
             var d = $q.defer();
 
             // If we already checked token to be valid, return true
@@ -33,6 +34,7 @@ angular.module('authentication-service', [])
             // If the user already has a token, check if still valid
             } else if (localStorage.authToken) {
                 Restangular.one('logins', localStorage.authToken).get().then(function () {
+
                     // If valid token, fill in the user model
                     user = {
                         token: localStorage.authToken,
@@ -42,6 +44,9 @@ angular.module('authentication-service', [])
                     };
                     d.resolve();
                 }, function () {
+
+
+
                     // If not valid, empty user model
                     user = {
                         validLogin: false

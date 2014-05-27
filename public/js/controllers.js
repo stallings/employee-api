@@ -1,10 +1,8 @@
 // This controller should use services to fill in the information
 myApp.controller('LoginController', function($scope, authentication) {
-    // Always make scope objects so they are referenced, not copied
-    $scope.customer = { name: "Scarlett" };
 
      // Login
-//    Auth.login("jpulgar", "password").then(function() {
+//    authentication.login("jpulgar", "password").then(function() {
 //        console.log('login successful');
 //    }, function() {
 //        console.log('login failed');
@@ -12,10 +10,9 @@ myApp.controller('LoginController', function($scope, authentication) {
 
     authentication.isLoggedIn().then(function() {
         $scope.isLoggedIn = true;
+        console.log(authentication.getName());
     }, function() {
         $scope.isLoggedIn = false;
-    }).then(function() {
-        console.log(authentication.getName());
     });
 
 });
@@ -28,10 +25,6 @@ myApp.controller('SearchController', function($scope) {
 
 myApp.controller('DirectoryController', function($scope, employee) {
 
-    // JavaScript objects are either copy by value or copy by reference.
-    // String, Number, and Boolean are copy by value.
-    // Array, Object, and Function are copy by reference.
-
     $scope.employeeTypes = [
         'FTE',
         'Contractor',
@@ -42,7 +35,7 @@ myApp.controller('DirectoryController', function($scope, employee) {
         'Principal',
         'Manager',
         'Sr. Developer',
-        'Developer'
+        'Web Developer'
     ]
 
     $scope.PJMS = [
@@ -54,20 +47,26 @@ myApp.controller('DirectoryController', function($scope, employee) {
     $scope.employeeTypeList = [];
     $scope.employeeTitleList = [];
     $scope.searchResults = {};
+    $scope.directoryResults = {
+        count: 0
+    };
 
-    // put the watch collection here
     $scope.$watchCollection('employeeTypeList', function(newNames, oldNames) {
-        if (newNames.length) {
-            console.log("Type Changed. Do API call");
-            // Put restangular call here
-        }
+            employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
+                function(data) {
+                    $scope.directoryResults.count = data.count;
+                    $scope.searchResults = data.results;
+                }
+            );
     });
 
     $scope.$watchCollection('employeeTitleList', function(newNames, oldNames) {
-        if (newNames.length) {
-            console.log("Title Changed. Do API call");
-            // Put restangular call here
-        }
+            employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
+                function(data) {
+                    $scope.directoryResults.count = data.count;
+                    $scope.searchResults = data.results;
+                }
+            );
     });
 
 
