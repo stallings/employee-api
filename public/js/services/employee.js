@@ -13,28 +13,22 @@ angular.module('employee-service', [])
                 searchObject.title = jobTitles;
             }
             Restangular.one('users').post('directory', searchObject).then(function(data) {
-                d.resolve(data), function() {
-                    d.reject();
-                };
+                d.resolve(data);
+            }, function() {
+                d.reject();
             });
             return d.promise;
         }
 
         function getUser(name) {
             var d = $q.defer();
-            var searchObject = {};
 
-            if(employeeTypes.length) {
-                searchObject.employeeType = employeeTypes;
-            }
-            if(jobTitles.length) {
-                searchObject.title = jobTitles;
-            }
-            Restangular.one('users').post('directory', searchObject).then(function(data) {
-                d.resolve(data), function() {
-                    d.reject();
-                };
+            Restangular.one('users', name).getList().then(function(data) {
+                d.resolve(data[0]);
+            }, function() {
+                d.reject();
             });
+
             return d.promise;
         }
 

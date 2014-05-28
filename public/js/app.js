@@ -20,7 +20,7 @@ myApp.config(function($routeProvider,RestangularProvider) {
         })
         .when('/users/:name', {
             templateUrl: 'partials/baseball-card.html',
-            controller: 'UserController'
+            controller: 'BaseballCardController'
         })
         .when('/add', {
             templateUrl: 'partials/add-user.html',

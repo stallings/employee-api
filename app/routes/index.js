@@ -163,7 +163,7 @@ module.exports = function (app) {
     // curl -i -X GET -H 'Content-Type: application/json' -d '{"skills": { "title": "User Research", "rating": 3.5 }}' http://localhost:5000/users/advancedsearch
     // curl -i -X GET -H 'Content-Type: application/json' -d '{"name": "Jose", "strengths": ["Presentation"], "skills": { "title": "User Research", "rating": 3.5 }}' http://localhost:5000/users/advancedsearch
     /* ********************************* */
-    app.get('/api/v1/users/advancedsearch', function (req, res, next) {
+    app.post('/api/v1/users/advancedsearch', function (req, res, next) {
 
         var searchObject = {};
 
@@ -206,8 +206,6 @@ module.exports = function (app) {
     // curl -i -X POST -H 'Content-Type: application/json' -d '{"title": ["Sr Web Developer", "Web Developer I"]}' http://localhost:5000/users/directory
     /* ********************************* */
     app.post('/api/v1/users/directory', function (req, res, next) {
-
-        console.log(req.body.employeeType);
 
         var searchObject = {};
         if (req.body.employeeType !== undefined) {
