@@ -583,7 +583,6 @@ module.exports = function (app) {
             Key.find({
                 '_id': req.params.key
             }, function (err, key) {
-                console.log(key);
                 if (err) {
                     newErr = new Error('Not authorized');
                     newErr.status = 401;

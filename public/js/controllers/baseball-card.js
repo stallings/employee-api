@@ -1,16 +1,19 @@
 myApp.controller('BaseballCardController', function($scope, $routeParams, employee) {
 
     $scope.employee = {};
+    $scope.results = {
+        valid: true
+    };
 
     employee.getUser($routeParams.name).then(
         function(data) {
-            $scope.employee.name = data._id;
-            $scope.employee.title = data.title;
+            $scope.results.valid = true;
+            $scope.employee.name = data._id ? data._id : '';
+            $scope.employee.title = data.title ? data.title : '';
         }
     ).catch(
         function() {
-            // reveal a different div in the template that says user not found
-            console.log('user does not exist! show the user not found div!');
+            $scope.results.valid = false;
         }
     );
 

@@ -1,5 +1,6 @@
-<div>
-    Baseball Card Partial
+Baseball Card Partial
+
+<div ng-show="results.valid">
 
     <div employee-intro></div>
 
@@ -13,4 +14,8 @@
 
     <div employee-system></div>
 
+</div>
+
+<div ng-show="!results.valid">
+    No users found
 </div>

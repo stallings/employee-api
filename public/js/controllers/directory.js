@@ -28,7 +28,6 @@ myApp.controller('DirectoryController', function($scope, employee) {
         reverse: false
     };
 
-
     $scope.$watchCollection('employeeTypeList', function(newNames, oldNames) {
         employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
             function(data) {
