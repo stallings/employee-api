@@ -1,9 +1,3 @@
-<div class="employee-headshot">
-    <!--<img ng-src="{{ headshot }}">-->
-</div>
-<div class="employee-name">
-    {{ employee.name }}
-</div>
-<div class="employee-title">
-    {{ employee.title }}
-</div>
+<div class="employee-headshot"><img ng-src="{{ headshot }}"></div>
+<div class="employee-name" ng-bind="name"></div>
+<div class="employee-title" ng-bind="title"></div>

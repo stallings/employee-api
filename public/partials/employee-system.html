@@ -1,0 +1,7 @@
+<div>System Information:</div>
+<div>Computer Asset #: <span ng-bind="asset"></span></div>
+<div>Computer Type: <span ng-bind="computer"></span></div>
+<div>Last 5: <span ng-bind="last5"></span></div>
+
+<!-- Need to ngSanitize this before it shows -->
+<div>Software:</div><div ng-bind-html="software"></div>

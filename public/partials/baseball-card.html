@@ -1,18 +1,22 @@
+<br/><br/>
 Baseball Card Partial
 
 <div ng-show="results.valid">
 
-    <div employee-intro></div>
+    <!-- Let's pass parameters to the directive so it's reusable -->
 
-    <div employee-profile></div>
 
-    <div employee-contact></div>
+    <div employee-intro name="employee._id" title="employee.title" headshot="employee.headshot"></div><br/>
 
-    <div employee-strengths></div>
+    <div employee-profile manager="employee.manager" mentor="employee.mentor" mentee="employee.mentee" buddy="employee.buddy" start="employee.start"></div><br/>
 
-    <div employee-growth></div>
+    <div employee-contact skype="employee.skype" location="employee.location" desk="employee.desk" phone="employee.phone" cell="employee.cell" email="employee.email"></div><br/>
 
-    <div employee-system></div>
+    <div employee-strengths strengths="employee.strengths"></div><br/>
+
+    <div employee-growth growth="employee.growth"></div><br/>
+
+    <div employee-system asset="employee.asset" computer="employee.computer" last5="employee.last5" software="employee.software"></div>
 
 </div>
 
