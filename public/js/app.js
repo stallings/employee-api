@@ -1,6 +1,6 @@
-var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'pasvaz.bindonce', 'ngSanitize', 'authentication-service', 'employee-service']);
+var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'pasvaz.bindonce', 'ngSanitize', 'employee-directives', 'employee-api', 'checklist-model']);
 
-myApp.config(function($routeProvider,RestangularProvider) {
+myApp.config(function($routeProvider, RestangularProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html',
@@ -30,4 +30,6 @@ myApp.config(function($routeProvider,RestangularProvider) {
             redirectTo: '/'
         });
     RestangularProvider.setBaseUrl('/api/v1');
+
+    // Todo: Add a provider here for employee to set the api key EmployeeProvider.setAPIKey()
 });

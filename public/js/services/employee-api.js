@@ -1,5 +1,5 @@
-angular.module('authentication-service', [])
-    .factory('authentication', function ($q, Restangular) {
+angular.module('employee-api', [])
+    .factory('employee', function ($q, Restangular) {
 
         // Make sure we are using promises
         // http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/
@@ -29,6 +29,7 @@ angular.module('authentication-service', [])
 
             // If we already checked token to be valid, return true
             if (user.validLogin) {
+                Restangular.setDefaultRequestParams({key: user.token});
                 d.resolve();
 
             // If the user already has a token, check if still valid
@@ -42,9 +43,9 @@ angular.module('authentication-service', [])
                         level: localStorage.authLevel,
                         validLogin: true
                     };
+                    Restangular.setDefaultRequestParams({key: user.token});
                     d.resolve();
                 }, function () {
-
 
 
                     // If not valid, empty user model
@@ -73,11 +74,45 @@ angular.module('authentication-service', [])
                     level: data.level,
                     validLogin: true
                 };
+                Restangular.setDefaultRequestParams({key: user.token});
                 setLocalStorage(user.token, user.name, user.level);
                 d.resolve();
             }, function() {
                 d.reject();
             });
+            return d.promise;
+        }
+
+
+        //ADD function setAPIkey(); that's configurable through as a provider
+
+        function directorySearch(employeeTypes, jobTitles) {
+            var d = $q.defer();
+            var searchObject = {};
+
+            if(employeeTypes.length) {
+                searchObject.employeeType = employeeTypes;
+            }
+            if(jobTitles.length) {
+                searchObject.title = jobTitles;
+            }
+            Restangular.one('users').post('directory', searchObject).then(function(data) {
+                d.resolve(data);
+            }, function() {
+                d.reject();
+            });
+            return d.promise;
+        }
+
+        function getUser(name) {
+            var d = $q.defer();
+
+            Restangular.one('users', name).get().then(function(data) {
+                d.resolve(data[0]);
+            }, function() {
+                d.reject();
+            });
+
             return d.promise;
         }
 
@@ -105,9 +140,18 @@ angular.module('authentication-service', [])
                     validLogin: false
                 };
                 setLocalStorage('', '', '');
+            },
+            directorySearch: function(employeeTypes, jobTitles) {
+                return directorySearch(employeeTypes, jobTitles);
+            },
+            getUser: function(name) {
+                return getUser(name);
             }
         };
 
         return service;
+
+        // todo: make this a provider? and configure the API key when you launch it
+        // if it's not set maybe wait until later
     });
 

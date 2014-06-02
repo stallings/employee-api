@@ -1,16 +1,15 @@
 <br/><br/>
 Baseball Card Partial
 
-<div ng-show="results.valid">
-
-    <!-- Let's pass parameters to the directive so it's reusable -->
-
+<div ng-if="results.valid">
 
     <div employee-intro name="employee._id" title="employee.title" headshot="employee.headshot"></div><br/>
 
     <div employee-profile manager="employee.manager" mentor="employee.mentor" mentee="employee.mentee" buddy="employee.buddy" start="employee.start"></div><br/>
 
     <div employee-contact skype="employee.skype" location="employee.location" desk="employee.desk" phone="employee.phone" cell="employee.cell" email="employee.email"></div><br/>
+
+    <div employee-skills ng-if="employee.skills" skills="employee.skills"></div><br/>
 
     <div employee-strengths strengths="employee.strengths"></div><br/>
 
@@ -20,6 +19,7 @@ Baseball Card Partial
 
 </div>
 
-<div ng-show="!results.valid">
+
+<div ng-if="!results.valid">
     No users found
 </div>

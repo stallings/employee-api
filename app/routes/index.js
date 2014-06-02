@@ -348,7 +348,7 @@ module.exports = function (app) {
                 '_id': {
                     $in: req.params.userid.split(",")
                 }
-            }, '-skills').lean().exec(function (err, user) {
+            }, '-skills -password').lean().exec(function (err, user) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!user.length) {
@@ -364,7 +364,7 @@ module.exports = function (app) {
         } else {
             User.find({
                 '_id': req.params.userid
-            }).lean().exec(function (err, user) {
+            }, '-password').lean().exec(function (err, user) {
                 if (err) {
                     return next(new Error(err.message));
                 } else if (!user.length) {

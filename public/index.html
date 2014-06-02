@@ -14,6 +14,8 @@
     <script type="text/javascript" src="lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="lib/lodash.compat.min.js"></script>
     <script type="text/javascript" src="lib/restangular.min.js"></script>
+
+
 </head>
 <body ng-app="employeeApp">
 
@@ -32,9 +34,11 @@
             <a href="#login">Log In</a>
         </span>
     </div>
+
+    <div ng-view></div>
 </div>
 
-<div ng-view></div>
+
 
 <!--<script src="js/app.all.min.js"></script>-->
 <script src="js/app.js"></script>
@@ -44,7 +48,6 @@
 <script src="js/controllers/directory.js"></script>
 <script src="js/directives/checklist.js"></script>
 <script src="js/directives/baseball-card.js"></script>
-<script src="js/services/authentication.js"></script>
-<script src="js/services/employee.js"></script>
+<script src="js/services/employee-api.js"></script>
 </body>
 </html>

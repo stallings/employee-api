@@ -1,15 +1,15 @@
-myApp.controller('LoginController', function($scope, authentication) {
+myApp.controller('LoginController', function($scope, employee) {
 
     // Login
-//    authentication.login("jpulgar", "password").then(function() {
+//    employee.login("jpulgar", "password").then(function() {
 //        console.log('login successful');
 //    }, function() {
 //        console.log('login failed');
 //    });
 
-    authentication.isLoggedIn().then(function() {
+    employee.isLoggedIn().then(function() {
         $scope.isLoggedIn = true;
-        console.log(authentication.getName());
+        console.log(employee.getName());
     }, function() {
         $scope.isLoggedIn = false;
     });

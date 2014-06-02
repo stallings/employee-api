@@ -1,4 +1,5 @@
-myApp
+angular.module('employee-directives', [])
+
     .directive('employeeIntro', function($parse, $compile) {
     return {
         restrict: 'A',
@@ -37,6 +38,16 @@ myApp
                 email: '='
             },
             templateUrl: 'partials/employee-contact.html'
+        }
+    })
+
+    .directive('employeeSkills', function($parse, $compile) {
+        return {
+            restrict: 'A',
+            scope: {
+                skills: '='
+            },
+            templateUrl: 'partials/employee-skills.html'
         }
     })
 
