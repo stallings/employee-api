@@ -7,6 +7,7 @@ myApp.controller('BaseballCardController', function($scope, $routeParams, employ
 
     employee.getUser($routeParams.name).then(
         function(data) {
+
             $scope.results.valid = true;
 
             $scope.employee = data;
@@ -22,7 +23,6 @@ myApp.controller('BaseballCardController', function($scope, $routeParams, employ
             $scope.employee.computer = "Macbook Pro (2010)";
             $scope.employee.last5 = "54284";
             $scope.employee.software = "Creative Suite CS4<br/>Omnigraffe";
-
         }
     ).catch(
         function() {

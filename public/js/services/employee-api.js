@@ -150,8 +150,5 @@ angular.module('employee-api', [])
         };
 
         return service;
-
-        // todo: make this a provider? and configure the API key when you launch it
-        // if it's not set maybe wait until later
     });
 

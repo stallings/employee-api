@@ -29,21 +29,27 @@ myApp.controller('DirectoryController', function($scope, employee) {
     };
 
     $scope.$watchCollection('employeeTypeList', function(newNames, oldNames) {
-        employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
-            function(data) {
-                $scope.directoryResults.count = data.count;
-                $scope.searchResults = data.results;
-            }
-        );
+        if (newNames !== oldNames) {
+            employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
+                function (data) {
+                    $scope.directoryResults.count = data.count;
+                    $scope.searchResults = data.results;
+                    console.log('one');
+                }
+            );
+        }
     });
 
     $scope.$watchCollection('employeeTitleList', function(newNames, oldNames) {
-        employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
-            function(data) {
-                $scope.directoryResults.count = data.count;
-                $scope.searchResults = data.results;
-            }
-        );
+        if (newNames !== oldNames) {
+            employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
+                function (data) {
+                    $scope.directoryResults.count = data.count;
+                    $scope.searchResults = data.results;
+                    console.log('two');
+                }
+            );
+        }
     });
 
 

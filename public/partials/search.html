@@ -1,3 +1,32 @@
 <div>
-    Search Partial
+    <h1>Search</h1>
+    <p>Find the right person for the job using the search tools below. You can search by name, for a specific skill required for that domain or strength.</p>
+
+    <div ng-if="!search.submitted">
+
+        <div search-name></div>
+
+        <div search-skills></div>
+
+        <div search-strengths></div>
+
+        First Screen. No results shown.
+
+    </div>
+
+    <div ng-if="search.submitted">
+
+        <div search-name></div>
+
+        <div search-skills></div>
+
+        <div search-strengths></div>
+
+        Show results
+
+    </div>
+
+
+
+
 </div>

@@ -340,8 +340,6 @@ module.exports = function (app) {
     /* ********************************* */
     app.get('/api/v1/users/:userid', function (req, res, next) {
 
-        // Todo: don't return encrypted passwords!
-
         // If multiple users requested, return info for each (less than individual)
         if (req.params.userid.indexOf(',') !== -1) {
             User.find({

@@ -14,40 +14,40 @@
     <script type="text/javascript" src="lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="lib/lodash.compat.min.js"></script>
     <script type="text/javascript" src="lib/restangular.min.js"></script>
-
-
 </head>
 <body ng-app="employeeApp">
 
 <div class="header" ng-controller="LoginController">
-    <div my-directive></div>
     <div>
         <b>The UX Team</b>
-        <a href="#home">Home</a>
-        <a href="#search">Search</a>
-        <a href="#directory">Directory</a>
-        <a href="#orgchart">Org Chart</a>
+        <a href="#/">Search</a>
+        <a href="#/directory/">Directory</a>
+        <a href="#/orgchart/">Org Chart</a>
         <span ng-if="isLoggedIn">
-            <a href="#login">Log Out</a>
+            Hello {{ fullname }}! (<a href="#login">Log Out</a>)
         </span>
         <span ng-if="!isLoggedIn">
-            <a href="#login">Log In</a>
+            <a href="#/login/">Log In</a>
         </span>
     </div>
 
     <div ng-view></div>
 </div>
 
-
-
 <!--<script src="js/app.all.min.js"></script>-->
 <script src="js/app.js"></script>
-<script src="js/controllers.js"></script>
+
 <script src="js/controllers/login.js"></script>
+<script src="js/controllers/search.js"></script>
 <script src="js/controllers/baseball-card.js"></script>
 <script src="js/controllers/directory.js"></script>
+
 <script src="js/directives/checklist.js"></script>
 <script src="js/directives/baseball-card.js"></script>
+<script src="js/directives/search.js"></script>
+
+<script src="js/partials.min.js"></script>
+
 <script src="js/services/employee-api.js"></script>
 </body>
 </html>

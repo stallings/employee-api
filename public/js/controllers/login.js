@@ -9,7 +9,7 @@ myApp.controller('LoginController', function($scope, employee) {
 
     employee.isLoggedIn().then(function() {
         $scope.isLoggedIn = true;
-        console.log(employee.getName());
+        $scope.fullname = employee.getName();
     }, function() {
         $scope.isLoggedIn = false;
     });
