@@ -34,7 +34,6 @@ myApp.controller('DirectoryController', function($scope, employee) {
                 function (data) {
                     $scope.directoryResults.count = data.count;
                     $scope.searchResults = data.results;
-                    console.log('one');
                 }
             );
         }
@@ -46,7 +45,6 @@ myApp.controller('DirectoryController', function($scope, employee) {
                 function (data) {
                     $scope.directoryResults.count = data.count;
                     $scope.searchResults = data.results;
-                    console.log('two');
                 }
             );
         }

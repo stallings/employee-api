@@ -1,5 +1,7 @@
 <form>
     <label>Search by name:</label>
     <input type="text" ng-model="search.name" placeholder="Employee Name">
-    <button type="submit" ng-click="searchByName()">Search</button>
+    <button type="submit" ng-click="searchByName()" ng-bind="search.buttonName"></button>
 </form>
+
+Name: {{ search.name }}

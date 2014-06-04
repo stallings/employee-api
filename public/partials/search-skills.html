@@ -1,5 +1,9 @@
 <form>
     <label>Search by Skills:</label>
-    <input type="text" ng-model="keywords" placeholder="Employee Name">
-    <button type="submit" ng-click="searchBySkills()">Search</button>
+    <select ng-model="search.selectedDisciplineSkill" ng-change="changeSkills(search.selectedDisciplineSkill)" ng-options="discipline for discipline in disciplines"></select>
+    <select ng-model="search.selectedSkill" ng-options="skill for skill in search.skills"></select>
+    <select ng-model="search.selectedRating" ng-options="rating for rating in ratings"></select>
+    <button type="submit" ng-click="searchBySkills()" ng-bind="search.buttonName"></button>
 </form>
+
+Discipline: {{ search.selectedDisciplineSkill }} Skill: {{ search.selectedSkill }} Rating: {{ search.selectedRating }}

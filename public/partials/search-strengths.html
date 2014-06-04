@@ -1,5 +1,13 @@
 <form>
     <label>Search by Strengths:</label>
-    <input type="text" ng-model="keywords" placeholder="Employee Name">
-    <button type="submit" ng-click="searchByStrengths()">Search</button>
+    <select ng-model="search.selectedDisciplineStrength" ng-change="changeStrengths(search.selectedDisciplineStrength)" ng-options="discipline for discipline in disciplines"></select>
+
+    <label ng-repeat="strengthListItem in search.strengths">
+        <input type="checkbox" checklist-model="search.selectedStrength" checklist-value="strengthListItem"> {{strengthListItem}}
+    </label>
+
+    <button type="submit" ng-click="searchByStrengths()" ng-bind="search.buttonName"></button>
 </form>
+
+
+{{search.selectedStrength}}

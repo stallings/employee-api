@@ -116,6 +116,18 @@ angular.module('employee-api', [])
             return d.promise;
         }
 
+        function getUserBySubstring(name) {
+            var d = $q.defer();
+
+            Restangular.one('users', name).get().then(function(data) {
+                d.resolve(data[0]);
+            }, function() {
+                d.reject();
+            });
+
+            return d.promise;
+        }
+
         var service = {
             isAuthorized: function (level) {
                 return user.level >= level;
@@ -146,6 +158,9 @@ angular.module('employee-api', [])
             },
             getUser: function(name) {
                 return getUser(name);
+            },
+            getUserBySubstring: function(name) {
+                return getUserBySubstring(name);
             }
         };
 
