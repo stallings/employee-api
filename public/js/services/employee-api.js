@@ -10,6 +10,39 @@ angular.module('employee-api', [])
             validLogin: false
         };
 
+        var saveStates = {
+            search: null,
+            searchResults: null,
+            directory: null,
+            directoryResults: null
+        };
+
+        // Todo: make a function to save/get searchResults
+        // Todo: make a function to save/get all scope parameters when hitting back
+        // Todo: when hitting the global nav, reset it
+        function saveSearchStateAvailable() {
+            return saveStates.search;
+        }
+        function getSearchState() {
+            return saveStates.search;
+        }
+        function getSearchStateResults() {
+            return saveStates.searchResults;
+        }
+        function saveSearchState(searchObj, resultsObj) {
+            saveStates.search = searchObj;
+            saveStates.searchResults = resultsObj;
+            console.log(saveStates);
+        }
+        function deleteSearchState() {
+            saveStates.search = null;
+            saveStates.searchResults = null;
+        }
+
+
+
+
+
         function setLocalStorage (token, name, level) {
             localStorage.authToken = token;
             localStorage.authName = name;
@@ -104,6 +137,62 @@ angular.module('employee-api', [])
             return d.promise;
         }
 
+        function strengthSearch(strengths) {
+            var d = $q.defer();
+            var searchObject = {};
+
+            if(strengths.length) {
+                searchObject.strengths = strengths;
+            }
+            Restangular.one('users').post('advancedsearch', searchObject).then(function(data) {
+                d.resolve(data);
+            }, function() {
+                d.reject();
+            });
+            return d.promise;
+        }
+
+        function skillSearch(skill, rating) {
+            var d = $q.defer();
+            var searchObject = {};
+
+            if(skill.length) {
+                searchObject.skills = {};
+                searchObject.skills.title = skill;
+                searchObject.skills.rating = rating;
+            }
+            Restangular.one('users').post('advancedsearch', searchObject).then(function(data) {
+                d.resolve(data);
+            }, function() {
+                d.reject();
+            });
+            return d.promise;
+        }
+
+        function complexSearch(name, strengths, skill, rating) {
+            var d = $q.defer();
+            var searchObject = {};
+
+            if(name.length) {
+                searchObject.name = name;
+            }
+            if(strengths.length) {
+                searchObject.strengths = strengths;
+            }
+            if(skill.length) {
+                searchObject.skills = {};
+                searchObject.skills.title = skill;
+                searchObject.skills.rating = rating;
+            }
+            console.log(searchObject);
+            Restangular.one('users').post('advancedsearch', searchObject).then(function(data) {
+                d.resolve(data);
+            }, function() {
+                d.reject();
+            });
+            return d.promise;
+        }
+
         function getUser(name) {
             var d = $q.defer();
 
@@ -119,8 +208,8 @@ angular.module('employee-api', [])
         function getUserBySubstring(name) {
             var d = $q.defer();
 
-            Restangular.one('users', name).get().then(function(data) {
-                d.resolve(data[0]);
+            Restangular.one('users/search', name).get().then(function(data) {
+                d.resolve(data);
             }, function() {
                 d.reject();
             });
@@ -161,8 +250,34 @@ angular.module('employee-api', [])
             },
             getUserBySubstring: function(name) {
                 return getUserBySubstring(name);
+            },
+            strengthSearch: function(strengths) {
+                return strengthSearch(strengths);
+            },
+            skillSearch: function(skill, rating) {
+                return skillSearch(skill, rating);
+            },
+            complexSearch: function(name, strengths, skill, rating) {
+                return complexSearch(name, strengths, skill, rating);
+            },
+            saveSearchStateAvailable: function() {
+                return saveSearchStateAvailable();
+            },
+            getSearchState: function() {
+                return getSearchState();
+            },
+            getSearchStateResults: function() {
+                return getSearchStateResults();
+            },
+            saveSearchState: function(searchObj, resultsObj) {
+                return saveSearchState(searchObj, resultsObj);
+            },
+            deleteSearchState: function() {
+                return deleteSearchState();
             }
         };
+
+
 
         return service;
     });

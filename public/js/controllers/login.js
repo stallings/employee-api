@@ -14,4 +14,5 @@ myApp.controller('LoginController', function($scope, employee) {
         $scope.isLoggedIn = false;
     });
 
+
 });

@@ -21,6 +21,7 @@ myApp.controller('DirectoryController', function($scope, employee) {
 
     $scope.employeeTypeList = [];
     $scope.employeeTitleList = [];
+
     $scope.searchResults = {};
     $scope.directoryResults = {
         predicate: '_id',
@@ -28,25 +29,24 @@ myApp.controller('DirectoryController', function($scope, employee) {
         reverse: false
     };
 
+    $scope.directorySearch = function() {
+        employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
+            function (data) {
+                $scope.directoryResults.count = data.count;
+                $scope.searchResults = data.results;
+            }
+        );
+    };
+
     $scope.$watchCollection('employeeTypeList', function(newNames, oldNames) {
         if (newNames !== oldNames) {
-            employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
-                function (data) {
-                    $scope.directoryResults.count = data.count;
-                    $scope.searchResults = data.results;
-                }
-            );
+            $scope.directorySearch();
         }
     });
 
     $scope.$watchCollection('employeeTitleList', function(newNames, oldNames) {
         if (newNames !== oldNames) {
-            employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
-                function (data) {
-                    $scope.directoryResults.count = data.count;
-                    $scope.searchResults = data.results;
-                }
-            );
+            $scope.directorySearch();
         }
     });
 

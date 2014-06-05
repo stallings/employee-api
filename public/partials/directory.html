@@ -17,8 +17,6 @@
     <pre>Employee Type: {{employeeTypeList|json}}</pre>
     <pre>Employee Title: {{employeeTitleList|json}}</pre>
     <pre>Number of Results: {{directoryResults.count|json}}</pre>
-    <!--<pre>Results: {{searchResults|json}}</pre>-->
-
     <pre>Sorting predicate = {{directoryResults.predicate}}; reverse = {{directoryResults.reverse}}</pre>
     <hr/>
     <table>
@@ -27,7 +25,8 @@
             <th><a href="" ng-click="directoryResults.predicate = 'title'; directoryResults.reverse = !directoryResults.reverse">Title</a></th>
         </tr>
         <tr ng-repeat="searchResult in searchResults | orderBy:directoryResults.predicate:directoryResults.reverse">
-            <td>{{searchResult._id}}</td>
+            <td><a ng-href="#/users/{{searchResult._id}}/" ng-bind="searchResult._id"></a></td>
+            <!--<td>{{searchResult._id}}</td>-->
             <td>{{searchResult.title}}</td>
         </tr>
     </table>

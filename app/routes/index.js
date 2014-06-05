@@ -141,6 +141,18 @@ module.exports = function (app) {
     });
 
     /* ********************************* */
+    // Route: GET /users/search/
+    // Description: Get all user names and IDs
+    //
+    // Sample curl:
+    // curl -i -X GET http://localhost:5000/users
+    /* ********************************* */
+    app.get('/api/v1/users/search', function (req, res, next) {
+        var searchObject = {};
+        findUsers(req, res, next, searchObject);
+    });
+
+    /* ********************************* */
     // Route: GET /users/search/string
     // Description: Get all names that contain the string
     //
