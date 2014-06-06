@@ -1,4 +1,4 @@
-myApp.controller('DirectoryController', function($scope, employee) {
+myApp.controller('DirectoryController', function($scope, employee, myCache) {
 
     $scope.employeeTypes = [
         'FTE',
@@ -22,18 +22,25 @@ myApp.controller('DirectoryController', function($scope, employee) {
     $scope.employeeTypeList = [];
     $scope.employeeTitleList = [];
 
-    $scope.searchResults = {};
-    $scope.directoryResults = {
+    $scope.directory = {
         predicate: '_id',
         count: 0,
         reverse: false
     };
+    $scope.directoryResults = {};
+
+    if (myCache.get('directory')) {
+        $scope.directory = myCache.get('directory');
+        $scope.directoryResults = myCache.get('directoryResults');
+    }
 
     $scope.directorySearch = function() {
         employee.directorySearch($scope.employeeTypeList, $scope.employeeTitleList).then(
             function (data) {
-                $scope.directoryResults.count = data.count;
-                $scope.searchResults = data.results;
+                $scope.directory.count = data.count;
+                $scope.directoryResults = data.results;
+                myCache.put('directory', $scope.directory);
+                myCache.put('directoryResults', $scope.directoryResults);
             }
         );
     };

@@ -20,8 +20,8 @@
 <div class="header" ng-controller="LoginController">
     <div>
         <b>The UX Team</b>
-        <a href="#/">Search</a>
-        <a href="#/directory/">Directory</a>
+        <a href="#/" ng-click="resetSearch()">Search</a>
+        <a href="#/directory/" ng-click="resetDirectory()">Directory</a>
         <a href="#/orgchart/">Org Chart</a>
         <span ng-if="isLoggedIn">
             Hello {{ fullname }}! (<a href="#login">Log Out</a>)

@@ -1,4 +1,4 @@
-myApp.controller('LoginController', function($scope, employee) {
+myApp.controller('LoginController', function($scope, employee, myCache) {
 
     // Login
 //    employee.login("jpulgar", "password").then(function() {
@@ -6,6 +6,16 @@ myApp.controller('LoginController', function($scope, employee) {
 //    }, function() {
 //        console.log('login failed');
 //    });
+
+    $scope.resetSearch = function() {
+        myCache.remove('search');
+        myCache.remove('searchResults');
+    }
+
+    $scope.resetDirectory = function() {
+        myCache.remove('directory');
+        myCache.remove('directoryResults');
+    }
 
     employee.isLoggedIn().then(function() {
         $scope.isLoggedIn = true;

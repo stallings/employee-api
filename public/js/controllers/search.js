@@ -1,10 +1,10 @@
-myApp.controller('SearchController', function($scope, employee) {
+myApp.controller('SearchController', function($scope, employee, myCache) {
 
     // Define disciplines
     $scope.disciplines = ['FED', 'PJM', 'UXA'];
 
     // Define skill data
-    $scope.ratings = [0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
+    $scope.ratings = ['Choose Rating', 0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
     $scope.skillList = [];
     $scope.skillList['FED'] = ["User Research", "FED Skill #2", "FED Skill #3"];
     $scope.skillList['PJM'] = ["PJM Skill #1", "PJM Skill #2", "PJM Skill #3"];
@@ -27,26 +27,23 @@ myApp.controller('SearchController', function($scope, employee) {
         selectedSkill: $scope.skillList['FED'][0],
         strengths: $scope.strengthList['PJM'],
         selectedStrength: [],
-        selectedRating: $scope.ratings[6],
+        selectedRating: $scope.ratings[0],
         predicate: '_id',
         count: 0,
         reverse: false
     };
 
-    // Todo: We need to reset selectedSkill (most ppl won't see this)
-
     $scope.searchResults = {};
 
-    if (employee.saveSearchStateAvailable()) {
-        $scope.search = employee.getSearchState();
-        $scope.searchResults = employee.getSearchStateResults();
+    if (myCache.get('search')) {
+        $scope.search = myCache.get('search');
+        $scope.searchResults = myCache.get('searchResults');
     }
 
-
-    // Todo: Maybe don't auto select the first skill, so it doesn't get added to filter
     $scope.changeSkills = function(discipline){
         $scope.search.skills = $scope.skillList[discipline];
         $scope.search.selectedSkill = $scope.search.skills[0];
+        $scope.search.selectedRating = $scope.ratings[0];
     };
 
     $scope.changeStrengths = function(discipline){
@@ -59,14 +56,20 @@ myApp.controller('SearchController', function($scope, employee) {
         $scope.search.buttonName = 'Refine';
     };
 
+    $scope.showSkills = function() {
+        return (employee.getLevel() >= 3);
+    };
+
     $scope.showResults = function(data) {
         $scope.search.count = data.count;
         $scope.searchResults = data.results;
-        employee.saveSearchState($scope.search, $scope.searchResults);
+        myCache.put('search', $scope.search);
+        myCache.put('searchResults', $scope.searchResults);
     };
 
     $scope.complexSearch = function() {
-        employee.complexSearch($scope.search.name, $scope.search.selectedStrength, $scope.search.selectedSkill, $scope.search.selectedRating).then(
+        var rating = ($scope.search.selectedRating === $scope.ratings[0]) ? -1 : $scope.search.selectedRating;
+        employee.complexSearch($scope.search.name, $scope.search.selectedStrength, $scope.search.selectedSkill, rating).then(
             function (data) {
                 $scope.showResults(data);
             }
@@ -87,13 +90,16 @@ myApp.controller('SearchController', function($scope, employee) {
     };
 
     $scope.searchBySkills  = function() {
+        var rating = ($scope.search.selectedRating === $scope.ratings[0]) ? -1 : $scope.search.selectedRating;
         if (!$scope.search.submitted) {
-            employee.skillSearch($scope.search.selectedSkill, $scope.search.selectedRating).then(
-                function (data) {
-                    $scope.showResults(data);
-                    $scope.setSubmitted();
-                }
-            );
+            if (rating) {
+                employee.skillSearch($scope.search.selectedSkill, rating).then(
+                    function (data) {
+                        $scope.showResults(data);
+                        $scope.setSubmitted();
+                    }
+                );
+            }
         } else {
             $scope.complexSearch();
         }

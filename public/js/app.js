@@ -18,5 +18,8 @@ myApp.config(function($routeProvider, RestangularProvider) {
             redirectTo: '/'
         });
     RestangularProvider.setBaseUrl('/api/v1');
+});
 
+myApp.factory('myCache', function($cacheFactory) {
+    return $cacheFactory('myData');
 });

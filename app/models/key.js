@@ -1,8 +1,10 @@
-// Levels:
-// 1 - Individual Contributor
-// 2 - Manager
-// 3 - Director
-// 4 - VP
+/*
+Levels:
+1 - Individual Contributor
+2 - Manager
+3 - Director
+4 - VP
+*/
 
 // Key expires every X number of seconds
 var mongoose = require('mongoose'),

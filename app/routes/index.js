@@ -115,20 +115,6 @@ module.exports = function (app) {
 
 
     /* ********************************* */
-    // Route: GET /
-    // Description: Returns the UX API version
-    //
-    // Sample curl:
-    // curl -i -X GET http://localhost:5000/
-    /* ********************************* */
-//    app.get('/', function (req, res) {
-//        res.jsonp({
-//            'version': '0.0.1'
-//        });
-//    });
-
-
-    /* ********************************* */
     // Route: GET /users
     // Description: Get all user names and IDs
     //
