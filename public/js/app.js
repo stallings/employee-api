@@ -1,4 +1,4 @@
-var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'pasvaz.bindonce', 'ngSanitize', 'MyAwesomePartials', 'search-directives', 'employee-directives', 'employee-api', 'checklist-model']);
+var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'pasvaz.bindonce', 'ngSanitize', 'MyAwesomePartials', 'search-directives', 'employee-directives', 'orgchart-directives', 'employee-api', 'checklist-model']);
 
 myApp.config(function($routeProvider, RestangularProvider) {
     $routeProvider
@@ -13,6 +13,10 @@ myApp.config(function($routeProvider, RestangularProvider) {
         .when('/users/:name/', {
             templateUrl: 'partials/baseball-card.html',
             controller: 'BaseballCardController'
+        })
+        .when('/orgchart/:name/', {
+            templateUrl: 'partials/orgchart.html',
+            controller: 'OrgChartController'
         })
         .otherwise({
             redirectTo: '/'

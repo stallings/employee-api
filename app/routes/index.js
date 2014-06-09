@@ -329,6 +329,76 @@ module.exports = function (app) {
     });
 
 
+    app.get('/api/v1/users/orgchartv2/:userid', function (req, res, next) {
+
+
+
+        /** @namespace req.params.userid */
+        User.findOne({
+            '_id': req.params.userid
+        }, function (err, user) {
+            if (err) {
+                return next(new Error(err.message));
+            } else if (!user) {
+                var newErr = new Error('User not found');
+                newErr.status = 404;
+                return next(newErr);
+            } else {
+
+                if (user._id !== "VP Name") {
+
+                    // Get the titles of manager and direct reports
+                    var idsToSearch = Array.prototype.concat(user.manager, user.directs);
+
+                    User.find({
+                        '_id': {
+                            $in: idsToSearch
+                        }
+                    }, 'title').lean().exec(function (err, userTitles) {
+                        if (err) {
+                            return next(new Error(err.message));
+                        } else if (!userTitles.length) {
+                            var newErr = new Error('No users titles found');
+                            newErr.status = 404;
+                            return next(newErr);
+                        } else {
+                            // Create array with name -> title
+                            var nameAndTitles = [];
+                            for (var i = 0; i < userTitles.length; i++) {
+                                nameAndTitles[userTitles[i]._id] = userTitles[i].title;
+                            }
+
+                            var orgChartData =
+                                {
+
+                                    name: user._id,
+                                    title: user.title,
+                                    manager: user.manager,
+                                    managerTitle: nameAndTitles[user.manager],
+                                    children: []
+
+                                }
+                            ;
+
+                            for (var j = 0; j < user.directs.length; j++) {
+                                orgChartData.children.push({
+                                    name: user.directs[j],
+                                    title: nameAndTitles[user.directs[j]]
+                                });
+                            }
+
+                            res.jsonp(orgChartData);
+                        }
+                    });
+
+                    // If it's VP, make a pre-defined structure
+                } else {
+                    console.log('finish this');
+                }
+            }
+        });
+    });
+
     /* ********************************* */
     // Route: GET /users/id,id
     // Description: Get one or more users

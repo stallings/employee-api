@@ -186,6 +186,18 @@ angular.module('employee-api', [])
             return d.promise;
         }
 
+        function getUserOrgChart(name) {
+            var d = $q.defer();
+
+            Restangular.one('users/orgchartv2', name).get().then(function(data) {
+                d.resolve(data);
+            }, function() {
+                d.reject();
+            });
+
+            return d.promise;
+        }
+
         var service = {
             isAuthorized: function (level) {
                 return user.level >= level;
@@ -219,6 +231,9 @@ angular.module('employee-api', [])
             },
             getUserBySubstring: function(name) {
                 return getUserBySubstring(name);
+            },
+            getUserOrgChart: function(name) {
+                return getUserOrgChart(name);
             },
             strengthSearch: function(strengths) {
                 return strengthSearch(strengths);
