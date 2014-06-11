@@ -1,13 +1,13 @@
 <div class="tree">
     <ul>
         <li>
-            <a href="#">{{ employee.manager }}<br/>{{ employee.managerTitle }}</a>
+            <a ng-href="#/orgchart/{{employee.manager}}/">{{ employee.manager }}<br/>{{ employee.managerTitle }}<br/>View Card</a>
             <ul>
                 <li>
-                    <a href="#">{{ employee.name }}<br/>{{ employee.title }}</a>
+                    <a ng-href="#/orgchart/{{employee.name}}/" class="selected">{{ employee.name }}<br/>{{ employee.title }}<br/>View Card</a>
                     <ul>
-                        <li ng-if="employee.children.length" ng-repeat="child in employee.children"><a href="#">{{ child.name }}<br/>{{ child.title }}</a></li>
-                        <li ng-if="!employee.children.length"><a href="#">Employee has no direct reports</a></li>
+                        <li ng-if="employee.children.length" ng-repeat="child in employee.children"><a ng-href="#/orgchart/{{child.name}}/">{{ child.name }}<br/>{{ child.title }}<br/>View Card</a></li>
+                        <li ng-if="!employee.children.length"><a href="#">{{ employee.name }} has no direct reports</a></li>
                     </ul>
                 </li>
             </ul>
@@ -46,6 +46,9 @@
         -moz-transition: all 0.5s;
     }
 
+    .tree li .selected {
+        background-color: #efefef;
+    }
     /*We will use ::before and ::after to draw the connectors*/
 
     .tree li::before, .tree li::after{

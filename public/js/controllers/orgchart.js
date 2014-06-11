@@ -13,7 +13,6 @@ myApp.controller('OrgChartController', function($scope, $routeParams, employee) 
     ).catch(
         function() {
             $scope.results.valid = false;
-            console.log("user 404");
         }
     );
 
