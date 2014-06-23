@@ -12,8 +12,10 @@ var express = require('express'),
 // Create Express App and use JSON/urlencoded parsing middleware
 var app = express();
 
-// app.set('json spaces', 2);  // set spaces to make API readable
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json())
 app.use(cors({
     origin: '*'
 }));
