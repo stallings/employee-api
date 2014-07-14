@@ -45,8 +45,19 @@ Don't inject service into directive, do it on the controller.
 * How to do top nav. Look at second example: http://stackoverflow.com/questions/15686155/conditional-partials-in-angular-js
 
 
-## User Import Utility ##
-mongoimport --db baseball --collection users --file sample_users.json --jsonArray --stopOnError
+## Create Database ##
+mongo
+use baseball
+
+## Export Collections ##
+mongoexport --db baseball --collection users --out baseball_users.json
+mongoexport --db baseball --collection logins --out baseball_logins.json
+mongoexport --db baseball --collection keys --out baseball_keys.json
+
+## Import Collections ##
+mongoimport --db baseball --collection users --file baseball_users.json --jsonArray --stopOnError
+mongoimport --db baseball --collection logins --file baseball_logins.json --jsonArray --stopOnError
+mongoimport --db baseball --collection keys --file baseball_keys.json --jsonArray --stopOnError
 
 ## Find Outdated NPM Packages ##
 npm outdated --depth 0
@@ -194,17 +205,6 @@ curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "jpulgar", 
     ]
 }
 ```
-
-## Projects
-````
-{
-    "_id" : "Baseball Cards",
-    "description" : "An awesome project using NodeJS and RESTful API",
-    "tags" : [ "NodeJS", "MongoDB" ]
-    "members" : [ "Jose Pulgar" ]
-}
-````
-
 
 ## Keys
 ````

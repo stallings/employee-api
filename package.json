@@ -7,20 +7,20 @@
         "url" : "https://github.com/jpulgar/employee-api.git"
     },
     "dependencies": {
-        "express": "~4.5.1",
+        "express": "~4.6.1",
         "body-parser": "~1.4.3",
         "morgan": "~1.1.1",
-        "mongoose": "~3.8.12",
+        "mongoose": "~3.8.13",
         "bcrypt": "~0.7.8",
         "cors": "~2.4.1"
     },
     "devDependencies": {
-        "gulp": "~3.8.5",
-        "gulp-jshint": "~1.6.4",
-        "jshint-stylish": "~0.2.0",
-        "gulp-concat": "~2.2.0",
+        "gulp": "~3.8.6",
+        "gulp-jshint": "~1.7.1",
+        "jshint-stylish": "~0.4.0",
+        "gulp-concat": "~2.3.3",
         "gulp-uglify": "~0.3.1",
-        "gulp-sourcemaps": "~0.4.4",
+        "gulp-sourcemaps": "~1.1.0",
         "gulp-nodemon": "~1.0.4",
         "gulp-ng-annotate": "~0.2.0",
         "gulp-ng-html2js": "~0.1.7",
