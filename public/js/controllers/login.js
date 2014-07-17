@@ -1,11 +1,11 @@
 myApp.controller('LoginController', function($scope, employee, myCache) {
 
     // Login
-//    employee.login("jpulgar", "password").then(function() {
-//        console.log('login successful');
-//    }, function() {
-//        console.log('login failed');
-//    });
+   employee.login("jpulgar", "password").then(function() {
+       console.log('login successful');
+   }, function() {
+       console.log('login failed');
+   });
 
     $scope.resetSearch = function() {
         myCache.remove('search');

@@ -1,3 +1,45 @@
-<div>
-    Add User Partial
+<div class="row add-user">
+	
+	<form class="step1" ng-if="addUser.step === 'step1'" action="#/adduser/step2">
+		<div class="col-md-6">
+			<div add-user-profile></div>
+		</div>
+		<div class="col-md-6">
+			<div add-user-contact-info></div>
+		</div>	
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-defualt btn-sm" type="submit">Next</button>	
+			</div>
+		</div>
+	</form>
+
+
+	<form class="step2" ng-if="addUser.step === 'step2'" action="#/adduser/step3">
+		<div class="col-md-6">
+			<div add-user-skills></div>
+		</div>
+		<div class="col-md-6">
+			<div add-user-strengths></div>
+		</div>	
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-defualt btn-sm" type="submit">Next</button>	
+			</div>
+		</div>
+	</form>
+
+	<form class="step3" ng-if="addUser.step === 'step3'">
+		<div class="col-md-12">
+			<div add-user-system-info></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-defualt btn-sm" type="submit">Save</button>	
+			</div>
+		</div>
+	</form>
+
 </div>
+
+

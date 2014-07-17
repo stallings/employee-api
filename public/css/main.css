@@ -1,0 +1,15 @@
+.add-user-profile{
+	width: 35%;
+	margin:20px 50px 10px 50px; 
+	background-color: #F0F0F5
+}
+
+.user-contanct-info{
+	width: 35%;
+	margin:20px 50px 10px 50px; 
+	background-color: #F0F0F5
+}
+
+.add-user .row:last-child button{
+	margin-left: 50px;
+}
