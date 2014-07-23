@@ -198,6 +198,19 @@ angular.module('employee-api', [])
             return d.promise;
         }
 
+        function postNewUser(newUser){
+            console.log("postNewUser employee-api");
+
+            var d = $q.defer();
+            
+            Restangular.one('users').post('', newUser).then(function(data) {
+                d.resolve(data);
+            }, function() {
+                d.reject();
+            });
+            return d.promise;
+        }
+
         var service = {
             isAuthorized: function (level) {
                 return user.level >= level;
@@ -243,6 +256,9 @@ angular.module('employee-api', [])
             },
             complexSearch: function(name, strengths, skill, rating) {
                 return complexSearch(name, strengths, skill, rating);
+            },
+            postNewUser: function(newUser){
+                return postNewUser(newUser);
             }
         };
 

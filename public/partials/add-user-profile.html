@@ -5,44 +5,44 @@
 
 
 	<label for="first-name">First Name <span>Required</span></label>
-	<input type="text" name="" id="first-name" ng-model="addUser.firstName"/>
+	<input type="text" name="" id="first-name" ng-model="newUser.firstName" placeholder="{{newUser.firstName}}" />
 
 	<label for="last-name">Last Name <span>Required</span></label>
-	<input type="text" name="" id="last-name" ng-model="addUser.lastName"/>
+	<input type="text" name="" id="last-name" ng-model="newUser.lastName"/>
 
 	<label for="discipline">Discipline <span>Required</span></label>
-	<select id="discipline" ng-model="addUser.discipline">
-		<option value ="discipline1">discipline1</option>
-		<option value ="discipline2">discipline2</option>
-		<option value ="discipline3" selected>discipline3</option>
-		<option value ="discipline4">discipline4</option>
+	<select id="discipline" ng-model="newUser.discipline">
+		<option>discipline1</option>
+		<option>discipline2</option>
+		<option selected>discipline3</option>
+		<option>discipline4</option>
 	</select>
 
 	<label for="title">Title <span>Required</span></label>
-	<select id="title" ng-model="addUser.title">
-		<option value ="title1">title1</option>
-		<option value ="title2">title2</option>
-		<option value ="title3" selected>title3</option>
-		<option value ="title4">title4</option>
+	<select id="title" ng-model="newUser.title">
+		<option</option>
+		<option</option>
+		<option selected>title3</option>
+		<option</option>
 	</select>
 
 	<label for="manager">Manager <span>Required</span></label>
-	<select id="manager" ng-model="addUser.manager">
-		<option value ="manager1">manager1</option>
-		<option value ="manager2">manager2</option>
-		<option value ="manager3" selected>manager3</option>
-		<option value ="manager4">manager4</option>
+	<select id="manager" ng-model="newUser.manager">
+		<option>manager1</option>
+		<option>manager2</option>
+		<option selected>manager3</option>
+		<option>manager4</option>
 	</select>
 
 
 	<label for="mentor">Mentor</label>
-	<input type="text" name="" id="mentor" ng-model="addUser.mentor"/>
+	<input type="text" name="" id="mentor" ng-model="newUser.mentor"/>
 
 	<label for="mentee">Mentee</label>
-	<input type="text" name="" id="mentee" ng-model="addUser.mentee"/>
+	<input type="text" name="" id="mentee" ng-model="newUser.mentee"/>
 	
 	<label for="buddy">Buddy</label>
-	<input type="text" name="" id="buddy" ng-model="addUser.buddy"/>
+	<input type="text" name="" id="buddy" ng-model="newUser.buddy"/>	
 
 
 </div>

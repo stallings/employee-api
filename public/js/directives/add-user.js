@@ -22,7 +22,7 @@ angular.module('add-user-directives', [])
     .directive('addUserStrengths', function($parse, $compile) {
         return {
             restrict: 'A',
-            templateUrl: 'partials/add-user-strenghts.html'
+            templateUrl: 'partials/add-user-strengths.html'
         }
     })
 

@@ -4,13 +4,13 @@ var mongoose = require('mongoose'),
 var skillSchema = new Schema({
     _id: {
         type: String,
-        required: true
+        // required: true
     },
     rating: {
         type: Number,
         min: 1,
         max: 5,
-        required: true
+        // required: true
     }
 });
 
@@ -24,28 +24,31 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
+    profileImg:{
+        type: String
+    }
     title: {
         type: String,
-        required: true
+        // required: true
     },
     department: {
         type: String,
         enum: ['PjM', 'Copy', 'FED', 'UXA', 'Visual Design', 'User Research'],
-        required: true
+        // required: true
     },
     employeeType: {
         type: String,
         enum: ['FTE', 'Contractor'],
-        required: true
+        // required: true
     },
     manager: {
         type: String,
-        required: true
+        // required: true
     },
     directs: [String],
     level: {
         type: Number,
-        required: true
+        // required: true
     },
 
     // Optional

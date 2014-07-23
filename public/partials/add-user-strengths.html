@@ -1,3 +1,6 @@
 <div class="add-user-strengths">
-	<h4>add-user-strengths here</h4>
+	<div ng-repeat="strength in newUserOpts.strengths">
+		<label for="{{strength}}">{{strength}}</label>
+		<input ng-model="newUser.strength" id="{{strength}}" type="checkbox" value="{{strength}}">	
+	</div>
 </div>

@@ -18,7 +18,7 @@ myApp.config(function($routeProvider, RestangularProvider) {
             templateUrl: 'partials/orgchart.html',
             controller: 'OrgChartController'
         })
-        .when('/adduser/:step', {
+        .when('/adduser', {
             templateUrl: 'partials/add-user.html',
             controller: 'AddUserController'
         })
