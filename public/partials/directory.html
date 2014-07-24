@@ -1,34 +1,52 @@
-<div>
+<div id="directory-page">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Find a team member</h1>
+            <p>Find the right person for the job using the tools below. You can search by name, for a specific skill required for that domain, or by strength.</p>
+        </div>
+    </div>
 
-    Directory Partial
+    <div class="row employee-types">
+        <div class="col-md-7">
 
-    <label ng-repeat="employeeType in employeeTypes">
-        <input type="checkbox" checklist-model="employeeTypeList" checklist-value="employeeType"> {{employeeType}}
-    </label>
+            <div ng-repeat="employeeType in employeeTypes" class="customCheckbox">
+                <input id="{{employeeType}}" type="checkbox"  checklist-model="employeeTypeList" checklist-value="employeeType"> 
+                <label for="{{employeeType}}">{{employeeType}}</label>
+            </div>
+            <div ng-repeat="FED in FEDS" class="customCheckbox">
+                <input id="{{FED}}" type="checkbox"  checklist-model="employeeTitleList" checklist-value="FED">
+                <label for="{{FED}}">{{FED}}</label>
+            </div>
+            <div ng-repeat="PJM in PJMS" class="customCheckbox">
+                <input type="checkbox" id="{{PJM}}"class="customCheckbox" checklist-model="employeeTitleList" checklist-value="PJM"> 
+                <label for="{{PJM}}">{{PJM}}</label>
+            </div>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
 
-    <label ng-repeat="FED in FEDS">
-        <input type="checkbox" checklist-model="employeeTitleList" checklist-value="FED"> {{FED}}
-    </label>
+    <div class="row">
+        <div class="col-md-7">
+        <!-- TODO:Leaving this code for now. In case it is needs. -->
 
-    <label ng-repeat="PJM in PJMS">
-        <input type="checkbox" checklist-model="employeeTitleList" checklist-value="PJM"> {{PJM}}
-    </label>
-
-    <pre>Employee Type: {{employeeTypeList|json}}</pre>
-    <pre>Employee Title: {{employeeTitleList|json}}</pre>
-    <pre>Number of Results: {{directory.count|json}}</pre>
-    <pre>Sorting predicate = {{directory.predicate}}; reverse = {{directory.reverse}}</pre>
-    <hr/>
-    <table>
-        <tr>
-            <th><a href="" ng-click="directory.predicate = '_id'; directory.reverse = !directory.reverse">Name</a>
-            <th><a href="" ng-click="directory.predicate = 'title'; directory.reverse = !directory.reverse">Title</a></th>
-        </tr>
-        <tr ng-repeat="searchResult in directoryResults | orderBy:directory.predicate:directory.reverse">
-            <td><a ng-href="#/users/{{searchResult._id}}/" ng-bind="searchResult._id"></a></td>
-            <td>{{searchResult.title}}</td>
-        </tr>
-    </table>
-
-
+            <!-- <pre>Employee Type: {{employeeTypeList|json}}</pre>
+            <pre>Employee Title: {{employeeTitleList|json}}</pre>
+            <pre>Number of Results: {{directory.count|json}}</pre>
+            <pre>Sorting predicate = {{directory.predicate}}; reverse = {{directory.reverse}}</pre>
+             -->
+            <table class="table table-striped">
+                <tr>
+                    <th><a href="" ng-click="directory.predicate = '_id'; directory.reverse = !directory.reverse">Name</a>
+                    <th><a href="" ng-click="directory.predicate = 'title'; directory.reverse = !directory.reverse">Title</a></th>
+                </tr>
+                <tr ng-repeat="searchResult in directoryResults | orderBy:directory.predicate:directory.reverse">
+                    <td><a ng-href="#/users/{{searchResult._id}}/" ng-bind="searchResult._id"></a></td>
+                    <td>{{searchResult.title}}</td>
+                </tr>
+            </table>
+            
+        </div>
+        <div class="col-md-5"></div>
+    </div>
 </div>
+

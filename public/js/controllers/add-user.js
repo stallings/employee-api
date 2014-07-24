@@ -45,6 +45,9 @@ myApp.controller('AddUserController', function($scope, $routeParams, employee) {
     $scope.addRow = function(){
     	$scope.softwareInfoRows = $scope.softwareInfoRows + 1;
     }
+    $scope.removeRow = function(){
+    	$scope.softwareInfoRows = $scope.softwareInfoRows - 1;
+    }
     
     $scope.saveNewUser = function(){
     	//////////////////////////////////////////////////////////////////

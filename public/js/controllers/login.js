@@ -1,4 +1,4 @@
-myApp.controller('LoginController', function($scope, employee, myCache) {
+myApp.controller('LoginController', function($location,$scope, employee, myCache) {
 
     // Login
    employee.login("jpulgar", "password").then(function() {
@@ -23,6 +23,4 @@ myApp.controller('LoginController', function($scope, employee, myCache) {
     }, function() {
         $scope.isLoggedIn = false;
     });
-
-
 });

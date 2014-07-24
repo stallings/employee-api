@@ -21,44 +21,58 @@
     <script type="text/javascript" src="lib/restangular.min.js"></script>
     
 </head>
-<body ng-app="employeeApp">
+<body ng-app="employeeApp" ng-controller="LoginController">
+    <header class="row">
+        <h2 class="logo">UXSEARS</h2>
+    </header>
 
-<div class="header" ng-controller="LoginController">
-    <div>
-        <b>The UX Team</b>
-        <a href="#/" ng-click="resetSearch()">Search</a>
-        <a href="#/directory/" ng-click="resetDirectory()">Directory</a>
-        <a href="#/orgchart/Jose Pulgar/">Org Chart</a>
-        <a href="#/adduser">Add User</a>
-        <span ng-if="isLoggedIn">
-            Hello {{ fullname }}! (<a href="#login">Log Out</a>)
-        </span>
-        <span ng-if="!isLoggedIn">
-            <a href="#/login/">Log In</a>
-        </span>
+    <div class="row">
+        <nav class="col-md-2" ng-controller="NavController">            
+            <ul>
+                <li><a ng-class="{active: $location.path() == '/'}" href="#/" ng-click="resetSearch()">Search</a></li>
+                <li><a ng-class="{active: $location.path() == '/directory/'}" href="#/directory/" ng-click="resetDirectory()">Directory</a></li>
+                <li><a ng-class="{active: $location.path() == '/orgchart/Jose Pulgar/'}" href="#/orgchart/Jose Pulgar/">Our Team</a></li>
+                <li><a ng-class="{active: $location.path() == '/adduser'}" href="#/adduser">Add User</a></li>
+                <li>
+                    <span ng-if="isLoggedIn">
+                        <a href="#login">Log Out</a>
+                    </span>
+                    <span ng-if="!isLoggedIn">
+                        <a href="#/login/">Log In</a>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+
+
+        
+        
+        
+        
+
+        <div ng-view class="col-md-10"></div>
     </div>
 
-    <div ng-view></div>
-</div>
 
-<!--<script src="js/app.all.min.js"></script>-->
-<script src="js/app.js"></script>
+    <!--<script src="js/app.all.min.js"></script>-->
+    <script src="js/app.js"></script>
 
-<script src="js/controllers/login.js"></script>
-<script src="js/controllers/search.js"></script>
-<script src="js/controllers/baseball-card.js"></script>
-<script src="js/controllers/directory.js"></script>
-<script src="js/controllers/orgchart.js"></script>
-<script src="js/controllers/add-user.js"></script>
+    <script src="js/controllers/login.js"></script>
+    <script src="js/controllers/nav.js"></script>
+    <script src="js/controllers/search.js"></script>
+    <script src="js/controllers/baseball-card.js"></script>
+    <script src="js/controllers/directory.js"></script>
+    <script src="js/controllers/orgchart.js"></script>
+    <script src="js/controllers/add-user.js"></script>
 
-<script src="js/directives/checklist.js"></script>
-<script src="js/directives/baseball-card.js"></script>
-<script src="js/directives/search.js"></script>
-<script src="js/directives/orgchart.js"></script>
-<script src="js/directives/add-user.js"></script>
+    <script src="js/directives/checklist.js"></script>
+    <script src="js/directives/baseball-card.js"></script>
+    <script src="js/directives/search.js"></script>
+    <script src="js/directives/orgchart.js"></script>
+    <script src="js/directives/add-user.js"></script>
 
-<script src="js/partials.min.js"></script>
+    <script src="js/partials.min.js"></script>
 
-<script src="js/services/employee-api.js"></script>
+    <script src="js/services/employee-api.js"></script>
 </body>
 </html>
