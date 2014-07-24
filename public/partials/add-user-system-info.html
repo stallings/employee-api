@@ -1,66 +1,46 @@
-<div class="add-user-system-info">
-	<h4>System Information</h4>
+<h3>System Information</h3>
 
-	<div class="row">
-		<div class="col-md-12">
-			<label>Asset tag / machine #
-				<input type="text" name="" ng-model="newUser.machineNumber"/>
-			</label>	
-		</div>
+<form class="add-user-system-info">
+
+	<div class="form-group">
+		<label>Asset tag / machine #
+			<input type="text" class="form-control" name="" ng-model="newUser.machineNumber"/>
+		</label>	
 	</div>
-
-	<div class="row">
-		<div class="col-md-12">
-			<label for="machineType">Machine Type <span>Required</span></label>
-			<select id="machineType" ng-model="newUser.machineType">
+	<div class="form-group">
+		<label for="machineType">Machine Type <span>Required</span></label>
+		<select id="machineType" class="form-control" ng-model="newUser.machineType">
+			<option>---</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label>Operating system
+			<label for="operating-system"></label>
+			<input id="operating-system" type="checkbox" ng-model="newUser.operatingSystem"/>
+		</label>
+	</div>
+	<div class="form-group">
+		<label>Last 5
+			<input type="text" class="form-control" ng-model="newUser.last5"/>
+		</label>
+	</div>
+	<div id="new-software-info" class="form-group">
+		<label>Software Information</label>
+		<div class="SI-row" ng-repeat="row in range(softwareInfoRows) track by $index">
+			<select ng-model="softwareInformationList">
 				<option>---</option>
 			</select>
+			<input type="text" class="form-control" ng-model="softwareInformationList"/>
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-md-12">
-			<label>Operating system
-				<label for="operating-system"></label>
-				<input id="operating-system" type="checkbox" ng-model="newUser.operatingSystem"/>
-			</label>
-		</div>
+	<div class="form-group">
+		<button class="btn btn-defualt btn-sm" ng-click="addRow()">Add row</button>	
+		<button class="btn btn-defualt btn-sm" ng-click="removeRow()">Remove row</button>	
 	</div>
-
-	<div class="row">
-		<div class="col-md-12">
-			<label>Last 5
-				<input type="text" ng-model="newUser.last5"/>
-			</label>
-		</div>
+	<div class="form-group">
+		<label>Additional Notes
+			<textarea class="additional-notes form-control" ng-model="newUser.additionalNotes"></textarea>
+		</label>
 	</div>
-
-	<div class="row">
-		<div id="new-software-info" class="col-md-12">
-			<label>Software Information</label>
-			<div class="SI-row" ng-repeat="row in range(softwareInfoRows) track by $index">
-				<select ng-model="softwareInformationList">
-					<option>---</option>
-				</select>
-				<input type="text" ng-model="softwareInformationList"/>
-			</div>
-
-		</div>
-	</div>		
-			
-	<div class="row">
-		<div class="col-md-12">
-			<button ng-click="addRow()">Add row</button>	
-			<button ng-click="removeRow()">Remove row</button>	
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-md-12">
-			<label>Additional Notes
-				<textarea class="additional-notes" ng-model="newUser.additionalNotes"></textarea>
-			</label>
-		</div>
-	</div>
-
-</div>
+</form>

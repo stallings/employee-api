@@ -13,6 +13,10 @@ header{
 	margin-right:80px;
 }
 
+table{
+	margin-top: 30px;
+}
+
 input[type=checkbox] {
 	visibility: hidden;
 }
@@ -82,11 +86,11 @@ nav a:hover{
 }
 
 
-.add-user-profile, .user-contanct-info, .add-user-skills, .add-user-strengths, .add-user-system-info{
+/*.add-user-profile, .user-contanct-info, .add-user-skills, .add-user-strengths, .add-user-system-info{
 	width: 35%;
 	margin:20px 50px 10px 50px; 
 	background-color: #F0F0F5
-}
+}*/
 
 
 /***************************
@@ -97,10 +101,6 @@ nav a:hover{
 /***************************
 *  DIRECTORY STYLES       *
 ****************************/
-#directory-page table{
-	margin-top: 30px;
-}
-
 .employee-types{
 	margin-top: 20px;
 }
@@ -114,11 +114,6 @@ nav a:hover{
 /***************************
 *  ADD TALENT STYLES       *
 ****************************/
-
-.add-user .row:last-child button{
-	margin-left: 50px;
-}
-
 
 
 

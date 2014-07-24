@@ -1,11 +1,10 @@
-<div class="add-user-skills">
+<form class="add-user-skills">
 	<div ng-repeat="skill in newUserOpts.skills">
-		<div ng-repeat="(label, options) in skill">
-			
+		<div class="form-group" ng-repeat="(label, options) in skill">
 			<label for="{{label}}">{{label}}</label>
-			<select id="{{label}}" ng-model="newUser.skills[label][value]" >
+			<select class="form-control" id="{{label}}" ng-model="newUser.skills[label][value]" >
 				<option ng-repeat="opt in options">{{opt}}</option>
 			</select>
 		</div>
 	</div>
-</div>
+</form>

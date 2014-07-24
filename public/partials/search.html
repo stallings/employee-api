@@ -6,29 +6,41 @@
 </div>
 
 <div class="row search-ctrls">
-    <div class="col-md-4">
-        <div search-name></div>
+    <!-- If there is permission to view skills -->
+    <div ng-if="!showSkills()">
+        <div class="col-md-4">
+            <div search-name></div>
+        </div>
+        <div class="col-md-4">
+            <div search-skills></div>
+        </div>
+        <div class="col-md-4 search-strengths">
+            <div search-strengths></div>
+        </div>
     </div>
-    <div class="col-md-4">
-    <!-- TODO: Need to implement showSkills -->
-        <div search-skills ng-if="showSkills()"></div>
-    </div>
-    <div class="col-md-4">
-        <div search-strengths></div>
+    <!-- If there is NOT permission to view skills -->
+    <div ng-if="showSkills()">
+        <div class="col-md-3">
+            <div search-name></div>
+        </div>
+        <div class="col-md-9 search-strengths">
+            <div search-strengths></div>
+        </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-12">
-        <h5>Results</h5>
-
+    
         <div ng-if="search.submitted">
-            <pre>Sorting predicate = {{search.predicate}}; reverse = {{search.reverse}}</pre>
+
+        <!-- TODO: Leave this code for now. In case it is needed -->
+<!--             <pre>Sorting predicate = {{search.predicate}}; reverse = {{search.reverse}}</pre>
             <hr/>
 
-            <pre>Number of Results: {{search.count|json}}</pre>
-
-            <table>
+            <pre>Number of Results: {{search.count|json}}</pre> -->
+            <h3>Results</h3>
+            <table class="table table-striped">
                 <tr>
                     <th><a href="" ng-click="search.predicate = '_id'; search.reverse = !search.reverse">Name</a>
                     <th><a href="" ng-click="search.predicate = 'title'; search.reverse = !search.reverse">Title</a></th>

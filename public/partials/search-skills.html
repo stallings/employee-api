@@ -1,9 +1,18 @@
 <form>
-    <label>Search by Skills:</label>
-    <select ng-model="search.selectedDisciplineSkill" ng-change="changeSkills(search.selectedDisciplineSkill)" ng-options="discipline for discipline in disciplines"></select>
-    <select ng-model="search.selectedSkill" ng-options="skill for skill in search.skills"></select>
-    <select ng-model="search.selectedRating" ng-options="rating for rating in ratings"></select>
-    <button type="submit" ng-click="searchBySkills()" ng-bind="search.buttonName"></button>
+    <h3>Skill</h3>
+	<div class="form-group">
+		<select class="form-control" ng-model="search.selectedDisciplineSkill" ng-change="changeSkills(search.selectedDisciplineSkill)" ng-options="discipline for discipline in disciplines"></select>
+	</div>
+
+    <div class="form-group">
+		<select class="form-control" ng-model="search.selectedSkill" ng-options="skill for skill in search.skills"></select>
+	</div>
+	<div class="form-group">
+    	<select class="form-control" ng-model="search.selectedRating" ng-options="rating for rating in ratings"></select>
+    </div>
+    <button type="submit" class="btn btn-default" ng-click="searchBySkills()" ng-bind="search.buttonName"></button>
 </form>
 
-Discipline: {{ search.selectedDisciplineSkill }} Skill: {{ search.selectedSkill }} Rating: {{ search.selectedRating }}
+<!-- TODO: Leaving this code in case it is still needed -->
+<!-- 
+Discipline: {{ search.selectedDisciplineSkill }} Skill: {{ search.selectedSkill }} Rating: {{ search.selectedRating }} -->

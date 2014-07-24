@@ -1,13 +1,20 @@
 <form>
-    <label>Search by Strengths:</label>
-    <select ng-model="search.selectedDisciplineStrength" ng-change="changeStrengths(search.selectedDisciplineStrength)" ng-options="discipline for discipline in disciplines"></select>
-
-    <label ng-repeat="strengthListItem in search.strengths">
-        <input type="checkbox" checklist-model="search.selectedStrength" checklist-value="strengthListItem"> {{strengthListItem}}
-    </label>
-
-    <button type="submit" ng-click="searchByStrengths()" ng-bind="search.buttonName"></button>
+	<div class="form-group">
+		<h3>Strength</h3>
+		<select class="form-control" ng-model="search.selectedDisciplineStrength" ng-change="changeStrengths(search.selectedDisciplineStrength)" ng-options="discipline for discipline in disciplines"></select>
+	</div>
+	<div class="form-group">
+		<div ng-repeat="strengthListItem in search.strengths" class="customCheckbox">
+			<input type="checkbox" id="strengthListItem" checklist-model="search.selectedStrength" checklist-value="strengthListItem">
+			<label for="{{strengthListItem}}">{{strengthListItem}}</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<button type="submit" class="btn btn-default" ng-click="searchByStrengths()" ng-bind="search.buttonName"></button>	
+		</div>
+	</div>
 </form>
 
 
-{{search.selectedStrength}}
+<!-- {{search.selectedStrength}} -->

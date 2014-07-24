@@ -1,7 +1,12 @@
-<div class="add-user-strengths">
-	<label ng-repeat="strength in newUserOpts.strengths">
-		<input type="checkbox" checklist-model="newUserStrengthList" checklist-value="strength"> {{strength}}
-	</label>
-</div>
+<h3>Strengths</h3>
+
+<form class="add-user-strengths">
+	<div class="form-group">
+		<div ng-repeat="strength in newUserOpts.strengths" class="customCheckbox">
+			<input id="{{strength}}" type="checkbox" checklist-model="newUserStrengthList" checklist-value="strength">
+			<label for="{{strength}}">{{strength}}</label>
+		</div>
+	</div>
+</form>
 
 
