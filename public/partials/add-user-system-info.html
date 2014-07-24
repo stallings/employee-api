@@ -1,3 +1,65 @@
 <div class="add-user-system-info">
-	<h4>add-user-system-info here</h4>
+	<h4>System Information</h4>
+
+	<div class="row">
+		<div class="col-md-12">
+			<label>Asset tag / machine #
+				<input type="text" name="" ng-model="newUser.machineNumber"/>
+			</label>	
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<label for="machineType">Machine Type <span>Required</span></label>
+			<select id="machineType" ng-model="newUser.machineType">
+				<option>---</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<label>Operating system
+				<label for="operating-system"></label>
+				<input id="operating-system" type="checkbox" ng-model="newUser.operatingSystem"/>
+			</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<label>Last 5
+				<input type="text" ng-model="newUser.last5"/>
+			</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<div id="new-software-info" class="col-md-12">
+			<label>Software Information</label>
+			<div class="SI-row" ng-repeat="row in range(softwareInfoRows) track by $index">
+				<select ng-model="softwareInformationList">
+					<option>---</option>
+				</select>
+				<input type="text" ng-model="softwareInformationList"/>
+			</div>
+
+		</div>
+	</div>		
+			
+	<div class="row">
+		<div class="col-md-12">
+			<button ng-click="addRow()">Add row</button>	
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<label>Additional Notes
+				<textarea class="additional-notes"></textarea>
+			</label>
+		</div>
+	</div>
+
 </div>

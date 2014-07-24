@@ -26,7 +26,7 @@ var userSchema = new Schema({
     },
     profileImg:{
         type: String
-    }
+    },
     title: {
         type: String,
         // required: true

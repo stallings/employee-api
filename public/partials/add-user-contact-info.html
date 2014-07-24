@@ -2,28 +2,21 @@
 	<p>User contact info</p>
 
 	<label for="skype-id">Skype ID</label>
-	<input type="text" name="" id="skype-id"/>
-
+	<input type="text" name="" id="skype-id" ng-model="newUser.skypeId"/>
 
 	<label>
 		Location
-	<label for="state_street">State Street</label>
-	<input id="state_street" type="checkbox">
-
-	<label for="hoffman_estates">Hoffman Estates</label>
-	<input id="hoffman_estates" type="checkbox">
-
-	<label for="splits_time">Splits Time Evenly</label>
-	<input id="splits_time" type="checkbox">
+		<label ng-repeat="location in newUserOpts.locations">
+			<input type="checkbox" checklist-model="newUserLocationList" checklist-value="location"> {{location}}
+		</label>
 	</label>
 
-
 	<label for="desk-num">Desk #</label>
-	<input type="text" name="" id="desk-num"/>
+	<input type="text" name="" id="desk-num" ng-model="newUser.deskNumber"/>
 
 	<label for="phone-num">Phone #</label>
-	<input type="text" name="" id="phone-num"/>
+	<input type="text" name="" id="phone-num" ng-model="newUser.phoneNumber"/>
 
 	<label for="email">Email Address</label>
-	<input type="text" name="" id="email"/>
+	<input type="text" name="" id="email" ng-model="newUser.email"/>
 </div>
