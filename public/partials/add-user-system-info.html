@@ -1,7 +1,6 @@
 <h3>System Information</h3>
 
 <form class="add-user-system-info">
-
 	<div class="form-group">
 		<label>Asset tag / machine #
 			<input type="text" class="form-control" name="" ng-model="newUser.machineNumber"/>
@@ -35,8 +34,14 @@
 	</div>
 
 	<div class="form-group">
-		<button class="btn btn-defualt btn-sm" ng-click="addRow()">Add row</button>	
-		<button class="btn btn-defualt btn-sm" ng-click="removeRow()">Remove row</button>	
+		<button class="btn btn-default btn-sm" ng-click="addRow()">
+			<span class="glyphicon glyphicon-plus"></span>
+			Add
+		</button>	
+		<button class="btn btn-default btn-sm" ng-click="removeRow()">
+			<span class="glyphicon glyphicon-minus"></span>
+			Remove
+		</button>	
 	</div>
 	<div class="form-group">
 		<label>Additional Notes
