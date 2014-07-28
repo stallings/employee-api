@@ -1,7 +1,27 @@
 
 body, a{
 	color: #000;
+	font-family: 'Open Sans',Arial,Helvetica,sans-serif;
+	font-style: normal;
+	font-weight: 300;
 }
+a{
+	color: #015696;
+}
+
+h1{
+	font-family: 'Lato', sans-serif;
+	font-style: thin;
+	font-weight: 100;
+	font-size: 90px;
+}
+h3{
+	color: #015696;
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 300;
+}
+
 
 header{
 	background-color: #015696;
@@ -66,15 +86,10 @@ nav ul{
 	list-style: none;
 }
 
-nav li{
-	padding: 20px;
-}
-
 nav a{
-	text-decoration: none;
-	position: relative;
-	width: 100%;
-	padding: 20px;
+	text-decoration: none !important;
+	padding: 20px 20px 20px 40px;
+	display: inherit;
 }
 nav a:hover{
 	color: #000;
@@ -117,4 +132,25 @@ nav a:hover{
 
 
 
+/***************************
+*  BASEBALL CARD           *
+****************************/
+
+
+.employee-headshot img{
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin-top: 25px
+}
+
+.employee-intro .row{
+	margin-top: 12px;
+	text-align: center;
+}
+.employee-intro .row:last-child{
+	margin-top: 50px;
+}
 

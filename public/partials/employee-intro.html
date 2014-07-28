@@ -1,3 +1,29 @@
-<div class="employee-headshot"><img ng-src="{{ headshot }}"></div>
-<div class="employee-name" ng-bind="name"></div>
-<div class="employee-title" ng-bind="title"></div>
+<div class="employee-intro">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="employee-headshot"><img ng-src="{{ headshot }}"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="employee-name" ng-bind="name"></div>
+			<div class="employee-title" ng-bind="title"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- TODO: Make this a working link -->
+			<a href="#/">Edit/Delete</a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- TODO: Make this button open a print styled page and open print window. -->
+			<button class="btn btn-default">Print</button>
+		</div>
+	</div>
+
+</div>

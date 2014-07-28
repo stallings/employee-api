@@ -1,23 +1,59 @@
-<br/><br/>
-Baseball Card Partial
+<div class="row">
+	<div class="col-md-9">
+		<h1>Add Talent</h1>
+		<p>Find right person for the job using the tools below. You can search by name, for a specific skill required for the domain, or by strength.</p>
 
-<div ng-if="results.valid">
-
-    <div employee-intro name="employee._id" title="employee.title" headshot="employee.headshot"></div><br/>
-
-    <div employee-profile manager="employee.manager" mentor="employee.mentor" mentee="employee.mentee" buddy="employee.buddy" start="employee.start"></div><br/>
-
-    <div employee-contact skype="employee.skype" location="employee.location" desk="employee.desk" phone="employee.phone" cell="employee.cell" email="employee.email"></div><br/>
-
-    <div employee-skills ng-if="employee.skills" skills="employee.skills"></div><br/>
-
-    <div employee-strengths strengths="employee.strengths"></div><br/>
-
-    <div employee-growth growth="employee.growth"></div><br/>
-
-    <div employee-system asset="employee.asset" computer="employee.computer" last5="employee.last5" software="employee.software"></div>
-
+		<div ng-if="results.valid">
+			<div class="row">
+				<div class="col-md-6">
+					  <div employee-profile manager="employee.manager" mentor="employee.mentor" mentee="employee.mentee" buddy="employee.buddy" start="employee.start"></div><br/>
+				</div>
+				<div class="col-md-6">
+					<div employee-contact skype="employee.skype" location="employee.location" desk="employee.desk" phone="employee.phone" cell="employee.cell" email="employee.email"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>Skills Assessment</h3>
+					<div employee-skills ng-if="employee.skills" skills="employee.skills"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<h3>Growth opportunities</h3>
+					<div employee-growth growth="employee.growth"></div>
+				</div>
+				<div class="col-md-6">
+					<h3>Strengths</h3>
+					<div employee-strengths strengths="employee.strengths"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>System Information</h3>
+					<div employee-system asset="employee.asset" computer="employee.computer" last5="employee.last5" software="employee.software"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div employee-intro name="employee._id" title="employee.title" headshot="employee.headshot"></div>
+	</div>
 </div>
+
+
+
+
+
+
+    
+
+    
+
+
+
+
+
 
 
 

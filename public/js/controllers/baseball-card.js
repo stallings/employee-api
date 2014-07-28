@@ -13,7 +13,7 @@ myApp.controller('BaseballCardController', function($scope, $routeParams, employ
             $scope.employee = data;
 
             // Overwrite for testing
-            $scope.employee.headshot = 'http://placekitten.com/50/50';
+            $scope.employee.headshot = 'http://placekitten.com/150/150';
 
             // Modify $scope.employee.start to make it pretty
 
