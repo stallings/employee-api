@@ -45,6 +45,9 @@ myApp.controller('DirectoryController', function($scope, employee, myCache) {
         );
     };
 
+    //Display all team members by default
+    $scope.directorySearch();
+
     $scope.$watchCollection('employeeTypeList', function(newNames, oldNames) {
         if (newNames !== oldNames) {
             $scope.directorySearch();

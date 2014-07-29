@@ -1,48 +1,90 @@
+<div class="row">
+	<div class="col-md-12">
+		<h1>Add Talent</h1>
+		<p>
+			Find the right person for the job using the tools below. You can search by name, for a specific skill required for that domain, or by strength.
+		</p>
+	</div>
+</div>
+
 <div class="row add-user">
+
 	<div class="step1" ng-show="step === 1">
-		<div class="col-md-6">
+		<div class="col-md-7">
 			<div add-user-profile></div>
 		</div>
-		<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<button class="btn btn-lg btn-primary" ng-click="getStep(2)">Next</button>
+				</div>
+				<div class="row">
+					<hr>	
+				</div>
+				
+			</div>
+			{{newUser}}
+		</div>
+	</div>
+
+	<div class="step2" ng-show="step === 2">
+		<div class="col-md-7">
 			<div add-user-contact-info></div>
 		</div>	
 		<div class="row">
 			<div class="col-md-12">
-				<button class="btn btn-default" ng-click="getStep(2)">Next</button>	
+
+				<div class="row">
+					<button class="btn btn-lg btn-primary" ng-click="getStep(3)">Next</button>
+					<button class="btn btn-lg btn-primary" ng-click="getStep(1)">Back</button>	
+					
+				</div>
+				<div class="row">
+					<hr>	
+				</div>
+
 			</div>
 			{{newUser}}
 		</div>
 	</div>
 
 
-	<div class="step2" ng-show="step === 2">
-		<div class="col-md-6">
-	
+	<div class="step3" ng-show="step === 3">
+		<div class="col-md-7">
 			<div add-user-skills></div>
 		</div>
-		<div class="col-md-6">
+		
+		<div class="col-md-7">
 			<div add-user-strengths></div>
 		</div>	
-		<div class="row">
-			<div class="col-md-12">
-				<button class="btn btn-default" ng-click="getStep(1)">Back</button>	
-				<button class="btn btn-default" ng-click="getStep(3)">Next</button>	
+		
+		<div class="col-md-12">
+			<div class="row">
+				<button class="btn btn-lg btn-primary" ng-click="getStep(4)">Next</button>
+				<button class="btn btn-lg btn-primary" ng-click="getStep(2)">Back</button>	
 			</div>
-			{{newUser}}	
+			<div class="row">
+				<hr>	
+			</div>
 		</div>
+			{{newUser}}	
 	</div>
 
 
-	<div class="step3" ng-show="step === 3">
-		<div class="col-md-12">
+	<div class="step4" ng-show="step === 4">
+		<div class="col-md-7">
 			<div add-user-system-info></div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<button class="btn btn-default" ng-click="getStep(2)">Back</button>
-				<button ng-click="saveNewUser()" class="btn btn-default" type="submit">Save</button>	
-				{{newUser}}	
+		</div>		
+		<div class="col-md-12">
+			<div class="row">
+				<button class="btn btn-lg btn-primary" ng-click="getStep(3)">Back</button>
+				<button class="btn btn-lg btn-primary" ng-click="saveNewUser()" type="submit">Save</button>	
 			</div>
+			<div class="row">
+				<hr>	
+			</div>
+
+			{{newUser}}	
 		</div>
 	</div>
 

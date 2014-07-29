@@ -9,7 +9,6 @@ body, a{
 a{
 	color: #015696;
 }
-
 h1{
 	font-family: 'Lato', sans-serif;
 	font-style: thin;
@@ -22,18 +21,14 @@ h3{
 	font-style: normal;
 	font-weight: 300;
 }
-
-
 header{
 	background-color: #015696;
 }
-
 .logo{
 	color: #fff;
 	float: right;
 	margin-right:80px;
 }
-
 table{
 	margin-top: 30px;
 }
@@ -41,13 +36,11 @@ table{
 input[type=checkbox] {
 	visibility: hidden;
 }
-
 .customCheckbox {
 	height: 28px;
 	float: left;
 	margin-right: 3px;
 }
-
 .customCheckbox label {
 	cursor: pointer;
 	-webkit-border-radius: 50px;
@@ -58,17 +51,14 @@ input[type=checkbox] {
 	padding: 0 5px 0 5px;
 	float: left;
 }
-
 .customCheckbox label:hover {
 	background-color: #888;
 	color: #fff;
 }
-
 .customCheckbox input[type=checkbox]:checked + label{
 	background-color: #333;
 	color: #fff;
 }
-
 select{
 	-webkit-appearance: none;  /*Removes default chrome and safari style*/
 	-moz-appearance: none; /* Removes Default Firefox style*/
@@ -79,10 +69,12 @@ select{
 	background-position: 94% 6px,
 						 center;
 }
-
-
-
-
+.glyphicon-asterisk{
+	color: #c9302c;
+	font-size: 7px;
+	margin: 7px 0 0 2px;
+	position: absolute;
+}
 
 /***************************
 *  NAVIGATION STYLES       *
@@ -113,16 +105,8 @@ nav a:hover{
 	background-color: #015696;
 }
 
-
-/*.add-user-profile, .user-contanct-info, .add-user-skills, .add-user-strengths, .add-user-system-info{
-	width: 35%;
-	margin:20px 50px 10px 50px; 
-	background-color: #F0F0F5
-}*/
-
-
 /***************************
-*  SEARCH STYLES       *
+*  SEARCH STYLES           *
 ****************************/
 
 
@@ -242,12 +226,22 @@ right connector from last child*/
 *  ADD TALENT STYLES       *
 ****************************/
 
+.add-user .btn-lg{
+	float: right;
+	margin: 10px 20px -8px 0;
+	padding: 10px 34px;
+}
+.add-user .col-md-12 .row{
+	margin-right: 40px;
+}
+.add-remove .btn{
+	margin-right: 10px;	
+}
 
 
 /***************************
 *  BASEBALL CARD           *
 ****************************/
-
 
 .employee-headshot img{
     background-position: 50% 50%;
@@ -265,4 +259,16 @@ right connector from last child*/
 .employee-intro .row:last-child{
 	margin-top: 50px;
 }
+
+/***************************
+*  FORM VALIDATION STYLES  *
+****************************/
+/*.css-form input.ng-invalid.ng-dirty {
+background-color: #FA787E;
+}
+
+.css-form input.ng-valid.ng-dirty {
+background-color: #78FA89;
+}*/
+
 

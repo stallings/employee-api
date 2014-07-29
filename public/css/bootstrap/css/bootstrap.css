@@ -99,7 +99,12 @@ figure {
 hr {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  height: 0;
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
 }
 pre {
   overflow: auto;
@@ -958,8 +963,6 @@ img {
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 0;
-  border-top: 1px solid #eeeeee;
 }
 .sr-only {
   position: absolute;
@@ -2797,7 +2800,7 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary {
   color: #ffffff;
-  background-color: #428bca;
+  background-color: #015696;
   border-color: #357ebd;
 }
 .btn-primary:hover,
@@ -2806,7 +2809,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
   color: #ffffff;
-  background-color: #3071a9;
+  background-color: #015696;
   border-color: #285e8e;
 }
 .btn-primary:active,

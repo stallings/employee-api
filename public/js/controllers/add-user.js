@@ -2,7 +2,7 @@ myApp.controller('AddUserController', function($scope, $routeParams, employee) {
 
     $scope.results = {valid: true};
 	$scope.step = 1;
-	$scope.softwareInfoRows = 3;
+	$scope.softwareInfoRows = 2;
 
 	$scope.newUserOpts = {};
 	$scope.newUserOpts.profileInfo = [];

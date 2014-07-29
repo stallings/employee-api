@@ -1,51 +1,61 @@
 <h3>System Information</h3>
 
-<form class="add-user-system-info">
+<form class="add-user-system-info form-horizontal">
 	<div class="form-group">
-		<label>Asset tag / machine #
-			<input type="text" class="form-control" name="" ng-model="newUser.machineNumber"/>
-		</label>	
-	</div>
-	<div class="form-group">
-		<label for="machineType">Machine Type <span>Required</span></label>
-		<select id="machineType" class="form-control" ng-model="newUser.machineType">
-			<option>---</option>
-		</select>
-	</div>
-	<div class="form-group">
-		<label>Operating system
-			<label for="operating-system"></label>
-			<input id="operating-system" type="checkbox" ng-model="newUser.operatingSystem"/>
-		</label>
-	</div>
-	<div class="form-group">
-		<label>Last 5
-			<input type="text" class="form-control" ng-model="newUser.last5"/>
-		</label>
-	</div>
-	<div id="new-software-info" class="form-group">
-		<label>Software Information</label>
-		<div class="SI-row" ng-repeat="row in range(softwareInfoRows) track by $index">
-			<select ng-model="softwareInformationList">
-				<option>---</option>
-			</select>
-			<input type="text" class="form-control" ng-model="softwareInformationList"/>
+		<label for="asset-tag" class="col-sm-4 control-label">Asset tag / machine #</label>
+		<div class="col-sm-8">
+			<input id="asset-tag" type="text" class="form-control" name="" ng-model="newUser.machineNumber"/>
 		</div>
 	</div>
-
 	<div class="form-group">
-		<button class="btn btn-default btn-sm" ng-click="addRow()">
-			<span class="glyphicon glyphicon-plus"></span>
-			Add
-		</button>	
-		<button class="btn btn-default btn-sm" ng-click="removeRow()">
-			<span class="glyphicon glyphicon-minus"></span>
-			Remove
-		</button>	
+		<label class="col-sm-4 control-label" for="machineType">Machine Type <span>Required</span></label>
+		<div class="col-sm-8">
+			<select id="machineType" class="form-control" ng-model="newUser.machineType">
+				<option>---</option>
+			</select>
+		</div>
 	</div>
 	<div class="form-group">
-		<label>Additional Notes
-			<textarea class="additional-notes form-control" ng-model="newUser.additionalNotes"></textarea>
-		</label>
+		<label class="col-sm-4 control-label" for="operating-system">Operating system</label>
+		<div class="col-sm-8">
+			<input id="operating-system" type="checkbox" ng-model="newUser.operatingSystem"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-4 control-label" for="last-5">Last 5</label>
+		<div class="col-sm-8">
+			<input id="last-5" class="form-control" type="text" ng-model="newUser.last5"/>
+		</div>
+	</div>
+	<div id="new-software-info" class="form-group">
+		<label class="col-sm-4 control-label">Software Information</label>
+		<div class="col-sm-8">
+			<div class="SI-row" ng-repeat="row in range(softwareInfoRows) track by $index">
+				<select class="col-sm-4 form-control" ng-model="softwareInformationList">
+					<option>---</option>
+					<option>Additional sofware info</option>
+				</select>
+				<input type="text" class="form-control" ng-model="softwareInformationList"/>
+			</div>
+		</div>
+	</div>
+	<div class="form-group add-remove">
+		<label class="col-sm-4 control-label">&nbsp;</label>
+		<div class="col-sm-8">
+				<button class="btn btn-default" ng-click="addRow()">
+					<span class="glyphicon glyphicon-plus"></span>
+					Add
+				</button>	
+				<button class="btn btn-default" ng-click="removeRow()">
+					<span class="glyphicon glyphicon-minus"></span>
+					Remove
+				</button>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="additional-notes" class="col-sm-4 control-label">Additional Notes</label>
+		<div class="col-sm-8">
+			<textarea id="additional-notes" class="additional-notes form-control" ng-model="newUser.additionalNotes"></textarea>
+		</div>
 	</div>
 </form>
