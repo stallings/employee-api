@@ -1,6 +1,6 @@
 <h3>Profile Information</h3>
 
-<form class="add-user-profile form-horizontal">
+<form class="add-user-profile form-horizontal" novalidate>
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="pic-upload">
 			Picture
@@ -16,7 +16,9 @@
 			<span class="glyphicon glyphicon-asterisk"></span>
 		</label>
 		<div class="col-sm-10">
-			<input type="text" required class="form-control" name="" id="first-name" ng-model="newUser.firstName" placeholder="{{newUser.firstName}}" />
+			<input type="text" required class="form-control" name="" id="first-name" ng-model="newUser.firstName" placeholder="{{newUser.firstName}}" required />
+			<p ng-show="newUser.firstName.$invalid && !newUser.firstName.$pristine" class="help-block">Your name is required.</p>
+    </div>
 
 <!-- 		<span class="glyphicon glyphicon-ok form-control-feedback"></span>
 			<span class="glyphicon glyphicon-remove form-control-feedback"></span> -->
@@ -52,10 +54,10 @@
 		</label>
 		<div class="col-sm-10">
 			<select id="title" class="form-control" ng-model="newUser.title">
-				<option</option>
-				<option</option>
-				<option selected>title3</option>
-				<option></option>
+				<option>FED</option>
+				<option>Contractor</option>
+				<option selected>Web Developer</option>
+				<option>Project Manager</option>
 			</select>
 		</div>
 	</div>

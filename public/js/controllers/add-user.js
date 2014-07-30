@@ -1,4 +1,4 @@
-myApp.controller('AddUserController', function($scope, $routeParams, employee) {
+myApp.controller('AddUserController', function($scope, $routeParams, employee, $location) {
 
     $scope.results = {valid: true};
 	$scope.step = 1;
@@ -12,6 +12,7 @@ myApp.controller('AddUserController', function($scope, $routeParams, employee) {
 	$scope.newUserOpts.sysInfo = [];
 	$scope.newUserStrengthList = [];
 	$scope.newUserLocationList = [];
+	$scope.newUserOsList = [];
 
 	$scope.newUserOpts.profileInfo = [
 		{"Discipline": ["Discipline1","Discipline2","Discipline3"]},
@@ -25,17 +26,18 @@ myApp.controller('AddUserController', function($scope, $routeParams, employee) {
 		{"Information Architecture": ["IAOption1","IAOption2","IAOption3"]},
 		{"UI design": ["UIOption1","UIOption2","UIOption3"]},
 	];
-	$scope.newUserOpts.strengths = [
-		"Prototyping", "Angular", "HTML5", "Strength", "Video Editing", "Mobile"
-	];
+	$scope.newUserOpts.strengths = [ "Prototyping", "Angular", "HTML5", "Strength", "Video Editing", "Mobile"];
+
+	$scope.newUserOpts.os = ["OSX", "Windows XP", "Windows 7", "Windows 8"];
 
     $scope.getStep = function(step){
     	$scope.step = step;
     }
 
     $scope.addAllListsToNewUser = function(){
-		$scope.newUser.strengths = newUserStrengthList;
-		$scope.newUser.locations = newUserLocationList;
+		$scope.newUser.strengths = $scope.newUserStrengthList;
+		$scope.newUser.locations = $scope.newUserLocationList;
+		$scope.newUser.operatingsystem = $scope.newUserOsList;
     }
 
     $scope.range = function(n) {
@@ -43,35 +45,60 @@ myApp.controller('AddUserController', function($scope, $routeParams, employee) {
     }
 
     $scope.addRow = function(){
-    	$scope.softwareInfoRows = $scope.softwareInfoRows + 1;
+    	//Max amout of rows to add
+    	if($scope.softwareInfoRows !== 8){
+    		$scope.softwareInfoRows = $scope.softwareInfoRows + 1;
+    	}
     }
     $scope.removeRow = function(){
-    	$scope.softwareInfoRows = $scope.softwareInfoRows - 1;
+    	//Min amount of rows
+    	if($scope.softwareInfoRows !== 1){
+    		$scope.softwareInfoRows = $scope.softwareInfoRows - 1;
+    	}
     }
-    
+
+    $scope.createUserId = function(first, last){
+    	$scope.newUser._id = first + " " + last;
+    }
+    $scope.createUserName = function(first, last){	
+    	$scope.newUser.username = first.charAt(0) + last.substr(0,6);
+    	$scope.newUser._id = $scope.newUser._id.toLowerCase();
+    }
+
+    $scope.showCardForNewUser = function(first, last){
+    	// $location.path("/users/" + first + "%20" + last +"%3Fsuccess=true");
+    	$location.path("/users/" + first + "%20" + last);
+    }
+
     $scope.saveNewUser = function(){
+    	var first = $scope.newUser.firstName;
+    	var last = $scope.newUser.lastName;
     	//////////////////////////////////////////////////////////////////
     	//// This needs to come from somewhere. Harded coded for now. ////
     	//////////////////////////////////////////////////////////////////
-		$scope.newUser._id = "Test USER";
-		$scope.newUser.username = "test_user";
+		$scope.createUserId(first, last);
+		$scope.createUserName(first, last);
 		$scope.newUser.level = 3;
 		//////////////////////////////////////////////////////////////////
 		
 		$scope.addAllListsToNewUser();
 
 		console.log($scope.newUser);
+
+		$scope.showCardForNewUser(first, last);
 	
-		employee.postNewUser($scope.newUser).then(
-			function(data) {
-				console.log(data);
-				$scope.results.valid = true;
-			}
-		).catch(
-			function() {
-				$scope.results.valid = false;
-			}
-		);
+		// employee.postNewUser($scope.newUser).then(
+		// 	function(data) {
+		// 		console.log(data);
+		// 		$scope.results.valid = true;
+
+		// 		// TODO: If valid results then redirect to baseball card page for the new user
+		// 	}
+		// ).catch(
+		// 	function() {
+		// 		$scope.results.valid = false;
+		// 	}
+		// );
     }
 
 });
