@@ -1,10 +1,23 @@
-myApp.controller('BaseballCardController', function($scope, $routeParams, employee) {
-
+myApp.controller('BaseballCardController', function($rootScope, $scope, $routeParams, employee, $location, $timeout) {
     $scope.employee = {};
     $scope.results = {
         valid: true
     };
+    $scope.fadeOutUp = false;
+    
+    $scope.showMessage = function(){
+        $timeout(function(){
+            $scope.fadeOutUp = true;
+            $timeout(function(){
+                $rootScope.successful = false;
+            },400);
+        }, 8000);
+    }
 
+    if($rootScope.successful === true){
+        $scope.showMessage();
+    }
+    
     employee.getUser($routeParams.name).then(
         function(data) {
 

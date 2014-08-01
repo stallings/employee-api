@@ -1,5 +1,4 @@
-myApp.controller('AddUserController', function($scope, $routeParams, employee, $location) {
-
+myApp.controller('AddUserController', function($rootScope, $scope, $routeParams, employee, $location) {
     $scope.results = {valid: true};
 	$scope.step = 1;
 	$scope.softwareInfoRows = 2;
@@ -66,39 +65,37 @@ myApp.controller('AddUserController', function($scope, $routeParams, employee, $
     }
 
     $scope.showCardForNewUser = function(first, last){
-    	// $location.path("/users/" + first + "%20" + last +"%3Fsuccess=true");
-    	$location.path("/users/" + first + "%20" + last);
+    	$rootScope.successful = true;
+    	var url = "/users/" + first.toLowerCase() + " " + last.toLowerCase();
+    	$location.path(url);
     }
 
     $scope.saveNewUser = function(){
     	var first = $scope.newUser.firstName;
     	var last = $scope.newUser.lastName;
+
+    	$scope.createUserId(first, last);
+		$scope.createUserName(first, last);
+
     	//////////////////////////////////////////////////////////////////
     	//// This needs to come from somewhere. Harded coded for now. ////
     	//////////////////////////////////////////////////////////////////
-		$scope.createUserId(first, last);
-		$scope.createUserName(first, last);
 		$scope.newUser.level = 3;
 		//////////////////////////////////////////////////////////////////
 		
 		$scope.addAllListsToNewUser();
 
-		console.log($scope.newUser);
-
-		$scope.showCardForNewUser(first, last);
-	
-		// employee.postNewUser($scope.newUser).then(
-		// 	function(data) {
-		// 		console.log(data);
-		// 		$scope.results.valid = true;
-
-		// 		// TODO: If valid results then redirect to baseball card page for the new user
-		// 	}
-		// ).catch(
-		// 	function() {
-		// 		$scope.results.valid = false;
-		// 	}
-		// );
+		employee.postNewUser($scope.newUser).then(
+			function(data) {
+				console.log(data);
+				$scope.results.valid = true;
+				$scope.showCardForNewUser(first, last);
+			}
+		).catch(
+			function() {
+				$scope.results.valid = false;
+			}
+		);
     }
 
 });

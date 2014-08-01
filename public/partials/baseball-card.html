@@ -1,4 +1,10 @@
-<h1 ng-show="$location.search().success">Success!!</h1>
+<!-- <div class="row alert-message" ng-animate="animate" ng-class="(success=='true') ? 'animate fadeInDown' : 'animate fadeOutUp'" > -->
+<div class="row alert-message animated fadeInDown" ng-if="successful == true" ng-class="(fadeOutUp === true) ?  'animate fadeOutUp' : 'animate fadeInDown'" >
+    <div class="col-md-12">
+        <h2>Successfully added new user!</h2>
+        <a class="btn btn-lg btn-primary" href="#/adduser">Add more talent</a>
+    </div>	
+</div>
 
 <div class="row">
 	<div class="col-md-9">

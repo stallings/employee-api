@@ -15,7 +15,9 @@ var skillSchema = new Schema({
 });
 
 var userSchema = new Schema({
-    // Required
+///////////////////////////////    
+//////// Required /////////////
+///////////////////////////////
     _id: {
         type: String,
         required: true
@@ -24,8 +26,21 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
+    firstname:{
+        type: String,
+        // required true
+    },
+    lastname:{
+        type: String,
+        // required: true
+    },
+    discipline:{
+        type: String,
+        // required: true
+    },
     profileImg:{
         type: String
+        // required: true
     },
     title: {
         type: String,
@@ -51,7 +66,49 @@ var userSchema = new Schema({
         // required: true
     },
 
-    // Optional
+///////////////////////////////    
+//////// Optional /////////////
+///////////////////////////////
+
+    // Contact info
+    skypeid:{
+        type: String
+    },
+    desknum:{
+        type: String
+    },
+    phonenum:{
+        type: String
+    },
+    email:{
+        type: String
+    },
+    location:{
+        type: String
+    },
+
+    // System info
+    machinenum:{
+        type: String
+    },
+    machinetype:{
+        type: String
+    },
+    operatingsystem:{
+        type: String
+    },
+    last5:{
+        type: String
+    },
+    // TODO: Additional software information
+    addnotes:{
+        type: String
+    },
+
+
+
+
+
     password: {
         type: String
     },
@@ -65,7 +122,16 @@ var userSchema = new Schema({
         type: String
     },
     strenghts: [String],
-    skills: [skillSchema]
+    skills: [skillSchema],
+    mentor:{
+        type: String
+    },
+    mentee:{
+        type: String
+    },
+    buddy:{
+        type: String
+    }
 
 
 });

@@ -23,6 +23,8 @@ h3{
 }
 header{
 	background-color: #015696;
+	position: relative;
+	z-index: 2;
 }
 .logo{
 	color: #fff;
@@ -75,6 +77,23 @@ select{
 	margin: 7px 0 0 2px;
 	position: absolute;
 }
+.alert-message{
+	background-color: #27ae60;
+	margin-right: -15px;
+	color: #ffffff;
+	z-index: 1;
+	position: relative;
+	padding: 8px;
+	text-align: center;
+}
+.alert-message h2{
+	display: inline-block;
+	margin-right: 20px;
+}
+.alert-message a{
+	margin-top: -14px;
+}
+
 
 /***************************
 *  NAVIGATION STYLES       *
