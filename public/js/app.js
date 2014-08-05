@@ -1,4 +1,4 @@
-var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'pasvaz.bindonce', 'ngSanitize', 'MyAwesomePartials', 'search-directives', 'employee-directives', 'orgchart-directives', 'employee-api', 'checklist-model', 'add-user-directives']);
+var myApp = angular.module('employeeApp', ['ngRoute','restangular', 'pasvaz.bindonce', 'ngSanitize', 'MyAwesomePartials', 'search-directives', 'employee-directives', 'orgchart-directives', 'employee-api', 'checklist-model', 'add-user-directives', 'ngMessages']);
 
 myApp.config(function($routeProvider, RestangularProvider) {
     $routeProvider
@@ -22,6 +22,10 @@ myApp.config(function($routeProvider, RestangularProvider) {
             templateUrl: 'partials/add-user.html',
             controller: 'AddUserController'
         })
+        .when('/errormessage', {
+            templateUrl: 'partials/error-messages.html',
+        })
+
         .otherwise({
             redirectTo: '/'
         });

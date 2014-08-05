@@ -1,6 +1,5 @@
 <h3>Profile Information</h3>
-
-<form class="add-user-profile form-horizontal" novalidate>
+<form name="usrProfileForm" class="add-user-profile form-horizontal" novalidate>
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="pic-upload">
 			Picture
@@ -16,8 +15,13 @@
 			<span class="glyphicon glyphicon-asterisk"></span>
 		</label>
 		<div class="col-sm-10">
-			<input type="text" required class="form-control" name="" id="first-name" ng-model="newUser.firstName" placeholder="{{newUser.firstName}}" required />
-			<p ng-show="newUser.firstName.$invalid && !newUser.firstName.$pristine" class="help-block">Your name is required.</p>
+			<input type="text" required class="form-control" name="firstName" id="first-name" ng-model="newUser.firstName" required ng-Minlength="3" ng-Maxlength="30" ng-pattern="/^[a-zA-Z0-9]*$/">
+
+			<div ng-messages="usrProfileForm.firstName.$error" style="color:maroon">
+				<div ng-message="required">Required</div>
+				<div ng-message="minlength">Your field is too short</div>
+				<div ng-message="maxlength">Your field is too long</div>
+			</div>
     </div>
 
 <!-- 		<span class="glyphicon glyphicon-ok form-control-feedback"></span>
@@ -30,8 +34,18 @@
 			<span class="glyphicon glyphicon-asterisk"></span>
 		</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="" id="last-name" ng-model="newUser.lastName"/>
+			<input type="text" class="form-control" name="lastName" id="last-name" ng-model="newUser.lastName"
+			required ng-Minlength="3" ng-Maxlength="30" ng-pattern="/^[a-zA-Z0-9]*$/" />
 		</div>
+
+		<div ng-messages="usrProfileForm.lastName.$error" style="color:maroon">
+			<div ng-message="required">Required</div>
+			<div ng-message="minlength">Your field is too short</div>
+			<div ng-message="maxlength">Your field is too long</div>
+			<div ng-message="pattern">No special characters.</div>
+		</div>
+
+
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="discipline">
